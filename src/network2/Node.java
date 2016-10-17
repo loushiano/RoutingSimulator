@@ -18,6 +18,9 @@ public class Node {
 	public void setNeighbours(ArrayList<Node> neighbours) {
 		this.neighbours = neighbours;
 	}
+	public void addNeighbour(Node node){
+		neighbours.add(node);
+	}
 	public Node (String name){
 		this.name=name;
 		neighbours=new ArrayList<Node>();

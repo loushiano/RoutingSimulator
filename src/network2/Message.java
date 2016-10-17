@@ -6,14 +6,26 @@ public class Message {
 	private Node destination;
 	private Node source;
 	private int numHops;
+	private int numPacks;
 	
 	
 	public Message(String message,Node destination,Node source){
 		this.message=message;
 		numHops=0;
+		numPacks=0;
 		this.destination=destination;
 		this.source=source;
 		
+	}
+
+
+	public int getNumPacks() {
+		return numPacks;
+	}
+
+
+	public void incNumPacks() {
+		this.numPacks++;
 	}
 
 
@@ -52,7 +64,7 @@ public class Message {
 	}
 
 
-	public void IncNumHops() {
+	public void incNumHops() {
 		this.numHops++;
 	}
 	

@@ -6,6 +6,7 @@ public class Node {
 	
 	private String name;
 	private ArrayList<Node> neighbours;
+	
 	public String getName() {
 		return name;
 	}

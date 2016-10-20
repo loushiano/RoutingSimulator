@@ -10,6 +10,9 @@ public class MainModel {
 	
 	public static void main(String[] args) {
        
+		
+		
+	UserUI Reader = new UserUI();	
 
 	//This the message that we want to send 
 	 sysc = "sysc3110 is amazing course";

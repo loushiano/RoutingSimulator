@@ -6,7 +6,7 @@ public class Node {
 	
 	private String name;
 	private ArrayList<Node> neighbours;
-	private Message message;
+	private ArrayList<Message> messages;
 	
 	public Node (String name){
 		this.name=name;
@@ -30,20 +30,24 @@ public class Node {
 		neighbours.add(node);
 	}
 
-	public void setMessage(Message message){
-		this.message=message;
+	public void addMessage(Message message){
+		this.messages.add(message);
 	}
-	public void transferMessage(){
-		message=null;
+	public Message transferMessage(){
+		return messages.remove(0);
 		
 	}
+	public ArrayList<Message> getMessages() {
+		return messages;
+	}
+
 	public String toString(){
 		
 		String s=this.getName()+" has neighbours: ";
 		for(Node no:neighbours){
 			s+=no.getName()+" ";
 		}
-		return s+ "\n";
+		return s;
 	}
 	
 }

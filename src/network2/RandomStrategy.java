@@ -8,12 +8,10 @@ import java.util.ArrayList;
  */
 import java.util.Random;
 
-public class RandomStrategy extends Strategy {
+public class RandomStrategy implements  Strategy {
 /*
- * Initializes the message,source and destination fields of its super class
- * @param message - a message to be transferred randomly
- * @param source - a source node from which the message has to be transferred
- * @param destination - a destination node to which the message has to be transferred
+ *contructor doesnt do anything
+ * 
  */
 	public RandomStrategy() {
 		
@@ -23,24 +21,33 @@ public class RandomStrategy extends Strategy {
 	 * transfers the message between the network routers randomly
 	 * 
 	 */
-	public void transferMessage(Message message,int count){
+	public ArrayList<Message> transferMessage(ArrayList<Node> nodes){
+		ArrayList<Message> messages=new ArrayList<Message>();
 		Random r=new Random();
-		Node node=message.getSource();
-		node.setMessage(message);
-		int i=0;;
-		while(!node.equals(message.getDestination())){
-			node.transferMessage();
-			i=r.nextInt(node.getNeighbours().size());
-			System.out.print("message "+count+" got transfered form "+ node.getName());
-			node=node.getNeighbours().get(i);
-			node.setMessage(message);
+		int i=0;
+		Message message=null;
+		for(Node n:nodes){
+			message=n.transferMessage();
+			i=r.nextInt(n.getNeighbours().size());
+			n=n.getNeighbours().get(i);
+			n.addMessage(message);
 			message.incNumHops();
-			System.out.println(" to node: "+node.getName());
-			
+			if(message.getDestination().equals(n)){
+				 messages.add(n.getMessages().remove(n.getMessages().size()-1));
+				 System.out.println("A message got transferred to node "+n.getName()+" successfuly after "+message.getNumHops()+" hops");
+			}else{
+				
+			}
 			
 		}
 		
-		printResult(message);
+		return messages;
+		
+	}
+	@Override
+	public void printResult(Message message) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

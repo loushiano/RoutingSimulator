@@ -37,6 +37,13 @@ public class Node {
 		message=null;
 		
 	}
-	
+	public String toString(){
+		
+		String s=this.getName()+"has neighbours: ";
+		for(Node no:neighbours){
+			s+=no.getName()+" ";
+		}
+		return s+ ".";
+	}
 	
 }

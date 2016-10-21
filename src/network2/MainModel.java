@@ -1,28 +1,41 @@
 package network2;
 
-public class MainModel {
-	
-	
-	private static Message messageSent;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-	private static Node a,b,c,d,e;
+public class MainModel implements Observer{
 	
 	
-	public static void main(String[] args) {
-       
+	private  Message messageSent;
+
+	
+	private ArrayList<Node> topology;
+	
+	public MainModel(){
+		topology =new ArrayList<Node>();
+		
+	}
+	
+       public void ModelIt(){
 		
 		
-	//UserUI Reader = new UserUI();	
+	
 
 	//This the message that we want to send 
 	 
 
 	// creating the five nodes 
-	 a = new Node ("a");
-	 b = new Node ("b");
-	 c = new Node ("c");
-	 d = new Node ("d");
-	 e = new Node ("e");
+	 Node a = new Node ("a");
+	 
+	 Node b = new Node ("b");
+	 
+	 Node c = new Node ("c");
+	
+	 Node d = new Node ("d");
+	 
+	 Node e = new Node ("e");
+	 
 	
 	// Adding neighbors to Node a 
 	a.addNeighbour(b);
@@ -45,15 +58,51 @@ public class MainModel {
 	e.addNeighbour(b);
 	
 	
+	topology.add(a);
+	topology.add(b);
+	 topology.add(c);
+	topology.add(d);
+	topology.add(e);
+	
+	UserUI Reader = new UserUI(topology,this.toString());	
+	
+       }
+	
+	//UserUI Reader = new UserUI();	
 	
 	
 	//messageSent = new Message( Reader.getMessage() ,d,a);
 	
 	// i still need to add things 
 	
+	
+
+
+	public ArrayList<Node> getTopology() {
+		return topology;
+	}
+
+	public void setTopology(ArrayList<Node> topology) {
+		this.topology = topology;
+	}
+	public String toString(){
+		String s="";
+		for(Node no:topology){
+			s+=no.toString();
+			
+		}
+		return s;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	
+}
+
+
 	
 	
 	
@@ -67,4 +116,4 @@ public class MainModel {
 	
 	
 
-}
+

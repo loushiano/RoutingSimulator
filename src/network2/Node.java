@@ -6,6 +6,7 @@ public class Node {
 	
 	private String name;
 	private ArrayList<Node> neighbours;
+	private Message message;
 	
 	public String getName() {
 		return name;
@@ -26,6 +27,12 @@ public class Node {
 		this.name=name;
 		neighbours=new ArrayList<Node>();
 		
+	}
+	public void setMessage(Message message){
+		this.message=message;
+	}
+	public void transferMessage(){
+		message=null;
 	}
 	
 	

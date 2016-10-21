@@ -26,7 +26,6 @@ public class UserUI {
 		
 	}
 
-	
 	public String getMessage() {
 		return message;
 	}

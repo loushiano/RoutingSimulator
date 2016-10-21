@@ -13,27 +13,22 @@ public class UserUI {
 		
 		System.out.print("Enter a Message: ");
 		in = new Scanner(System.in);  // Reading the message
-		System.out.println();
 		
 		message = in.nextLine(); //store the message
 		//System.out.println(n);
 		
 		System.out.print("Enter a Source: ");
 		in = new Scanner(System.in);  // Reading source
-		System.out.println();
 		
 		source = in.nextLine();  //store the source
 		
 		System.out.print("Enter a Destination: ");
 		in = new Scanner(System.in);  // Reading destination
-		System.out.println();
 		
 		destination = in.nextLine(); //store the destination
 		
-		System.out.print("Enter the amount of messages to be sent: ");
-		in = new Scanner(System.in);  // Reading the amount of messages to be sent
-		System.out.println();
-		
+		System.out.print("Enter the number of messeges to be sent: ");
+		in = new Scanner(System.in);
 		numOfMessages = new Integer(in.nextLine()); // store the amount of messages to be sent
 		
 		
@@ -76,28 +71,58 @@ public class UserUI {
 			if(isAlgorithm) break; // Quit from the infinite loop.	
 		}
 		
+		System.out.println("Do you want to send the message? (Yes/No): ");
+		in = new Scanner(System.in);  // Reading command
+		
+		if(in.nextLine().toLowerCase().equals("yes")){
+			Node s = new Node(source) ;
+			Node d = new Node(destination); 
+			Message m = new Message(message, d, s);
+			RandomStrategy randomStrategy = new RandomStrategy(m, s, d);
+			randomStrategy.transferMessage();
+		}
+		
 	}
-
 	
+	/*
+	 * Returns the message 
+	 */
 	public String getMessage() {
 		return message;
 	}
+	
+	/*
+	 * @param message the message to be sent
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	/*
+	 * Returns the a string for the source
+	 */
 	public String getSource() {
 		return source;
 	}
+	
+	/*
+	 * @param source the source node that will be set
+	 */
 	public void setSource(String source) {
 		this.source = source;
 	}
+	
+	/*
+	 * Returns a string for the destination
+	 */
 	public String getDestination() {
 		return destination;
 	}
+	
+	/*
+	 * @param destination the destination node that will be set.
+	 */
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-	
-	
-	
 }

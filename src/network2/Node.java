@@ -8,6 +8,12 @@ public class Node {
 	private ArrayList<Node> neighbours;
 	private Message message;
 	
+	public Node (String name){
+		this.name=name;
+		neighbours=new ArrayList<Node>();
+		
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -23,16 +29,13 @@ public class Node {
 	public void addNeighbour(Node node){
 		neighbours.add(node);
 	}
-	public Node (String name){
-		this.name=name;
-		neighbours=new ArrayList<Node>();
-		
-	}
+
 	public void setMessage(Message message){
 		this.message=message;
 	}
 	public void transferMessage(){
 		message=null;
+		
 	}
 	
 	

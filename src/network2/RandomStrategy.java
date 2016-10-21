@@ -25,10 +25,12 @@ public class RandomStrategy extends Strategy {
 	public void transferMessage(){
 		Random r=new Random();
 		Node node=getSource();
-		
+		node.setMessage(message);
+		int i=0;;
 		while(!node.equals(destination)){
 			node.transferMessage();
-			node=node.getNeighbours().get(r.nextInt(node.getNeighbours().size()));
+			i=r.nextInt(node.getNeighbours().size());
+			node=node.getNeighbours().get(i);
 			node.setMessage(message);
 			message.incNumHops();
 			System.out.println("message got transfered to node: "+node.getName());

@@ -1,4 +1,5 @@
 package network2;
+import java.util.ArrayList;
 /*
  * class RandomStrategy takes the responsibility of transferring a message in a network of routers randomly.
  * @author Ibrahim Ali Fawaz
@@ -14,20 +15,20 @@ public class RandomStrategy extends Strategy {
  * @param source - a source node from which the message has to be transferred
  * @param destination - a destination node to which the message has to be transferred
  */
-	public RandomStrategy(Message message, Node source, Node destination) {
-		super(message, source, destination);
+	public RandomStrategy() {
+		
 		
 	}
 	/*
 	 * transfers the message between the network routers randomly
 	 * 
 	 */
-	public void transferMessage(){
+	public void transferMessage(Message message){
 		Random r=new Random();
-		Node node=getSource();
+		Node node=message.getSource();
 		node.setMessage(message);
 		int i=0;;
-		while(!node.equals(destination)){
+		while(!node.equals(message.getDestination())){
 			node.transferMessage();
 			i=r.nextInt(node.getNeighbours().size());
 			node=node.getNeighbours().get(i);
@@ -38,7 +39,7 @@ public class RandomStrategy extends Strategy {
 			
 		}
 		
-		printResult();
+		printResult(message);
 	}
 
 }

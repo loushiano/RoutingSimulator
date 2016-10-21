@@ -1,7 +1,7 @@
 package network2;
 
 import java.util.*;
-public class UserUI {
+public class UserUI extends Observable {
 	
 	String message, source, destination, algorithm;
 	Scanner in;
@@ -9,7 +9,11 @@ public class UserUI {
 	
 	
 	
-	public UserUI(){
+	public UserUI(ArrayList<Node> nodes, String representation){
+		
+		System.out.print("Enter the number of messeges to be sent: ");
+		in = new Scanner(System.in);
+		numOfMessages = new Integer(in.nextLine()); // store the amount of messages to be sent
 		
 		System.out.print("Enter a Message: ");
 		in = new Scanner(System.in);  // Reading the message
@@ -26,12 +30,7 @@ public class UserUI {
 		in = new Scanner(System.in);  // Reading destination
 		
 		destination = in.nextLine(); //store the destination
-		
-		System.out.print("Enter the number of messeges to be sent: ");
-		in = new Scanner(System.in);
-		numOfMessages = new Integer(in.nextLine()); // store the amount of messages to be sent
-		
-		
+
 		//Ask the user for the type of the routing algorithm to be used in the network
 		System.out.println("The following are the types of Routing algorithm in this network communication:");
 		System.out.println("1. Random");

@@ -65,6 +65,9 @@ public class Strategy {
 	public void setDestination(Node destination) {
 		this.destination = destination;
 	}
+	public void printResult(){
+		System.out.println("the message : "+message.getMessage()+" was transferred successfuly from "+source.getName()+" to "+destination.getName());
+	}
 
 	
 

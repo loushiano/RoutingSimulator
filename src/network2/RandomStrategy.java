@@ -38,7 +38,7 @@ public class RandomStrategy extends Strategy {
 			
 		}
 		
-		
+		printResult();
 	}
 
 }

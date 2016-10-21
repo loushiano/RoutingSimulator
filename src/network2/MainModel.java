@@ -7,12 +7,16 @@ public class MainModel {
 
 	private static Node a,b,c,d,e;
 	
+	
 	public static void main(String[] args) {
-
-	UserUI Reader = new UserUI();	
+       
+		
+		
+	//UserUI Reader = new UserUI();	
 
 	//This the message that we want to send 
 	 
+
 	// creating the five nodes 
 	 a = new Node ("a");
 	 b = new Node ("b");
@@ -40,7 +44,12 @@ public class MainModel {
 	e.addNeighbour(a);
 	e.addNeighbour(b);
 	
-	messageSent = new Message( Reader.getMessage() ,d,a);
+	
+	
+	
+	//messageSent = new Message( Reader.getMessage() ,d,a);
+	
+	// i still need to add things 
 	
 	}
 	

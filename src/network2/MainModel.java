@@ -7,14 +7,17 @@ import java.util.Observer;
 public class MainModel implements Observer{
 	
 	
-	private  Message messageSent;
+	private  ArrayList<Message> messagesSent;
 
 	
 	private ArrayList<Node> topology;
+
+
+	private boolean flag=true;
 	
 	public MainModel(){
 		topology =new ArrayList<Node>();
-		
+		messagesSent=new ArrayList<Message>();
 	}
 	
        public void ModelIt(){
@@ -61,16 +64,11 @@ public class MainModel implements Observer{
 	topology.add(d);
 	topology.add(e);
 	
-	UserUI Reader = new UserUI(topology,this.toString());	
+	UserUI Reader = new UserUI(this);	
 	
    }
 	
-	//UserUI Reader = new UserUI();	
-	
-	
-	//messageSent = new Message( Reader.getMessage() ,d,a);
-	
-	// i still need to add things 
+
 
 	public ArrayList<Node> getTopology() {
 		return topology;
@@ -90,8 +88,24 @@ public class MainModel implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
+		 messagesSent=(ArrayList<Message>)arg1;
+		flag=false;
 	}
+	
+	
+	
+
+	private int hopsMetrix(ArrayList<Message> messages) {
+		int j=0;
+		for(Message i:messages){
+			j+=i.getNumHops();
+			
+		}
+		j=j/messages.size();
+		return j;
+	}
+	
+	
 	
 }
 

@@ -6,31 +6,42 @@ public class UserUI extends Observable {
 	String message, source, destination, algorithm;
 	Scanner in;
 	int numOfMessages;
-	
-	
-	
+	ArrayList<String[]> messages;
+	String array[];
+
 	public UserUI(MainModel model){
-		
+		//Add the current model to the observer list
+		addObserver(model);
+		messages =new ArrayList<String[]>();
+		//print out the topology network for the user
+		System.out.println(model.toString());
 		
 		System.out.print("Enter the number of messeges to be sent: ");
 		in = new Scanner(System.in);
 		numOfMessages = new Integer(in.nextLine()); // store the amount of messages to be sent
 		
-		System.out.print("Enter a Message: ");
-		in = new Scanner(System.in);  // Reading the message
+		for(int i = 1; i <= numOfMessages; i++){
+			System.out.print("Enter message number "+ i + ": ");
+			in = new Scanner(System.in);
+			message=in.nextLine();
+			
+			System.out.print("Enter a Source: ");
+			in = new Scanner(System.in);  // Reading source
+			source = in.nextLine();
+			System.out.print("Enter a Destination: ");
+			in = new Scanner(System.in);  // Reading destination
+			
+			destination = in.nextLine(); //store the destination
+			array =new String[3];
+			
+			array[0]=message;
+			array[1]=source;
+			array[2]=destination;
+			messages.add(array);
+			
+		}
 		
-		message = in.nextLine(); //store the message
-		//System.out.println(n);
-		
-		System.out.print("Enter a Source: ");
-		in = new Scanner(System.in);  // Reading source
-		
-		source = in.nextLine();  //store the source
-		
-		System.out.print("Enter a Destination: ");
-		in = new Scanner(System.in);  // Reading destination
-		
-		destination = in.nextLine(); //store the destination
+	
 
 		//Ask the user for the type of the routing algorithm to be used in the network
 		System.out.println("The following are the types of Routing algorithm in this network communication:");
@@ -51,18 +62,22 @@ public class UserUI extends Observable {
 			case "1": 
 				System.out.println("You have choosed Random algorithm");
 				isAlgorithm = true;
+				
 				break;
 			case "2": 
 				System.out.println("You have choosed Flooding algorithm");
 				isAlgorithm = true;
+				
 				break;
 			case "3": 
 				System.out.println("You have choosed Shortest Path algorithm");
 				isAlgorithm = true;
+				
 				break;
 			case "4": 
 				System.out.println("You have choosed Our Method algorithm");
 				isAlgorithm = true;
+				
 				break;			
 			default: 
 				System.out.print("Please insert an appropriate value: ");
@@ -71,58 +86,11 @@ public class UserUI extends Observable {
 			if(isAlgorithm) break; // Quit from the infinite loop.	
 		}
 		
-		System.out.println("Do you want to send the message? (Yes/No): ");
-		in = new Scanner(System.in);  // Reading command
+		System.out.println("the messages will be send in the algrithm specified. Have a good day");
 		
-		if(in.nextLine().toLowerCase().equals("yes")){
-			Node s = new Node(source) ;
-			Node d = new Node(destination); 
-			Message m = new Message(message, d, s);
-			RandomStrategy randomStrategy = new RandomStrategy(m, s, d);
-			randomStrategy.transferMessage();
+		setChanged();
+		notifyObservers(messages);
 		}
-		
-	}
-	
-	/*
-	 * Returns the message 
-	 */
-	public String getMessage() {
-		return message;
-	}
-	
-	/*
-	 * @param message the message to be sent
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
-	/*
-	 * Returns the a string for the source
-	 */
-	public String getSource() {
-		return source;
-	}
-	
-	/*
-	 * @param source the source node that will be set
-	 */
-	public void setSource(String source) {
-		this.source = source;
-	}
-	
-	/*
-	 * Returns a string for the destination
-	 */
-	public String getDestination() {
-		return destination;
-	}
-	
-	/*
-	 * @param destination the destination node that will be set.
-	 */
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
 }
+
+

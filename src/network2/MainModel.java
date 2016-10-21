@@ -99,9 +99,11 @@ public class MainModel implements Observer{
 			
 		}
 		RandomStrategy random=new RandomStrategy();
+		int j=0;
 		for(String[] i:messages){
+			j++;
 			Message message=new Message(i[0],topologies.get(i[1]),topologies.get(i[2]));
-			random.transferMessage(message);
+			random.transferMessage(message,j);
 			messagesSent.add(message);
 		}
 		
@@ -118,7 +120,7 @@ public class MainModel implements Observer{
 	
 
 	private void hopsMetrix( ArrayList<Message> messages) {
-		int j=0;
+		double j=0;
 		for(Message i:messages){
 			j+=i.getNumHops();
 			

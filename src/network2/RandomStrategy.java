@@ -23,7 +23,7 @@ public class RandomStrategy extends Strategy {
 	 * transfers the message between the network routers randomly
 	 * 
 	 */
-	public void transferMessage(Message message){
+	public void transferMessage(Message message,int count){
 		Random r=new Random();
 		Node node=message.getSource();
 		node.setMessage(message);
@@ -31,10 +31,11 @@ public class RandomStrategy extends Strategy {
 		while(!node.equals(message.getDestination())){
 			node.transferMessage();
 			i=r.nextInt(node.getNeighbours().size());
+			System.out.print("message "+count+" got transfered form "+ node.getName());
 			node=node.getNeighbours().get(i);
 			node.setMessage(message);
 			message.incNumHops();
-			System.out.println("message got transfered to node: "+node.getName());
+			System.out.println(" to node: "+node.getName());
 			
 			
 		}

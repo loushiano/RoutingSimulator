@@ -9,7 +9,7 @@ public class Message {
 	private int numPacks;
 	
 	
-	public Message(String message,Node destination,Node source){
+	public Message(String message,Node source,Node destination){
 		this.message=message;
 		numHops=0;
 		numPacks=0;

@@ -4,7 +4,7 @@ public class MainModel {
 	
 	
 	private static Message messageSent;
-	private static String sysc;
+
 	private static Node a,b,c,d,e;
 	
 	
@@ -15,7 +15,7 @@ public class MainModel {
 	UserUI Reader = new UserUI();	
 
 	//This the message that we want to send 
-	 sysc = "sysc3110 is amazing course";
+	 
 
 	// creating the five nodes 
 	 a = new Node ("a");
@@ -47,7 +47,7 @@ public class MainModel {
 	
 	
 	
-	messageSent = new Message(sysc ,d,a);
+	messageSent = new Message( Reader.getMessage() ,d,a);
 	
 	// i still need to add things 
 	

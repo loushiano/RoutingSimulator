@@ -9,7 +9,8 @@ public class UserUI extends Observable {
 	
 	
 	
-	public UserUI(ArrayList<Node> nodes, String representation){
+	public UserUI(MainModel model){
+		
 		
 		System.out.print("Enter the number of messeges to be sent: ");
 		in = new Scanner(System.in);

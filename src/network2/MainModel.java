@@ -18,9 +18,6 @@ public class MainModel implements Observer{
 	}
 	
        public void ModelIt(){
-		
-		
-	
 
 	//This the message that we want to send 
 	 
@@ -60,13 +57,13 @@ public class MainModel implements Observer{
 	
 	topology.add(a);
 	topology.add(b);
-	 topology.add(c);
+	topology.add(c);
 	topology.add(d);
 	topology.add(e);
 	
 	UserUI Reader = new UserUI(topology,this.toString());	
 	
-       }
+   }
 	
 	//UserUI Reader = new UserUI();	
 	
@@ -74,9 +71,6 @@ public class MainModel implements Observer{
 	//messageSent = new Message( Reader.getMessage() ,d,a);
 	
 	// i still need to add things 
-	
-	
-
 
 	public ArrayList<Node> getTopology() {
 		return topology;
@@ -97,7 +91,6 @@ public class MainModel implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 }

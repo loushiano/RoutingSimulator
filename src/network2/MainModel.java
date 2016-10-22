@@ -32,6 +32,7 @@ public class MainModel {
 		messagesSent=new ArrayList<Message>();
 		r=new Random();
 		randomStrategy=new RandomStrategy();
+		in=new Scanner(System.in);
 	}
 	
 	/*
@@ -40,7 +41,7 @@ public class MainModel {
     public void simualteMessages(){
     	for(Node node:topology){
     	   for(int i=0;i<3;i++){  
-    		   Message message=new Message("i love Professor baback",node,getDestinationNode(node));
+    		   Message message=new Message("i love Professor babak",node,getDestinationNode(node));
     		   node.addMessage(message);
     	   }
 		}
@@ -89,16 +90,23 @@ public class MainModel {
 	 * @param strategy the type o algorithm passed as a string
 	 */
 	public void Simulation(String Strategy){
+		System.out.print("the simulation will start now at the user settableRate.Type in step to step through and anything else whenever you want to stop the simulation: ");
+		while(in.nextLine().equals("step")){
+			
 			count++;
 			int size=messagesSent.size();
 			AddMessages(randomStrategy.transferMessage(topology));
 			if(count==settableRate){
 				injectNewMessage();
 				count=0;
+				System.out.println("a new message has been successfuly injected");
 			}
 			if(size!=messagesSent.size()){
 				hopsMetrix();
 			}	
+		
+		}
+		System.out.println("simulation is done have a greate day!!");
 	}
 	
 	/*
@@ -123,7 +131,7 @@ public class MainModel {
 	 */
 	private void injectNewMessage() {
 		Node node = topology.get(r.nextInt(topology.size()));
-		Message message =new Message("baback is the best",node,getDestinationNode(node));
+		Message message =new Message("babak is the best",node,getDestinationNode(node));
 		node.addMessage(message);
 		
 	}
@@ -136,7 +144,7 @@ public class MainModel {
 		ArrayList<Node> nodes;
 		for(;;){
 			System.out.print("How many nodes do you want to create? "); //fix the issue of wrong value
-			in = new Scanner(System.in);
+			//in = new Scanner(System.in);
 			try{
 				numOfNodes = new Integer(in.nextLine()); // store number of created nodes
 				break;
@@ -149,7 +157,7 @@ public class MainModel {
 		
 		for(;;){
 			System.out.print("Enter your settable rate to send messages from each node: "); //fix the issue of wrong value
-			in = new Scanner(System.in);
+			//in = new Scanner(System.in);
 			try{
 				settableRate = new Integer(in.nextLine()); // store number of created nodes
 				break;
@@ -165,7 +173,7 @@ public class MainModel {
 		//Add each node to the nodes array list
 		for(int i = 0; i < numOfNodes; i++){
 			System.out.print("Enter Node name: ");
-			in = new Scanner(System.in);
+			//in = new Scanner(System.in);
 			nodes.add(new Node(in.nextLine().trim()));
 			
 		}// end for loop
@@ -184,7 +192,7 @@ public class MainModel {
 		for(int x = 0; x < numOfNodes; x++){
 			System.out.println();
 			System.out.print(nodes.get(x).toString()); //print the representation of the current node (i.e a has neighbours: ...)
-			in = new Scanner(System.in);
+			//in = new Scanner(System.in);
 			
 			//convert the inputs coming from the user (a, c, d, ....) to an array of characters
 			char[] charArrays = in.nextLine().replaceAll(","," ").toCharArray();
@@ -202,7 +210,7 @@ public class MainModel {
 		
 		//After add neighbours to each node, print that we are done from the network topology design
 		System.out.println("You have created the network topology");
-		in.close();
+		
 		topology=nodes;
 		}// end UserUI
 	
@@ -253,23 +261,26 @@ public class MainModel {
 		MainModel model=new MainModel();
 		model.createTopology();
 		model.simualteMessages();
-
-		System.out.print("the simulation will start now at the user settableRate.Type in stop whenever you want to stop the simulation: ");
-		Scanner in =new Scanner(System.in);
-		int g =0;
-		while(g<20){
+		//Scanner input;
+		//System.out.print("the simulation will start now at the user settableRate.Type in step to step through and stop whenever you want to stop the simulation: ");
+		
+			//input=new Scanner(System.in);
+			
+				//in=new Scanner(System.in);
+				//String s=input.nextLine();
+				//if(s.equals("step")){
+					//System.out.println("sd");
+				//}
+				
+			
+		
 		
 		model.Simulation("Random Strategy");
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
 		}
-		g++;
-		}
-		}	
 	}
+			
+	
 	
 	
 

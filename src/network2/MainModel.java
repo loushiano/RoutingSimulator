@@ -24,16 +24,21 @@ public class MainModel {
 	private int count=0;
 	
 	Scanner in;
+	
 	/*
-	 * 
+	 * Create new object of topology
+	 * Create new object of messagesSent
+	 * Create new object of Random
 	 */
 	public MainModel(){
 		topology =new ArrayList<Node>();
 		messagesSent=new ArrayList<Message>();
 		r=new Random();
+		randomStrategy=new RandomStrategy();
 	}
+	
 	/*
-	 * 
+	 * Create three messages and make those have different source and destination nodes
 	 */
     public void simualteMessages(){
     	for(Node node:topology){
@@ -45,8 +50,8 @@ public class MainModel {
     }
     
     /*
-     * 
-     * 
+     * Returns a different node than the node passed to it
+     * @param node the given node
      */
     private Node getDestinationNode(Node node){
     	   Node node1=topology.get(r.nextInt(topology.size()));
@@ -57,13 +62,14 @@ public class MainModel {
     }
     
     /*
-     * 
+     * returns the network Topology
      */
 	public ArrayList<Node> getTopology() {
 		return topology;
 	}
+	
 	/*
-	 * 
+	 * Edit the network Topolgy.
 	 */
 	public void setTopology(ArrayList<Node> topology) {
 		this.topology = topology;
@@ -81,8 +87,9 @@ public class MainModel {
 		}
 		return s;
 	}
+	
 	/*
-	 * 
+	 * @param strategy the type o algorithm passed as a string
 	 */
 	public void Simulation(String Strategy){
 			count++;
@@ -94,28 +101,28 @@ public class MainModel {
 			}
 			if(size!=messagesSent.size()){
 				hopsMetrix();
-			}
-			
-		
-		
+			}	
 	}
+	
 	/*
-	 * 
+	 * add messages from the given array list of message to messsagesSent field
+	 * @param transferMessage arraylist of Message
 	 */
 	private void AddMessages(ArrayList<Message> transferMessage)
 	{
 		if(transferMessage.size()==0){
 			return;
 		}
+		
 		for(Message message :transferMessage)
 		{
 			messagesSent.add(message);
 		}
 		
 	}
+	
 	/*
-	 * 
-	 * 
+	 *put a message in the network 
 	 */
 	private void injectNewMessage() {
 		Node node = topology.get(r.nextInt(topology.size()));
@@ -125,7 +132,7 @@ public class MainModel {
 	}
 	
 	/*
-	 * 
+	 * Start creating the network topology from the user inputs
 	 */
 	public void createTopology(){
 		int numOfNodes;
@@ -141,7 +148,7 @@ public class MainModel {
 			}
 		}	
 		
-		System.out.println(); //Print a space Hahaha
+		System.out.println(); 
 		
 		for(;;){
 			System.out.print("Enter your settable rate to send messages from each node: "); //fix the issue of wrong value
@@ -187,7 +194,9 @@ public class MainModel {
 			for(char c: charArrays){
 				if(c != ' '){
 					//add neighbours
-					nodes.get(x).addNeighbour(new Node(c + ""));
+					Node n=getNode(c,nodes);
+					nodes.get(x).addNeighbour(n);
+					n.addNeighbour(nodes.get(x));
 				}
 			}
 			//print the representation of the current node (i.e a has neighbours: ...)
@@ -201,10 +210,22 @@ public class MainModel {
 		}// end UserUI
 	
 	
-
+	/*
+	 * Returns a node from nodes that is equal to given character
+	 * @param c the given character
+	 * @param nodes the given array list of nodes
+	 */
+	private Node getNode(char c,ArrayList<Node> nodes) {
+		for(Node n:nodes){
+			if(c==n.getName().charAt(0)){
+				return n;
+			}
+		}
+		return null;
+	}
 	
 	/*
-	 * 
+	 * calculates the hops
 	 */
 	public void hopsMetrix() {
 		double j=0;
@@ -217,42 +238,44 @@ public class MainModel {
 	}
 	
 	/*
-	 * 
+	 * returns an arraylist of messages
 	 */
 	public ArrayList<Message> getMessagesSent() {
 		return messagesSent;
 	}
 	
 	/*
-	 * 
+	 * sets an array list of messages
 	 */
 	public void setMessagesSent(ArrayList<Message> messagesSent) {
 		this.messagesSent = messagesSent;
 	}
 	
-	
-	
-	
-	
+	//runs the simulation
 	public static void main(String args[]){
 		MainModel model=new MainModel();
 		model.createTopology();
 		model.simualteMessages();
-		boolean flag=true;
-		
-		Scanner in =new Scanner(System.in);
+
 		System.out.print("the simulation will start now at the user settableRate.Type in stop whenever you want to stop the simulation: ");
+		Scanner in =new Scanner(System.in);
+		int g =0;
+		while(g<20){
 		
-		while(!in.nextLine().equals("stop")){
 		model.Simulation("Random Strategy");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		
-		
+		g++;
+		}
+		}	
 	}
 	
 	
-}
+
 
 
 	

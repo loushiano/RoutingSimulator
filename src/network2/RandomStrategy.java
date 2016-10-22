@@ -27,6 +27,9 @@ public class RandomStrategy implements  Strategy {
 		int i=0;
 		Message message=null;
 		for(Node n:nodes){
+			if(n.getMessages().size()==0){
+				
+			}else{
 			message=n.transferMessage();
 			i=r.nextInt(n.getNeighbours().size());
 			n=n.getNeighbours().get(i);
@@ -38,7 +41,7 @@ public class RandomStrategy implements  Strategy {
 			}else{
 				
 			}
-			
+		}
 		}
 		
 		return messages;

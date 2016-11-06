@@ -7,17 +7,17 @@ import java.util.Scanner;
 public class MainModel {
 	
 	
-	//
+	//Array list of nodes that represents the topology
 	private ArrayList<Node> topology;
-	//
+	//Array list of messages that represents the messages sent
 	private ArrayList<Message> messagesSent;
-	//
+	//table rate
 	private int settableRate=0;
-	//
+	//Random strategy
 	private RandomStrategy randomStrategy;
-	//
+	//random object
 	private Random r;
-	//
+	//counter for a method
 	private int count=0;
 	
 	Scanner in;

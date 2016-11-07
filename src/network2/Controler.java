@@ -90,9 +90,9 @@ public class Controler implements ActionListener, MouseListener {
 			CreateButtonClicked=true;
 			
 		}else if(e.getActionCommand().equals("Step")){
-			
+			model.step();
 		}else if(e.getActionCommand().equals("Start Simulation")){
-				
+				model.start();
 			
 			
 			//createNode.setActionCommand("Step");

@@ -25,9 +25,6 @@ public class MainModel extends Observable {
 	private int count=0;
 	
 	Scanner in;
-	private boolean step;
-	private boolean end;
-	private boolean start;
 	private GUI gui;
 	
 	/*
@@ -46,6 +43,7 @@ public class MainModel extends Observable {
 	 * Create three messages and make those have different source and destination nodes
 	 */
     public void simualteMessages(){
+    	System.out.println("hello");
     	while(getTopology().size()==0){
     		
     	}
@@ -100,10 +98,11 @@ public class MainModel extends Observable {
 	/*
 	 * @param strategy the type o algorithm passed as a string
 	 */
-	public void Simulation(){
+	public void simulation(){
 		
 			
 			count++;
+			System.out.println(""+topology.size());
 			int size=messagesSent.size();
 			AddMessages(randomStrategy.transferMessage(topology));
 			if(count==settableRate){
@@ -307,6 +306,14 @@ public class MainModel extends Observable {
 			notifyObservers(nodes);
 			
 		}
+	}
+
+	public void step() {
+		simulation();
+		
+	}
+	public void start(){
+		simualteMessages();
 	}
 
 }

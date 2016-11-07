@@ -30,7 +30,7 @@ import javax.swing.JTextArea;
 public class GUI implements Observer{
 	private JFrame frame; // The fame
 	private JButton createNode; //Button
-	private JButton addNeighbour; //Button
+	private JButton step,delete,end,addNeighbour; //Button
 	private JButton startSimulation; //Button
 	private Container contentPane; // Content Pane
 	private JPanel southPanel; //South Panel of the content Pane
@@ -40,6 +40,7 @@ public class GUI implements Observer{
 	private String letter="A";
 	private CirclePanel circlePanel;
 	private Controler controler;
+	private ArrayList<JButton> buttons;
 
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
@@ -49,6 +50,7 @@ public class GUI implements Observer{
 		this.controler=controler;
 		setFrame(new JFrame("Network Topology"));
 		getFrame().setPreferredSize(new Dimension(420, 400));
+		buttons=new ArrayList<JButton>();
 		circlePanel=new CirclePanel();
 		
 		
@@ -66,20 +68,34 @@ public class GUI implements Observer{
 		contentPane.setLayout(new BorderLayout());
 		//Create the buttons required for representing the topology.
 		createNode = new JButton("Create Node");
-		
+		buttons.add(createNode);
 		startSimulation = new JButton("Start Simulation");
-		
+		buttons.add(startSimulation);
+		step = new JButton("Step");
+		delete = new JButton("delete Node");
+		end = new JButton("end Simulation");
+		addNeighbour=new JButton("add Neighbour");
+		buttons.add(step);
+		buttons.add(delete);
+		buttons.add(end);
+		buttons.add(addNeighbour);
 		//Add actionListenr to Buttons
 		createNode.addActionListener(controler);
-
+		step.addActionListener(controler);
 		startSimulation.addActionListener(controler);
 		
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
-		southPanel.setBounds(61, 11, 81, 140);
-		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-		southPanel.add(createNode);
 		
+		southPanel.setPreferredSize(new Dimension(140,300));
+		southPanel.setLayout(new FlowLayout(0,15,30));
+		southPanel.add(createNode);
+		southPanel.add(addNeighbour);
+		
+		southPanel.add(delete);
 		southPanel.add(startSimulation);
+		southPanel.add(step);
+		southPanel.add(end);
+		
 		
 		//Set the layout manage of the North Panel to Border Layout and add the area that represents the Topology to the panel.
 		northPanel.setBackground(Color.white);
@@ -124,5 +140,13 @@ public class GUI implements Observer{
 					(int)n2.getCircle().getCenter().getX(),(int)n2.getCircle().getCenter().getY());
 		}
 		
+	}
+
+	public ArrayList<JButton> getButtons() {
+		return buttons;
+	}
+
+	public void setButtons(ArrayList<JButton> buttons) {
+		this.buttons = buttons;
 	}
 }

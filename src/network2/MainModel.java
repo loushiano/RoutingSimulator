@@ -123,7 +123,6 @@ public class MainModel {
 		{
 			messagesSent.add(message);
 		}
-		
 	}
 	
 	/*
@@ -212,7 +211,7 @@ public class MainModel {
 		System.out.println("You have created the network topology");
 		
 		topology=nodes;
-		}// end UserUI
+		}// end create Topology
 	
 	
 	/*

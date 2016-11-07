@@ -51,7 +51,7 @@ public class Node {
 	}
 	
 	/*
-	 * adds a neighborto this node  
+	 * adds a Message this node  
 	 * @param node is the node that we want to add it as neighbor to this node .  
 	 */
 	public void addMessage(Message message){

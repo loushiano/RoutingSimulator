@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface Strategy {
 	
 	
-	
+	//HELLO :D
 
 	/*
 	 * Initializes the message,source and destination fields

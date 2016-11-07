@@ -62,7 +62,11 @@ public class Node {
 	 * transferMessage()method is used to transfer the message 
 	 */
 	public Message transferMessage(){
-		return messages.remove(0);
+		if(messages.size() != 0){
+			return messages.remove(0);
+		}else{
+			return null;
+		}
 		
 	}
 	/*

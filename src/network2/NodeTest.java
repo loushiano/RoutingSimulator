@@ -84,7 +84,6 @@ public class NodeTest {
 		nodes5.add(n1);
 		nodes5.add(n2);
 		nodes5.add(n3);
-		nodes5.add(n4);
 		n5.setNeighbours(nodes5);
 		
 	}
@@ -114,7 +113,11 @@ public class NodeTest {
 
 	@Test
 	public void testSetName() {
-		fail("Not yet implemented");
+		assertNotEquals(n1.getName(),null);
+		n1.setName(null);
+		assertEquals(n1.getName(),null);
+		n1.setName("H");
+		assertEquals(n1.getName(), "H");
 	}
 
 	@Test
@@ -122,15 +125,13 @@ public class NodeTest {
 		assertNotEquals(n3.getNeighbours(),null);
 		assertEquals(n4.getNeighbours(), nodes3);
 		assertNotEquals(n2.getNeighbours(), n3.getNeighbours());
-		assertNotEquals(n2.getNeighbours(), n2.getNeighbours());
+		assertEquals(n2.getNeighbours(), n2.getNeighbours());
 		assertEquals(n4.getNeighbours(), nodes3);
 	}
 
 	@Test
 	public void testSetNeighbours() {
-		//n1 Neighbours are already set above in setUP
-		
-		
+		//n1 and n5 Neighbours are already set above in setUP
 		assertNotEquals(n1.getNeighbours(),null);
 		assertEquals(n1.getNeighbours(), nodes1);
 		assertNotEquals(n1.getNeighbours(), n5.getNeighbours());
@@ -139,7 +140,10 @@ public class NodeTest {
 
 	@Test
 	public void testAddNeighbour() {
-		fail("Not yet implemented");
+		n4.addNeighbour(n5);
+		assertNotEquals(n4.getNeighbours(), null);
+		assertEquals(n4.getNeighbours(), nodes3);
+		assertNotEquals(n4.getNeighbours(), nodes2);
 	}
 
 	@Test
@@ -159,7 +163,10 @@ public class NodeTest {
 
 	@Test
 	public void testTransferMessage() {
-		fail("Not yet implemented");
+		assertNotEquals(n5.transferMessage(), null);
+		assertEquals(n5.transferMessage(), messages.get(1));
+		assertEquals(n5.transferMessage(), messages.get(2));
+		assertEquals(n5.transferMessage(), null);
 	}
 
 	@Test
@@ -176,7 +183,7 @@ public class NodeTest {
 	public void testToString() {
 		assertNotEquals(n1.toString(), null);
 		assertNotEquals(n1.toString(), n2.toString());
-		assertEquals(n1.toString(), "A has neighbours: B ");
+		assertEquals(n1.toString(), "A has neighbours: B J ");
 		assertEquals(n4.toString(), "A has neighbours: C B ");
 		assertNotEquals(n1.toString(), n4.toString());
 	}

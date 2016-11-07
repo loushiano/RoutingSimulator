@@ -1,5 +1,6 @@
 package network2;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Node {
@@ -7,11 +8,12 @@ public class Node {
 	private String name;
 	private ArrayList<Node> neighbours;
 	private ArrayList<Message> messages;
-	
+	private Circle circle;
 	public Node (String name){
 		this.name=name;
 		neighbours=new ArrayList<Node>();
 		messages =new ArrayList<Message>();
+		
 	}
 	/*
 	 * gets the name of the node 
@@ -51,7 +53,7 @@ public class Node {
 	}
 	
 	/*
-	 * adds a Message this node  
+	 * adds a neighborto this node  
 	 * @param node is the node that we want to add it as neighbor to this node .  
 	 */
 	public void addMessage(Message message){
@@ -62,11 +64,7 @@ public class Node {
 	 * transferMessage()method is used to transfer the message 
 	 */
 	public Message transferMessage(){
-		if(messages.size() != 0){
-			return messages.remove(0);
-		}else{
-			return null;
-		}
+		return messages.remove(0);
 		
 	}
 	/*
@@ -86,6 +84,12 @@ public class Node {
 			s+=no.getName()+" ";
 		}
 		return s;
+	}
+	public Circle getCircle() {
+		return circle;
+	}
+	public void setCircle(Circle circle) {
+		this.circle = circle;
 	}
 	
 }

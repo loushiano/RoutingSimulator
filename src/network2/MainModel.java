@@ -1,10 +1,14 @@
 package network2;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import java.util.Scanner;
 
-public class MainModel {
+import javax.swing.JFrame;
+
+public class MainModel implements Observer {
 	
 	
 	//Array list of nodes that represents the topology
@@ -21,6 +25,9 @@ public class MainModel {
 	private int count=0;
 	
 	Scanner in;
+	private boolean step;
+	private boolean end;
+	private boolean start;
 	
 	/*
 	 * Create new object of topology
@@ -32,14 +39,17 @@ public class MainModel {
 		messagesSent=new ArrayList<Message>();
 		r=new Random();
 		randomStrategy=new RandomStrategy();
-		in=new Scanner(System.in);
 	}
 	
 	/*
 	 * Create three messages and make those have different source and destination nodes
 	 */
     public void simualteMessages(){
+    	while(getTopology().size()==0){
+    		
+    	}
     	for(Node node:topology){
+    		
     	   for(int i=0;i<3;i++){  
     		   Message message=new Message("i love Professor babak",node,getDestinationNode(node));
     		   node.addMessage(message);
@@ -89,9 +99,8 @@ public class MainModel {
 	/*
 	 * @param strategy the type o algorithm passed as a string
 	 */
-	public void Simulation(String Strategy){
-		System.out.print("the simulation will start now at the user settableRate.Type in step to step through and anything else whenever you want to stop the simulation: ");
-		while(in.nextLine().equals("step")){
+	public void Simulation(){
+		
 			
 			count++;
 			int size=messagesSent.size();
@@ -104,10 +113,9 @@ public class MainModel {
 			if(size!=messagesSent.size()){
 				hopsMetrix();
 			}	
-		
-		}
-		System.out.println("simulation is done have a greate day!!");
-	}
+			
+			}
+	
 	
 	/*
 	 * add messages from the given array list of message to messsagesSent field
@@ -137,7 +145,7 @@ public class MainModel {
 	
 	/*
 	 * Start creating the network topology from the user inputs
-	 */
+	 *
 	public void createTopology(){
 		int numOfNodes;
 		ArrayList<Node> nodes;
@@ -212,7 +220,7 @@ public class MainModel {
 		
 		topology=nodes;
 		}// end create Topology
-	
+	*/
 	
 	/*
 	 * Returns a node from nodes that is equal to given character
@@ -258,25 +266,56 @@ public class MainModel {
 	//runs the simulation
 	public static void main(String args[]){
 		MainModel model=new MainModel();
-		model.createTopology();
-		model.simualteMessages();
-		//Scanner input;
-		//System.out.print("the simulation will start now at the user settableRate.Type in step to step through and stop whenever you want to stop the simulation: ");
+		GUI gui =new GUI(model);
+		gui.createTopology();
 		
-			//input=new Scanner(System.in);
-			
-				//in=new Scanner(System.in);
-				//String s=input.nextLine();
-				//if(s.equals("step")){
-					//System.out.println("sd");
-				//}
+		
+		
+		
+		
+		
 				
 			
 		
 		
-		model.Simulation("Random Strategy");
+		
 		
 		}
+
+	
+
+	
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		GUI gui=(GUI)arg0;
+		if(arg1 instanceof ArrayList){
+			
+			setTopology((ArrayList<Node>)arg1);
+			System.out.print("the simulation will start now at the user settableRate. step to step through and stop whenever you want to stop the simulation: ");
+			//System.out.println(""+getTopology().size());
+			//Simulation("Random Strategy",gui);
+			simualteMessages();
+		}else if (arg1 instanceof String){
+			String s=(String)arg1;
+			if(s.equals("Step")){
+			Simulation();
+			}else if (s.equals("end Simulation")){
+				
+				endSimulation(gui);
+			}
+		}
+		
+	}
+
+	private void endSimulation(GUI gui) {
+		System.out.println("the simulation has ended");
+		gui.close();
+		
+		
+	}
+
+	
 	}
 			
 	

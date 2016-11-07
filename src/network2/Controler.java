@@ -22,6 +22,7 @@ public class Controler implements ActionListener, MouseListener {
 		this.model=model;
 		
 	}
+	
 	public void setGUI(GUI gui){
 		this.gui=gui;
 	}
@@ -37,7 +38,7 @@ public class Controler implements ActionListener, MouseListener {
 	    	
 	    	CreateButtonClicked=false;
 		
-	}
+	 }
 	}
 
 	@Override
@@ -80,9 +81,9 @@ public class Controler implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e){
 		if(e.getActionCommand().equals("Create Node")){
-			letter = JOptionPane.showInputDialog(gui.getFrame(), "enter the name of the Node");
+			letter = JOptionPane.showInputDialog(gui.getFrame(), "Enter the name of the Node");
 			while(letter==null || letter.equals("")){
-				letter = JOptionPane.showInputDialog(gui.getFrame(), "enter the name of the Node");
+				letter = JOptionPane.showInputDialog(gui.getFrame(), "Enter the name of the Node");
 				
 			}
 			letter=letter.toUpperCase();

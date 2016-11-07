@@ -45,7 +45,6 @@ public class RandomStrategy implements  Strategy {
 		}
 		
 		return messages;
-		
 	}
 	@Override
 	public void printResult(Message message) {

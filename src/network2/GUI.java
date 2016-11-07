@@ -40,14 +40,14 @@ public class GUI implements Observer{
 	private String letter="A";
 	private CirclePanel circlePanel;
 	private Controler controler;
-	
+
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
 	 */
 	public GUI(Controler controler){
 		//Create the fame with specific features
 		this.controler=controler;
-		 setFrame(new JFrame("Network Topology"));
+		setFrame(new JFrame("Network Topology"));
 		getFrame().setPreferredSize(new Dimension(420, 400));
 		circlePanel=new CirclePanel();
 		
@@ -88,30 +88,14 @@ public class GUI implements Observer{
 		
         contentPane.addMouseListener(controler);
 
-
-	    
-		
 		//Add the panels to the content pane.
 		contentPane.add(southPanel, BorderLayout.EAST);
-		
 		
 		//Set the frame to visible and pack it.
 		frame.setVisible(true);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
 	}
-	
-	
-	
-		
-	
-	
-
-	
-	
 
 	public void close() {
 		getFrame().dispatchEvent(new WindowEvent(getFrame(), WindowEvent.WINDOW_CLOSING));
@@ -131,8 +115,7 @@ public class GUI implements Observer{
 		if(arg1 instanceof Node){
 			Node node=(Node)arg1;
 			circlePanel.addCircle(node.getCircle());
-	    	circlePanel.draw();
-			
+	    	circlePanel.draw();	
 		}else {
 			ArrayList<Node> nodes=(ArrayList<Node>)arg1;
 			Node n1=nodes.get(0);
@@ -142,9 +125,4 @@ public class GUI implements Observer{
 		}
 		
 	}
-
-	
-
-	
-	
 }

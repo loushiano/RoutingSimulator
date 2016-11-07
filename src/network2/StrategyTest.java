@@ -16,9 +16,5 @@ public class StrategyTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testPrintResult() {
-		fail("Not yet implemented");
-	}
 
 }

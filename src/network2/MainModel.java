@@ -143,7 +143,6 @@ public class MainModel extends Observable {
 		node.addMessage(message);
 		
 	}
-	
 	/*
 	 * Start creating the network topology from the user inputs
 	 *
@@ -272,27 +271,8 @@ public class MainModel extends Observable {
 		controler.setGUI(gui);
 		model.setGUI(gui);
 		gui.createTopology();
-		
-		
-		
-		
-		
-		
-				
-			
-		
-		
-		
-		
-		}
 
-	
-
-	
-
-	
-		
-	
+	}
 
 	private void setGUI(GUI gui) {
 		this.gui=gui;
@@ -327,19 +307,9 @@ public class MainModel extends Observable {
 			notifyObservers(nodes);
 			
 		}
-		
 	}
 
-	
-
-	
-	}
-			
-	
-	
-	
-
-
+}
 
 	
 	

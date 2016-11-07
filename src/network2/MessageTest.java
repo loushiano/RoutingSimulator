@@ -7,9 +7,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MessageTest {
-
+	private Node n1, n2;
+	private Message m;
+	
 	@Before
 	public void setUp() throws Exception {
+		
+		n1 = new Node("A");
+		n2 = new Node("B");
+		m = new Message("Hi", n1,n2);
 	}
 
 	@After
@@ -18,57 +24,81 @@ public class MessageTest {
 
 	@Test
 	public void testMessage() {
-		fail("Not yet implemented");
+		assertNotEquals(m, null);
+		assertEquals(m.getMessage(), "Hi");
+		assertEquals(m.getSource(), n1);
+		assertEquals(m.getDestination(), n2);
 	}
 
 	@Test
 	public void testGetNumPacks() {
-		fail("Not yet implemented");
+		assertEquals(m.getNumPacks(), 0);
+		m.incNumPacks();
+		assertEquals(m.getNumPacks(), 1);
 	}
 
 	@Test
 	public void testIncNumPacks() {
-		fail("Not yet implemented");
+		m.incNumPacks();
+		assertEquals(m.getNumPacks(), 1);
+		m.incNumPacks();
+		assertEquals(m.getNumPacks(), 2);
 	}
 
 	@Test
 	public void testGetDestination() {
-		fail("Not yet implemented");
+		assertNotEquals(m.getDestination(), null);
+		assertEquals(m.getDestination(), n2);
 	}
 
 	@Test
 	public void testSetDestination() {
-		fail("Not yet implemented");
+		m.setDestination(n1);
+		assertNotEquals(m.getDestination(), null);
+		assertEquals(m.getDestination(), n1);
 	}
 
 	@Test
 	public void testGetSource() {
-		fail("Not yet implemented");
+		assertNotEquals(m.getSource(), null);
+		assertEquals(m.getSource(), n1);
 	}
 
 	@Test
 	public void testSetSource() {
-		fail("Not yet implemented");
+		m.setSource(n2);
+		assertNotEquals(m.getSource(), null);
+		assertEquals(m.getSource(), n2);
 	}
 
 	@Test
 	public void testGetMessage() {
-		fail("Not yet implemented");
+		assertNotEquals(m.getMessage(),null);
+		assertEquals(m.getMessage(), "Hi");
 	}
 
 	@Test
 	public void testSetMessage() {
-		fail("Not yet implemented");
+		m.setMessage("Hello");
+		assertNotEquals(m.getMessage(),null);
+		assertEquals(m.getMessage(), "Hello");
 	}
 
 	@Test
 	public void testGetNumHops() {
-		fail("Not yet implemented");
+		assertEquals(m.getNumHops(),0);
+		m.incNumHops();
+		assertEquals(m.getNumHops(),1);
 	}
 
 	@Test
 	public void testIncNumHops() {
-		fail("Not yet implemented");
+		m.incNumHops();
+		assertEquals(m.getNumHops(),1);
+		m.incNumHops();
+		assertEquals(m.getNumHops(),2);
+		m.incNumHops();
+		assertEquals(m.getNumHops(),3);
 	}
 
 }

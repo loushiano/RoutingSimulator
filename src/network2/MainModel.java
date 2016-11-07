@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-public class MainModel implements Observer {
+public class MainModel extends Observable {
 	
 	
 	//Array list of nodes that represents the topology
@@ -28,6 +28,7 @@ public class MainModel implements Observer {
 	private boolean step;
 	private boolean end;
 	private boolean start;
+	private GUI gui;
 	
 	/*
 	 * Create new object of topology
@@ -266,7 +267,10 @@ public class MainModel implements Observer {
 	//runs the simulation
 	public static void main(String args[]){
 		MainModel model=new MainModel();
-		GUI gui =new GUI(model);
+		Controler controler=new Controler(model);
+		GUI gui =new GUI(controler);
+		controler.setGUI(gui);
+		model.setGUI(gui);
 		gui.createTopology();
 		
 		
@@ -286,25 +290,13 @@ public class MainModel implements Observer {
 
 	
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		GUI gui=(GUI)arg0;
-		if(arg1 instanceof ArrayList){
-			
-			setTopology((ArrayList<Node>)arg1);
-			System.out.print("the simulation will start now at the user settableRate. step to step through and stop whenever you want to stop the simulation: ");
-			//System.out.println(""+getTopology().size());
-			//Simulation("Random Strategy",gui);
-			simualteMessages();
-		}else if (arg1 instanceof String){
-			String s=(String)arg1;
-			if(s.equals("Step")){
-			Simulation();
-			}else if (s.equals("end Simulation")){
-				
-				endSimulation(gui);
-			}
-		}
+	
+		
+	
+
+	private void setGUI(GUI gui) {
+		this.gui=gui;
+		addObserver(this.gui);
 		
 	}
 
@@ -314,6 +306,31 @@ public class MainModel implements Observer {
 		
 		
 	}
+
+	public void addNode(String letter, Circle circle) {
+		Node n=new Node(letter);
+		n.setCircle(circle);
+		topology.add(n);
+		setChanged();
+		notifyObservers(n);
+		
+	}
+
+	public void addNeighbours(Node n1, Node n2) {
+		if(n1!=null && n2!=null){
+			n1.addNeighbour(n2);
+			n2.addNeighbour(n1);
+			ArrayList<Node> nodes=new ArrayList<Node>();
+			nodes.add(n1);
+			nodes.add(n2);
+			setChanged();
+			notifyObservers(nodes);
+			
+		}
+		
+	}
+
+	
 
 	
 	}

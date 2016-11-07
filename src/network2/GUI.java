@@ -16,7 +16,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -25,7 +27,7 @@ import javax.swing.JTextArea;
 /*
  * This class is responsible for representing the whole Network Topology for the user.
  */
-public class GUI extends Observable implements ActionListener{
+public class GUI implements Observer{
 	private JFrame frame; // The fame
 	private JButton createNode; //Button
 	private JButton addNeighbour; //Button
@@ -35,24 +37,22 @@ public class GUI extends Observable implements ActionListener{
 	private JPanel northPanel; //North Panel of the content Pane
 	private int x,y,x1,y1,x2,y2;
 	private boolean CreateButtonClicked;
-	private String l="";
-	private ArrayList<Node> topology;
 	private String letter="A";
 	private CirclePanel circlePanel;
-	private MainModel model;
+	private Controler controler;
 	
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
 	 */
-	public GUI(MainModel model){
+	public GUI(Controler controler){
 		//Create the fame with specific features
-		topology=new ArrayList<Node>();
-		 frame = new JFrame("Network Topology");
-		frame.setPreferredSize(new Dimension(420, 400));
+		this.controler=controler;
+		 setFrame(new JFrame("Network Topology"));
+		getFrame().setPreferredSize(new Dimension(420, 400));
 		circlePanel=new CirclePanel();
-		this.model=model;
-		this.addObserver(model);
-		frame.setResizable(false);
+		
+		
+		getFrame().setResizable(false);
 		}
 		
 		public void createTopology(){
@@ -70,12 +70,13 @@ public class GUI extends Observable implements ActionListener{
 		startSimulation = new JButton("Start Simulation");
 		
 		//Add actionListenr to Buttons
-		createNode.addActionListener(this);
+		createNode.addActionListener(controler);
 
-		startSimulation.addActionListener(this);
+		startSimulation.addActionListener(controler);
 		
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
-		//southPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+		southPanel.setBounds(61, 11, 81, 140);
+		southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 		southPanel.add(createNode);
 		
 		southPanel.add(startSimulation);
@@ -85,77 +86,13 @@ public class GUI extends Observable implements ActionListener{
         northPanel.setOpaque(true);
         //northPanel.add(circlePanel);
 		
-        contentPane.addMouseListener(new MouseListener(){
+        contentPane.addMouseListener(controler);
 
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				   x = e.getX();
-				     y = e.getY();
-				    if(CreateButtonClicked){
-				    	Circle circle=new Circle(new Point(x,y),20,letter);
-				    	circlePanel.addCircle(circle);
-				    	circlePanel.draw();
-				    	Node node=new Node(letter);
-				    	node.setCircle(circle);
-				    	topology.add(node);
-				    	CreateButtonClicked=false;
-				    	frame.pack();
-				    }
 
-				    
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				x1=e.getX();
-				y1=e.getY();
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				x2=e.getX();
-				y2=e.getY();
-				Node n1=null,n2=null;
-				for(Node n:topology){
-					if(n.getCircle().contains(new Point(x1,y1))){
-						 n1=n;
-						
-					}
-					if(n.getCircle().contains(new Point(x2,y2))){
-						 n2=n;
-					}
-				}
-				if(n1!=null && n2!=null){
-					n1.addNeighbour(n2);
-					n2.addNeighbour(n1);
-					circlePanel.drawLine((int)n1.getCircle().getCenter().getX(),(int)n1.getCircle().getCenter().getY(),
-							(int)n2.getCircle().getCenter().getX(),(int)n2.getCircle().getCenter().getY());
-				}
-				
-			}
-
-			
-	    	
-	    	
-	    });
 	    
 		
 		//Add the panels to the content pane.
-		contentPane.add(southPanel, BorderLayout.SOUTH);
+		contentPane.add(southPanel, BorderLayout.EAST);
 		
 		
 		//Set the frame to visible and pack it.
@@ -170,38 +107,39 @@ public class GUI extends Observable implements ActionListener{
 	
 	
 		
-	public void actionPerformed(ActionEvent e){
-		if(e.getActionCommand().equals("Create Node")){
-			letter = JOptionPane.showInputDialog(frame, "enter the name of the Node");
-			while(letter==null || letter.equals("")){
-				letter = JOptionPane.showInputDialog(frame, "enter the name of the Node");
-			}
-			letter=letter.toUpperCase();
-			CreateButtonClicked=true;
-		}else if(e.getActionCommand().equals("Step")){
-			setChanged();
-			notifyObservers(e.getActionCommand());
-		}else if(e.getActionCommand().equals("Start Simulation")){
-				
-			setChanged();
-			notifyObservers(topology);
-			
-			createNode.setActionCommand("Step");
-			createNode.setText("Step");
-			startSimulation.setActionCommand("end Simulation");
-			startSimulation.setText("End Simulation");
-		}else if(e.getActionCommand().equals("end Simulation")){
-			setChanged();
-			notifyObservers(e.getActionCommand());
-		}
-	}
+	
 	
 
 	
 	
 
 	public void close() {
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		getFrame().dispatchEvent(new WindowEvent(getFrame(), WindowEvent.WINDOW_CLOSING));
+		
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg1 instanceof Node){
+			Node node=(Node)arg1;
+			circlePanel.addCircle(node.getCircle());
+	    	circlePanel.draw();
+			
+		}else {
+			ArrayList<Node> nodes=(ArrayList<Node>)arg1;
+			Node n1=nodes.get(0);
+			Node n2=nodes.get(1);
+			circlePanel.drawLine((int)n1.getCircle().getCenter().getX(),(int)n1.getCircle().getCenter().getY(),
+					(int)n2.getCircle().getCenter().getX(),(int)n2.getCircle().getCenter().getY());
+		}
 		
 	}
 

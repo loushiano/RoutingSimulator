@@ -254,7 +254,7 @@ public class MainModel extends Observable {
 	public ArrayList<Message> getMessagesSent() {
 		return messagesSent;
 	}
-	
+	//
 	/*
 	 * sets an array list of messages
 	 */

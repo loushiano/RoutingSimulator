@@ -21,31 +21,26 @@ public class RandomStrategy implements  Strategy {
 	 * transfers the message between the network routers randomly
 	 * 
 	 */
-	public ArrayList<Message> transferMessage(ArrayList<Node> nodes){
-		ArrayList<Message> messages=new ArrayList<Message>();
+	public void updateRoutingTable(ArrayList<Node> nodes){
 		Random r=new Random();
 		int i=0;
-		Message message=null;
-		for(Node n:nodes){
-			if(n.getMessages().size()==0){
-				
-			}else{
-			message=n.transferMessage();
-			i=r.nextInt(n.getNeighbours().size());
-			n=n.getNeighbours().get(i);
-			n.addMessage(message);
-			message.incNumHops();
-			if(message.getDestination().equals(n)){
-				 messages.add(n.getMessages().remove(n.getMessages().size()-1));
-				 System.out.println("A message got transferred to node "+n.getName()+" successfuly after "+message.getNumHops()+" hops");
-			}else{
-				
+		Node j=null;
+		for(Node node:nodes){
+			for(Node node1:node.getRoutingTable().keySet()){
+				i=r.nextInt(node.getNeighbours().size());
+				j=node.getNeighbours().get(i);
+				if(node.equals(node1)){
+					
+				}else{
+				node.getRoutingTable().put(node1,j);
+				}
 			}
+			
+			
+			
 		}
-		}
-		
-		return messages;
 	}
+		
 	@Override
 	public void printResult(Message message) {
 		// TODO Auto-generated method stub

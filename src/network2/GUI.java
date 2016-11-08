@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 /*
  * This class is responsible for representing the whole Network Topology for the user.
@@ -35,13 +36,10 @@ public class GUI implements Observer{
 	private Container contentPane; // Content Pane
 	private JPanel southPanel; //South Panel of the content Pane
 	private JPanel northPanel; //North Panel of the content Pane
-	private int x,y,x1,y1,x2,y2;
-	private boolean CreateButtonClicked;
-	private String letter="A";
-	private CirclePanel circlePanel;
-	private Controler controler;
-	private ArrayList<JButton> buttons;
-
+	private CirclePanel circlePanel;//a panel in which we will draw shapes
+	private Controler controler;//the controler that lsitens to the gui
+	private ArrayList<JButton> buttons;//list of buttons to be passed to the controller
+	private JTextArea area;//Jtext area to display output in
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
 	 */
@@ -49,14 +47,16 @@ public class GUI implements Observer{
 		//Create the fame with specific features
 		this.controler=controler;
 		setFrame(new JFrame("Network Topology"));
-		getFrame().setPreferredSize(new Dimension(420, 400));
+		getFrame().setPreferredSize(new Dimension(600, 600));
 		buttons=new ArrayList<JButton>();
 		circlePanel=new CirclePanel();
 		
 		
 		getFrame().setResizable(false);
 		}
-		
+		/*
+		 * creates the topology based on a user entry, with all the nodes and connections
+		 */
 		public void createTopology(){
 		
 		//Panels of the Content Pane
@@ -69,12 +69,12 @@ public class GUI implements Observer{
 		//Create the buttons required for representing the topology.
 		createNode = new JButton("Create Node");
 		buttons.add(createNode);
-		startSimulation = new JButton("Start Simulation");
+		startSimulation = new JButton("Start");
 		buttons.add(startSimulation);
 		step = new JButton("Step");
-		delete = new JButton("delete Node");
-		end = new JButton("end Simulation");
-		addNeighbour=new JButton("add Neighbour");
+		delete = new JButton("Delete");
+		end = new JButton("End");
+		addNeighbour=new JButton("Add Neighbour");
 		buttons.add(step);
 		buttons.add(delete);
 		buttons.add(end);
@@ -82,8 +82,14 @@ public class GUI implements Observer{
 		//Add actionListenr to Buttons
 		createNode.addActionListener(controler);
 		step.addActionListener(controler);
+		step.setEnabled(false);
 		startSimulation.addActionListener(controler);
-		
+		startSimulation.setEnabled(false);
+		addNeighbour.addActionListener(controler);
+		delete.addActionListener(controler);
+		end.addActionListener(controler);
+		//add a jtext area to display the results for the user
+		 area=new JTextArea(10,52);
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
 		
 		southPanel.setPreferredSize(new Dimension(140,300));
@@ -96,17 +102,20 @@ public class GUI implements Observer{
 		southPanel.add(step);
 		southPanel.add(end);
 		
+		JScrollPane pane1 =
+		            new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
+			northPanel.add(pane1);
 		//Set the layout manage of the North Panel to Border Layout and add the area that represents the Topology to the panel.
-		northPanel.setBackground(Color.white);
-        northPanel.setOpaque(true);
+		
         //northPanel.add(circlePanel);
 		
         contentPane.addMouseListener(controler);
 
 		//Add the panels to the content pane.
 		contentPane.add(southPanel, BorderLayout.EAST);
-		
+		contentPane.add(northPanel,BorderLayout.SOUTH );
 		//Set the frame to visible and pack it.
 		frame.setVisible(true);
 		frame.pack();
@@ -132,12 +141,24 @@ public class GUI implements Observer{
 			Node node=(Node)arg1;
 			circlePanel.addCircle(node.getCircle());
 	    	circlePanel.draw();	
-		}else {
+		}else if(arg1 instanceof ArrayList) {
 			ArrayList<Node> nodes=(ArrayList<Node>)arg1;
 			Node n1=nodes.get(0);
 			Node n2=nodes.get(1);
 			circlePanel.drawLine((int)n1.getCircle().getCenter().getX(),(int)n1.getCircle().getCenter().getY(),
 					(int)n2.getCircle().getCenter().getX(),(int)n2.getCircle().getCenter().getY());
+			startSimulation.setEnabled(true);
+		}else if(arg1 instanceof String){
+			String s=(String)arg1;
+			if(s.length()<4){
+			circlePanel.delete(s);
+			}else {
+				area.append(s);
+				area.append("\n");
+			}
+			
+		}else{
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
 		
 	}
@@ -148,5 +169,25 @@ public class GUI implements Observer{
 
 	public void setButtons(ArrayList<JButton> buttons) {
 		this.buttons = buttons;
+	}
+	public String getLetter() {
+		String letter;
+		letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node");
+		while(letter==null || letter.equals("")){
+			letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node");
+			
+		}
+		return letter.toUpperCase();
+	}
+	public int getSettable() {
+		int i=0;
+		String letter;
+		letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate and press ok to start the simulation");
+		while(letter==null || letter.equals("")){
+			letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate and press ok to start the simulation");
+			
+		}
+		
+		return Integer.parseInt(letter);
 	}
 }

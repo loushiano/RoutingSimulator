@@ -2,6 +2,7 @@ package network2;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Node {
 	
@@ -9,10 +10,12 @@ public class Node {
 	private ArrayList<Node> neighbours;
 	private ArrayList<Message> messages;
 	private Circle circle;
+	private HashMap<Node,Node> routingtable;
 	public Node (String name){
 		this.name=name;
 		neighbours=new ArrayList<Node>();
 		messages =new ArrayList<Message>();
+		routingtable=new HashMap<Node,Node>();
 		
 	}
 	/*
@@ -50,6 +53,7 @@ public class Node {
 	 */
 	public void addNeighbour(Node node){
 		neighbours.add(node);
+		
 	}
 	
 	/*
@@ -64,8 +68,20 @@ public class Node {
 	 * transferMessage()method is used to transfer the message 
 	 */
 	public Message transferMessage(){
-		return messages.remove(0);
-		
+		if(messages.size()==0){
+			return null;
+		}
+		Message message=messages.remove(0);
+		if(message.getDestination().equals(this)){
+			return message;
+		}
+		for(Node n:routingtable.keySet()){
+			if(message.getDestination().equals(n)){
+				message.incNumHops();
+				routingtable.get(n).addMessage(message);
+			}
+		}
+		return null;
 	}
 	/*
 	 * returns messages
@@ -91,5 +107,13 @@ public class Node {
 	public void setCircle(Circle circle) {
 		this.circle = circle;
 	}
-	
+	public HashMap<Node,Node> getRoutingTable(){
+		return routingtable;
+	}
+	public void setRoutingTable(ArrayList<Node> topology) {
+		for(Node n:topology){
+			routingtable.put(n,null);
+		}
+		
+	}
 }

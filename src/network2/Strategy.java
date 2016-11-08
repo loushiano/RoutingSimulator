@@ -20,7 +20,7 @@ public interface Strategy {
 	 */
 	
 	public void printResult(Message message);
-
+	public void updateRoutingTable(ArrayList<Node> nodes);
 	
 
 }

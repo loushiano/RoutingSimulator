@@ -42,6 +42,7 @@ public class CirclePanel extends JPanel {
 				drawCircle(c,g);
 			}
 		}
+		
 		if(lines.size()!=0){
 			for(Line l:lines){
 				l.draw(g);
@@ -64,8 +65,39 @@ public class CirclePanel extends JPanel {
 	}
 
 	public void drawLine(int x1, int y1, int x2, int y2) {
+		
 		Line line =new Line(x1,y1,x2,y2);
 		lines.add(line);
+		for(Circle c:circles){
+			if(c.contains(new Point(x1,y1))||c.contains(new Point(x2,y2)) ){
+				
+				c.addLine(line);
+			}
+		}
+		repaint();
+	}
+
+	public void delete(String s) {
+		Circle ci=null;
+		ArrayList<Line> lines1=new ArrayList<Line>();
+		for(Circle c:circles){
+			if(c.containsLetter(s.toUpperCase())){
+				
+				for(Line l:lines){
+					if(c.containsLine(l)){
+						
+						lines1.add(l);
+						}
+				}
+				
+				ci=c;
+			}
+		}
+		circles.remove(ci);
+		for(Line l:lines1){
+			
+			lines.remove(l);
+		}
 		repaint();
 	}
 	

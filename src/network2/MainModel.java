@@ -1,5 +1,6 @@
 package network2;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -43,18 +44,22 @@ public class MainModel extends Observable {
 	 * Create three messages and make those have different source and destination nodes
 	 */
     public void simualteMessages(){
-    	System.out.println("hello");
-    	while(getTopology().size()==0){
-    		
-    	}
+    	String s="hello Sir, your simulation is about to start, messages are being simulated now";
+    	setChanged();
+    	notifyObservers(s);
+    	
     	for(Node node:topology){
     		
     	   for(int i=0;i<3;i++){  
     		   Message message=new Message("i love Professor babak",node,getDestinationNode(node));
     		   node.addMessage(message);
+    		   node.setRoutingTable(topology);
     	   }
+    	}
+    	   
+    	   randomStrategy.updateRoutingTable(topology);
 		}
-    }
+    
     
     /*
      * Returns a different node than the node passed to it
@@ -102,13 +107,24 @@ public class MainModel extends Observable {
 		
 			
 			count++;
-			System.out.println(""+topology.size());
+			
 			int size=messagesSent.size();
-			AddMessages(randomStrategy.transferMessage(topology));
+			for(Node n: topology){
+				Message message=n.transferMessage();
+				if(message!=null){
+					String s="A message has been transferred from "+message.getSource().getName() +" to "+message.getDestination().getName();
+					messagesSent.add(message);
+					setChanged();
+					notifyObservers(s);
+				}
+			}
+			
 			if(count==settableRate){
 				injectNewMessage();
 				count=0;
-				System.out.println("a new message has been successfuly injected");
+				String s="a new message has been successfuly injected";
+				setChanged();
+				notifyObservers(s);
 			}
 			if(size!=messagesSent.size()){
 				hopsMetrix();
@@ -142,98 +158,9 @@ public class MainModel extends Observable {
 		node.addMessage(message);
 		
 	}
-	/*
-	 * Start creating the network topology from the user inputs
-	 *
-	public void createTopology(){
-		int numOfNodes;
-		ArrayList<Node> nodes;
-		for(;;){
-			System.out.print("How many nodes do you want to create? "); //fix the issue of wrong value
-			//in = new Scanner(System.in);
-			try{
-				numOfNodes = new Integer(in.nextLine()); // store number of created nodes
-				break;
-			}catch(NumberFormatException e){
-				System.out.println("Please insert a correct number...");
-			}
-		}	
-		
-		System.out.println(); 
-		
-		for(;;){
-			System.out.print("Enter your settable rate to send messages from each node: "); //fix the issue of wrong value
-			//in = new Scanner(System.in);
-			try{
-				settableRate = new Integer(in.nextLine()); // store number of created nodes
-				break;
-			}catch(NumberFormatException e){
-				System.out.println("Please insert a correct number...");
-			}
-		}
-		
-		
-		//Initialize the nodes Array lists
-		nodes = new ArrayList<Node>();
-		
-		//Add each node to the nodes array list
-		for(int i = 0; i < numOfNodes; i++){
-			System.out.print("Enter Node name: ");
-			//in = new Scanner(System.in);
-			nodes.add(new Node(in.nextLine().trim()));
-			
-		}// end for loop
-		
-		//Now ask the user to add the neighbours nodes
-		System.out.println("Please add neighbours to each node that you created in the following format...");
-		System.out.println("Format: h, k, c, d");
-		System.out.println("Your created nodes are: ");
-		
-		//Loop through your list of nodes and print the name of each node inside it.
-		for(int x = 0; x < numOfNodes; x++){
-			System.out.print(nodes.get(x).getName() + " ");
-		}
-		
-		//Loop through the nodes and add their neighbours
-		for(int x = 0; x < numOfNodes; x++){
-			System.out.println();
-			System.out.print(nodes.get(x).toString()); //print the representation of the current node (i.e a has neighbours: ...)
-			//in = new Scanner(System.in);
-			
-			//convert the inputs coming from the user (a, c, d, ....) to an array of characters
-			char[] charArrays = in.nextLine().replaceAll(","," ").toCharArray();
-			for(char c: charArrays){
-				if(c != ' '){
-					//add neighbours
-					Node n=getNode(c,nodes);
-					nodes.get(x).addNeighbour(n);
-					n.addNeighbour(nodes.get(x));
-				}
-			}
-			//print the representation of the current node (i.e a has neighbours: ...)
-			System.out.println(nodes.get(x).toString());
-		}
-		
-		//After add neighbours to each node, print that we are done from the network topology design
-		System.out.println("You have created the network topology");
-		
-		topology=nodes;
-		}// end create Topology
-	*/
 	
-	/*
-	 * Returns a node from nodes that is equal to given character
-	 * @param c the given character
-	 * @param nodes the given array list of nodes
-	 */
-	private Node getNode(char c,ArrayList<Node> nodes) {
-		for(Node n:nodes){
-			if(c==n.getName().charAt(0)){
-				return n;
-			}
-		}
-		return null;
-	}
+	
+	
 	
 	/*
 	 * calculates the hops
@@ -245,7 +172,9 @@ public class MainModel extends Observable {
 			
 		}
 		j=j/messagesSent.size();
-		System.out.println("the current average Hops for the random Strategy is: "+j);
+		String s="the current average Hops for the random Strategy is: "+j;
+		setChanged();
+		notifyObservers(s);
 	}
 	
 	/*
@@ -273,15 +202,18 @@ public class MainModel extends Observable {
 
 	}
 
-	private void setGUI(GUI gui) {
+	public void setGUI(GUI gui) {
 		this.gui=gui;
 		addObserver(this.gui);
 		
 	}
 
-	private void endSimulation(GUI gui) {
-		System.out.println("the simulation has ended");
-		gui.close();
+	public void endSimulation() {
+		String s="the simulation has ended";
+		setChanged();
+		notifyObservers(s);
+		setChanged();
+		notifyObservers(null);
 		
 		
 	}
@@ -312,8 +244,35 @@ public class MainModel extends Observable {
 		simulation();
 		
 	}
-	public void start(){
+	public void start(int i){
+		settableRate=i;
 		simualteMessages();
+	}
+
+	public void deleteNode(int x, int y) {
+		Node n=null;
+		Node n2=null;
+		String s="";
+		for(Node node:topology){
+			if(node.getCircle().contains(new Point(x,y))){
+				n=node;
+				s=node.getName();
+			}
+				
+		}
+		n2=n;
+		if(n!=null){
+			topology.remove(n);}
+		if(n2!=null){	
+		for(Node n1:topology){
+				if(n1.getNeighbours().contains(n)){
+					n1.getNeighbours().remove(n);
+				}
+			}
+		
+		}
+		setChanged();
+		notifyObservers(s);
 	}
 
 }

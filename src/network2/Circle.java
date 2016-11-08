@@ -1,6 +1,7 @@
 package network2;
 
 import java.awt.*;   // for Graphics
+import java.util.ArrayList;
 
 
 
@@ -13,6 +14,7 @@ public class Circle {
 	private Point center;   // fields
 	private int radius;
 	private String letter;
+	private ArrayList<Line> lines;
 
 	// constructor(s)
 
@@ -22,6 +24,7 @@ public class Circle {
 
 		this.radius = radius;
 		this.letter=letter;
+		lines=new ArrayList<Line>();
 
 	}
 
@@ -66,8 +69,32 @@ public class Circle {
 	
 	// Draws this Circle onto a DrawingPanel.
     public void draw(Graphics g) {
-		g.fillOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
+    	g.setColor(Color.green);
+    	g.drawOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
+    	g.setColor(Color.blue);
+    	g.fillOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
 		g.setColor(Color.WHITE);
 		g.drawString(letter,(int)center.getX() ,(int)center.getY());
+	}
+    public boolean containsLetter(String l){
+    	return letter.equals(l);
+    }
+
+	public void addLine(Line line) {
+		lines.add(line);
+		
+	}
+
+	public void removeLines() {
+		lines.clear();
+		
+	}
+
+	public boolean containsLine(Line l) {
+		
+		return lines.contains(l);
+	}
+	public void removeLine(Line l){
+		lines.remove(l);
 	}
 }

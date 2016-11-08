@@ -1,5 +1,7 @@
 package network2;
-
+/*
+ * the main Model that simulates the routing message transferring 
+ */
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -25,8 +27,8 @@ public class MainModel extends Observable {
 	//counter for a method
 	private int count=0;
 	
-	Scanner in;
-	private GUI gui;
+	//the view that is to be updated when the model changes something
+	public GUI gui;
 	
 	/*
 	 * Create new object of topology
@@ -101,24 +103,26 @@ public class MainModel extends Observable {
 	}
 	
 	/*
-	 * @param strategy the type o algorithm passed as a string
+	 * simulates the messaging transfer, represents a step of the simulation
 	 */
-	public void simulation(){
+	private void simulation(){
 		
 			
 			count++;
-			
+			//check the size of the messagesSent arrayList
 			int size=messagesSent.size();
+			//loop through the node and invoke transfer message to transfer messages between routers
 			for(Node n: topology){
 				Message message=n.transferMessage();
 				if(message!=null){
 					String s="A message has been transferred from "+message.getSource().getName() +" to "+message.getDestination().getName();
 					messagesSent.add(message);
+					//notify the view to show the string s
 					setChanged();
 					notifyObservers(s);
 				}
 			}
-			
+			//inject a message in the system at a user settable rate
 			if(count==settableRate){
 				injectNewMessage();
 				count=0;
@@ -126,6 +130,7 @@ public class MainModel extends Observable {
 				setChanged();
 				notifyObservers(s);
 			}
+			
 			if(size!=messagesSent.size()){
 				hopsMetrix();
 			}	
@@ -201,13 +206,18 @@ public class MainModel extends Observable {
 		gui.createTopology();
 
 	}
-
+	/*
+	 * sets the view that is an observer to the model
+	 * @param gui the view that is an observer to the model
+	 */
 	public void setGUI(GUI gui) {
 		this.gui=gui;
 		addObserver(this.gui);
 		
 	}
-
+	/*
+	 * method that is invoked by the controller to end the simulation
+	 */
 	public void endSimulation() {
 		String s="the simulation has ended";
 		setChanged();
@@ -217,7 +227,11 @@ public class MainModel extends Observable {
 		
 		
 	}
-
+	/*
+	 * adds a Node to the topology
+	 * @param letter the name of the node
+	 * @param circle the circle that represents the node
+	 */
 	public void addNode(String letter, Circle circle) {
 		Node n=new Node(letter);
 		n.setCircle(circle);
@@ -226,7 +240,11 @@ public class MainModel extends Observable {
 		notifyObservers(n);
 		
 	}
-
+	/*
+	 * add neighbors to each other after checking if both parameters are not null
+	 * @param n1 the first neighbor
+	 * @param n2 the second neighbor
+	 */
 	public void addNeighbours(Node n1, Node n2) {
 		if(n1!=null && n2!=null){
 			n1.addNeighbour(n2);
@@ -239,16 +257,26 @@ public class MainModel extends Observable {
 			
 		}
 	}
-
+	/*
+	 * steps through the simulation invoking the method simulation
+	 */
 	public void step() {
 		simulation();
 		
 	}
+	/*
+	 * starts the simulation by invoking the method simulate Messages
+	 * @param i the user settable rate
+	 */
 	public void start(int i){
 		settableRate=i;
 		simualteMessages();
 	}
-
+	/*
+	 * deletes a node represented by the circle at the position of the point
+	 * @param x the x-axis position
+	 * @param y the y-axis position
+	 */
 	public void deleteNode(int x, int y) {
 		Node n=null;
 		Node n2=null;

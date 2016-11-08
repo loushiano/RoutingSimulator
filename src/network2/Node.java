@@ -85,13 +85,15 @@ public class Node {
 	}
 	/*
 	 * returns messages
+	 * @return messages in this router
 	 */
 	public ArrayList<Message> getMessages() {
 		return messages;
 	}
 	
 	/*
-	 * Returns the info of the node 
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
 	public String toString(){
 		
@@ -101,15 +103,31 @@ public class Node {
 		}
 		return s;
 	}
+	/*
+	 * returns the circle that represents this node
+	 * @return the circle that represents this node
+	 */
 	public Circle getCircle() {
 		return circle;
 	}
+	/*
+	 * sets the circle that represents this node
+	 * @param circle that represents this node
+	 */
 	public void setCircle(Circle circle) {
 		this.circle = circle;
 	}
+	/*
+	 * returns the routing table of this node
+	 * @return the routing table of this node
+	 */
 	public HashMap<Node,Node> getRoutingTable(){
 		return routingtable;
 	}
+	/*
+	 * sets the routing table of this node
+	 * @param topology of the system
+	 */
 	public void setRoutingTable(ArrayList<Node> topology) {
 		for(Node n:topology){
 			routingtable.put(n,null);

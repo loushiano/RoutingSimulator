@@ -42,6 +42,7 @@ public class GUI implements Observer{
 	private JTextArea area;//Jtext area to display output in
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
+	 * @param controler that listens to this view
 	 */
 	public GUI(Controler controler){
 		//Create the fame with specific features
@@ -102,14 +103,14 @@ public class GUI implements Observer{
 		southPanel.add(step);
 		southPanel.add(end);
 		
-		JScrollPane pane1 =
-		            new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-			northPanel.add(pane1);
 		//Set the layout manage of the North Panel to Border Layout and add the area that represents the Topology to the panel.
-		
-        //northPanel.add(circlePanel);
+		JScrollPane pane1 =
+	            new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+	                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	
+		northPanel.add(pane1);
+        //add a mouse listener to the content pane which is the controler
 		
         contentPane.addMouseListener(controler);
 
@@ -121,16 +122,24 @@ public class GUI implements Observer{
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-
+		/*
+		 * closes the application
+		 */
 	public void close() {
 		getFrame().dispatchEvent(new WindowEvent(getFrame(), WindowEvent.WINDOW_CLOSING));
 		
 	}
-
+	/*
+	 * returns the frame of gui
+	 * @return the frame of gui
+	 */
 	public JFrame getFrame() {
 		return frame;
 	}
-
+	/*
+	 * sets the frame of the gui
+	 * @param frame to be set to the frame of this class
+	 */
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
@@ -162,14 +171,24 @@ public class GUI implements Observer{
 		}
 		
 	}
-
+	/*
+	 * returns an ArrayList of buttons
+	 * @return an ArrayList of buttons
+	 */
 	public ArrayList<JButton> getButtons() {
 		return buttons;
 	}
-
+	/*
+	 * sets the ArrayList of buttons
+	 * @param buttons an ArrayList of buttons
+	 */
 	public void setButtons(ArrayList<JButton> buttons) {
 		this.buttons = buttons;
 	}
+	/*
+	 * returns the string that the user enter which represents the name of the node
+	 * @return the string that the user enter which represents the name of the node
+	 */
 	public String getLetter() {
 		String letter;
 		letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node");
@@ -179,6 +198,10 @@ public class GUI implements Observer{
 		}
 		return letter.toUpperCase();
 	}
+	/*
+	 * returns the user settable rate of the simulation
+	 * @return  the user settable rate of the simulation
+	 */
 	public int getSettable() {
 		int i=0;
 		String letter;

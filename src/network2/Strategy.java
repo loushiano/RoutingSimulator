@@ -20,6 +20,11 @@ public interface Strategy {
 	 */
 	
 	public void printResult(Message message);
+	/*
+	 * updates the routing table of the nodes
+	 * @param nodes of the toplogy
+	 * 
+	 */
 	public void updateRoutingTable(ArrayList<Node> nodes);
 	
 

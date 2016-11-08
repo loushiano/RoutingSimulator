@@ -18,7 +18,8 @@ public class RandomStrategy implements  Strategy {
 		
 	}
 	/*
-	 * transfers the message between the network routers randomly
+	 * updates the routing table of the nodes
+	 * @param nodes of the toplogy
 	 * 
 	 */
 	public void updateRoutingTable(ArrayList<Node> nodes){

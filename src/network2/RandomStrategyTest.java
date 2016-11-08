@@ -24,12 +24,13 @@ public class RandomStrategyTest {
 		messages.add(new Message("Hello", n2, n1));
 		messages.add(new Message("Hi", n1, n2));
 		nodes = new ArrayList<Node>();
-		//n2.addMessage(new Message("Hello", n3, n1));
-		//n3.addMessage(new Message("Hi", n1, n2));
 		nodes.add(n1);
 		nodes.add(n2);
 		nodes.add(n3);
-	
+		MainModel model=new MainModel();
+		model.setTopology(nodes);
+		model.simualteMessages();
+		
 	}
 
 	@After
@@ -37,9 +38,19 @@ public class RandomStrategyTest {
 	}
 	/* there is a null pointer exception in RAndomStrategy Class !?!*/
 	@Test
-	public void testTransferMessage() {
-		assertNotEquals(rs.transferMessage(nodes), null);
-		assertNotEquals(rs.transferMessage(nodes), messages);
+	public void testUpdateRoutingTable() {
 		
-	}
+		rs.updateRoutingTable(nodes);
+		for(Node n:nodes){
+			for(Node n1:n.getRoutingTable().keySet()){
+				if(n1.equals(n)){
+					assertNull(n1.getRoutingTable().get(n1));
+				}else {
+					assertNotNull(n1.getRoutingTable().get(n1));
+				}
+				
+			}
+		}
+		
+		}
 }

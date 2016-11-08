@@ -43,8 +43,11 @@ public class Controler implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		x = e.getX();
 	     y = e.getY();
+	     //get the position of the mouse when its clicked
 	    if(CreateButtonClicked){
+	    	//if the user have pressed the create Node button we create a circle
 	    	Circle circle=new Circle(new Point(x,y),20,letter);
+	    	//pass the circle to the model along side with the letter that it contains
 	    	model.addNode(letter,circle);
 	    	
 	    	
@@ -52,6 +55,7 @@ public class Controler implements ActionListener, MouseListener {
 		
 	 }
 	    if(deleteNode){
+	    	//if the user have pressed delete node we invoke the method in the model to delete it 
 	    	model.deleteNode(x,y);
 	    	deleteNode=false;
 	    }
@@ -73,7 +77,7 @@ public class Controler implements ActionListener, MouseListener {
 	public void mousePressed(MouseEvent e) {
 		x1=e.getX();
 		y1=e.getY();
-		
+	//get Position of the mouse when its pressed	
 	}
 
 	@Override
@@ -97,7 +101,7 @@ public class Controler implements ActionListener, MouseListener {
 		x2=0;
 		y1=0;
 		y2=0;
-		//add them to each other in model addNeighbours
+		//add the two circles to each other in model addNeighbours method
 		model.addNeighbours(n1,n2);
 		
 	}

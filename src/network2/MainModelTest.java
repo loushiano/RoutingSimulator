@@ -2,6 +2,7 @@ package network2;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -93,20 +94,11 @@ public class MainModelTest {
 		assertEquals(main1.toString(), main2.toString());
 	}
 
-	@Test
-	public void testSimulation() {
-		fail("Not yet implemented");
-	}
+	
 
-	@Test
-	public void testCreateTopology() {
-		fail("Not yet implemented");
-	}
+	
 
-	@Test
-	public void testHopsMetrix() {
-		fail("Not yet implemented");
-	}
+	
 
 	@Test
 	public void testGetMessagesSent() {
@@ -127,5 +119,42 @@ public class MainModelTest {
 		assertEquals(main2.getMessagesSent(), messages);
 		assertNotEquals(main1.getMessagesSent(),main2.getMessagesSent());
 	}
+	@Test
+	public void testSimulateMessages() {
+		ArrayList<Node> topology=new ArrayList<Node>();
+		topology.add(new Node("A"));
+		
+		main1.setTopology(topology);
+		main1.simualteMessages();
+		for(Node n:topology1){
+			assertEquals(3,n.getMessages().size());
+		}
+	}
+	@Test
+	public void testAddNode() {
+		
+		Circle c=new Circle(new Point(3,3),20,"A");
+		main1.addNode("A", c);
+		assertEquals(c,main1.getTopology().get(0).getCircle());
+		
+	}
+	@Test
+	public void testSetGUI() {	
+		GUI gui=new GUI(null);
+		main1.setGUI(gui);
+		assertEquals(gui,main1.gui);
+	}
+	@Test
+	public void testAddNeighbours() {	
+		Node n1=new Node("a");
+		Node n2=new Node("b");
+		main1.addNeighbours(n1,n2);
+		assertTrue(n1.getNeighbours().contains(n2));
+		assertTrue(n2.getNeighbours().contains(n1));
+		
+	}
+	
+	
+	
 
 }

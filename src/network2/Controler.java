@@ -23,6 +23,7 @@ public class Controler implements ActionListener, MouseListener {
 	private MainModel model;
 	private GUI gui;
 	private boolean deleteNode;
+	private boolean adding;
 	/*
 	 * Constructor of the Controller initializes the model field of the class
 	 * @param model the models that communicates with the controller 
@@ -46,7 +47,7 @@ public class Controler implements ActionListener, MouseListener {
 	     //get the position of the mouse when its clicked
 	    if(CreateButtonClicked){
 	    	//if the user have pressed the create Node button we create a circle
-	    	Circle circle=new Circle(new Point(x,y),20,letter);
+	    	Circle circle=new Circle(new Point(x,y),30,letter);
 	    	//pass the circle to the model along side with the letter that it contains
 	    	model.addNode(letter,circle);
 	    	
@@ -75,13 +76,19 @@ public class Controler implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(adding==true){
 		x1=e.getX();
 		y1=e.getY();
-	//get Position of the mouse when its pressed	
+	//get Position of the mouse when its pressed
+		}else{
+			
+			
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(adding==true){
 		//get the position where the mouse was released
 		x2=e.getX();
 		y2=e.getY();
@@ -103,7 +110,7 @@ public class Controler implements ActionListener, MouseListener {
 		y2=0;
 		//add the two circles to each other in model addNeighbours method
 		model.addNeighbours(n1,n2);
-		
+		}
 	}
 
 	@Override
@@ -135,7 +142,7 @@ public class Controler implements ActionListener, MouseListener {
 		}else if(e.getActionCommand().equals("Delete")){
 			deleteNode=true;
 		}else if(e.getActionCommand().equals("Add Neighbour")){
-			
+			adding=true;
 		}
 	}
 	

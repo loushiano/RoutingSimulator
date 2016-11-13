@@ -25,6 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 /*
  * This class is responsible for representing the whole Network Topology for the user.
  */
@@ -46,6 +48,21 @@ public class GUI implements Observer{
 	 */
 	public GUI(Controler controler){
 		//Create the fame with specific features
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.controler=controler;
 		setFrame(new JFrame("Network Topology"));
 		getFrame().setPreferredSize(new Dimension(600, 600));
@@ -90,7 +107,7 @@ public class GUI implements Observer{
 		delete.addActionListener(controler);
 		end.addActionListener(controler);
 		//add a jtext area to display the results for the user
-		 area=new JTextArea(10,52);
+		 area=new JTextArea(10,60);
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
 		
 		southPanel.setPreferredSize(new Dimension(140,300));
@@ -154,8 +171,11 @@ public class GUI implements Observer{
 			ArrayList<Node> nodes=(ArrayList<Node>)arg1;
 			Node n1=nodes.get(0);
 			Node n2=nodes.get(1);
-			circlePanel.drawLine((int)n1.getCircle().getCenter().getX(),(int)n1.getCircle().getCenter().getY(),
-					(int)n2.getCircle().getCenter().getX(),(int)n2.getCircle().getCenter().getY());
+			int x1=(int)n1.getCircle().getCenter().getX();
+			int y1=(int)n1.getCircle().getCenter().getY();
+			int x2=(int)n2.getCircle().getCenter().getX();
+			int y2=(int)n2.getCircle().getCenter().getY();
+			circlePanel.drawLine(x1,y1,x2,y2);
 			startSimulation.setEnabled(true);
 		}else if(arg1 instanceof String){
 			String s=(String)arg1;

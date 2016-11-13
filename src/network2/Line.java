@@ -1,7 +1,11 @@
 package network2;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 
 public class Line {
 	private int x1,x2,y1,y2;
@@ -13,7 +17,20 @@ public class Line {
 			this.y2=y2;
 		}
 		public void draw(Graphics g){
-			g.setColor(Color.BLUE);
-			g.drawLine(x1, y1, x2, y2);
+			Graphics2D g2 =(Graphics2D)g;
+			g2.setRenderingHint(
+	    		    RenderingHints.KEY_ANTIALIASING,
+	    		    RenderingHints.VALUE_ANTIALIAS_ON);
+	    		g2.setRenderingHint(
+	    		    RenderingHints.KEY_TEXT_ANTIALIASING,
+	    		    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			
+	    	Stroke oldStroke = g2.getStroke();
+	    	g2.setStroke(new BasicStroke(5));
+	    	
+			
+			g2.setColor(Color.black);
+			g2.drawLine(x1, y1, x2, y2);
+			g2.setStroke(oldStroke);
 		}
 }

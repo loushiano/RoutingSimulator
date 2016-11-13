@@ -29,15 +29,16 @@ public class CirclePanel extends JPanel {
 		super.paintComponent(g);
 		
 			this.setBackground(Color.WHITE);
-		if(circles.size()!=0){
-			for(Circle c:circles){
-				drawCircle(c,g);
-			}
-		}
+		
 		
 		if(lines.size()!=0){
 			for(Line l:lines){
 				l.draw(g);
+			}
+		}
+		if(circles.size()!=0){
+			for(Circle c:circles){
+				drawCircle(c,g);
 			}
 		}
 	}

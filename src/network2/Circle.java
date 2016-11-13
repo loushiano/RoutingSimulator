@@ -96,12 +96,27 @@ public class Circle {
 	 *  @param g the graphics of the panel
 	 */
     public void draw(Graphics g) {
-    	g.setColor(Color.green);
-    	g.drawOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
-    	g.setColor(Color.blue);
-    	g.fillOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
-		g.setColor(Color.WHITE);
-		g.drawString(letter,(int)center.getX() ,(int)center.getY());
+    	Graphics2D g2 =(Graphics2D)g;
+    	g2.setRenderingHint(
+    		    RenderingHints.KEY_ANTIALIASING,
+    		    RenderingHints.VALUE_ANTIALIAS_ON);
+    		g2.setRenderingHint(
+    		    RenderingHints.KEY_TEXT_ANTIALIASING,
+    		    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    		
+
+    	float thickness = 2;
+    	Stroke oldStroke = g2.getStroke();
+    	g2.setStroke(new BasicStroke(10));
+    	g2.setColor(Color.BLACK);
+    	g2.drawOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
+    	g2.setStroke(oldStroke);
+    	g2.setColor(Color.GRAY);
+    	g2.fillOval((int)center.getX() - radius, (int)center.getY() - radius, 2 * radius, 2 * radius);
+		g2.setColor(Color.WHITE);
+		Font font =new Font(Font.SANS_SERIF,Font.BOLD,15);
+		g2.setFont(font);
+		g2.drawString(letter,(int)center.getX()-2 ,(int)center.getY()+5);
 	}
     /*
      * returns true if the circle contains the letter passed to it, false otherwise
@@ -141,5 +156,13 @@ public class Circle {
 	 */
 	public void removeLine(Line l){
 		lines.remove(l);
+	}
+
+	public int getRadius() {
+		
+		return this.radius;
+	}
+	public void setCentre(int x,int y){
+		this.center=new Point(x,y);
 	}
 }

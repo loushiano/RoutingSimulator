@@ -20,7 +20,7 @@ public class Controler implements ActionListener, MouseListener {
 	private int y,x1,y1,x2,y2;
 	private boolean CreateButtonClicked=false;
 	private String letter;
-	private MainModel model;
+	private NetworkSimulator model;
 	private GUI gui;
 	private boolean deleteNode;
 	private boolean adding;
@@ -28,7 +28,7 @@ public class Controler implements ActionListener, MouseListener {
 	 * Constructor of the Controller initializes the model field of the class
 	 * @param model the models that communicates with the controller 
 	 */
-	public Controler(MainModel model){
+	public Controler(NetworkSimulator model){
 		this.model=model;
 		
 	}
@@ -92,24 +92,13 @@ public class Controler implements ActionListener, MouseListener {
 		//get the position where the mouse was released
 		x2=e.getX();
 		y2=e.getY();
-		Node n1=null,n2=null;
-		for(Node n:model.getTopology()){
-			//check if a circle contains the point where the mouse was clicked
-			if(n.getCircle().contains(new Point(x1,y1))){
-				 n1=n;
-				
-			}
-			//check if a circle contains the point where the mouse was released
-			if(n.getCircle().contains(new Point(x2,y2))){
-				 n2=n;
-			}
-		}
-		x1=0;
-		x2=0;
-		y1=0;
-		y2=0;
+		
+		//x1=0;
+		//x2=0;
+		//y1=0;
+		//y2=0;
 		//add the two circles to each other in model addNeighbours method
-		model.addNeighbours(n1,n2);
+		model.addNeighbours(x1,y1,x2,y2);
 		}
 	}
 

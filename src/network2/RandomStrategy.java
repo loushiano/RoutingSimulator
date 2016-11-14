@@ -33,7 +33,7 @@ public class RandomStrategy implements  Strategy {
 				if(node.equals(node1)){
 					
 				}else{
-				node.getRoutingTable().put(node1,j);
+				node.getRoutingTable().get(node1).add(j);
 				}
 			}
 			

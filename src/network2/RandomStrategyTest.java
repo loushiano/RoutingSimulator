@@ -27,7 +27,7 @@ public class RandomStrategyTest {
 		nodes.add(n1);
 		nodes.add(n2);
 		nodes.add(n3);
-		MainModel model=new MainModel();
+		NetworkSimulator model=new NetworkSimulator();
 		model.setTopology(nodes);
 		model.simualteMessages();
 		

@@ -10,12 +10,13 @@ public class Node {
 	private ArrayList<Node> neighbours;
 	private ArrayList<Message> messages;
 	private Circle circle;
-	private HashMap<Node,Node> routingtable;
+	private HashMap<Node,ArrayList<Node>> routingtable;
 	public Node (String name){
 		this.name=name;
 		neighbours=new ArrayList<Node>();
 		messages =new ArrayList<Message>();
-		routingtable=new HashMap<Node,Node>();
+		routingtable=new HashMap<Node,ArrayList<Node>>();
+		
 		
 	}
 	/*
@@ -72,13 +73,17 @@ public class Node {
 			return null;
 		}
 		Message message=messages.remove(0);
+		message.setPreviousNode(this);
 		if(message.getDestination().equals(this)){
 			return message;
 		}
 		for(Node n:routingtable.keySet()){
 			if(message.getDestination().equals(n)){
-				message.incNumHops();
-				routingtable.get(n).addMessage(message);
+				
+				for(Node n1:routingtable.get(n)){
+					n1.addMessage(message);
+					message.incNumHops();
+				}
 			}
 		}
 		return null;
@@ -121,7 +126,7 @@ public class Node {
 	 * returns the routing table of this node
 	 * @return the routing table of this node
 	 */
-	public HashMap<Node,Node> getRoutingTable(){
+	public HashMap<Node,ArrayList<Node>> getRoutingTable(){
 		return routingtable;
 	}
 	/*
@@ -130,7 +135,7 @@ public class Node {
 	 */
 	public void setRoutingTable(ArrayList<Node> topology) {
 		for(Node n:topology){
-			routingtable.put(n,null);
+			routingtable.put(n,new ArrayList<Node>());
 		}
 		
 	}

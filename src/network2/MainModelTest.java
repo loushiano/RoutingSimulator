@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MainModelTest {
-	private MainModel main1, main2;
+	private NetworkSimulator main1, main2;
 	private ArrayList<Node> topology1, topology2;
 	private ArrayList<Message> messages;
 	private Node source1, source2, destination1, destination2;
@@ -18,8 +18,8 @@ public class MainModelTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		main1 = new MainModel();
-		main2 = new MainModel();
+		main1 = new NetworkSimulator();
+		main2 = new NetworkSimulator();
 		
 		source1 = new Node("A");
 		source2 = new Node("B");

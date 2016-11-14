@@ -5,6 +5,7 @@ public class Message {
 	private String message;
 	private Node destination;
 	private Node source;
+	private Node previousNode;
 	private int numHops;
 	private int numPacks;
 	
@@ -96,6 +97,14 @@ public class Message {
 	 */
 	public void incNumHops() {
 		this.numHops++;
+	}
+
+	public Node getPreviousNode() {
+		return previousNode;
+	}
+
+	public void setPreviousNode(Node previousNode) {
+		this.previousNode = previousNode;
 	}
 	
 }

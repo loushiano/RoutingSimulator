@@ -11,22 +11,22 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-public class MainModel extends Observable {
+public class NetworkSimulator extends Observable {
 	
 	
 	//Array list of nodes that represents the topology
-	private ArrayList<Node> topology;
+	private Topology topology;
 	//Array list of messages that represents the messages sent
 	private ArrayList<Message> messagesSent;
 	//table rate
 	private int settableRate=0;
 	//Random strategy
-	private RandomStrategy randomStrategy;
+	private Strategy strategy;
 	//random object
 	private Random r;
 	//counter for a method
 	private int count=0;
-	
+	private Simulation simulation;
 	//the view that is to be updated when the model changes something
 	public GUI gui;
 	
@@ -35,11 +35,12 @@ public class MainModel extends Observable {
 	 * Create new object of messagesSent
 	 * Create new object of Random
 	 */
-	public MainModel(){
-		topology =new ArrayList<Node>();
+	public NetworkSimulator(){
+		topology =new Topology();
 		messagesSent=new ArrayList<Message>();
 		r=new Random();
-		randomStrategy=new RandomStrategy();
+		strategy=new RandomStrategy();
+		simulation=new Simulation();
 	}
 	
 	/*
@@ -50,56 +51,31 @@ public class MainModel extends Observable {
     	setChanged();
     	notifyObservers(s);
     	
-    	for(Node node:topology){
+    	for(Node node:topology.getTopology()){
     		
     	   for(int i=0;i<3;i++){  
-    		   Message message=new Message("i love Professor babak",node,getDestinationNode(node));
+    		   Message message=new Message("i love Professor babak",node,topology.getDestinationOfAMessage(node));
     		   node.addMessage(message);
-    		   node.setRoutingTable(topology);
+    		   node.setRoutingTable(topology.getTopology());
     	   }
     	}
     	   
-    	   randomStrategy.updateRoutingTable(topology);
+    	   strategy.updateRoutingTable(topology.getTopology());
 		}
     
     
-    /*
-     * Returns a different node than the node passed to it
-     * @param node the given node
-     */
-    private Node getDestinationNode(Node node){
-    	   Node node1=topology.get(r.nextInt(topology.size()));
-    	   while(node1.equals(node)){
-			    node1=topology.get(r.nextInt(topology.size()));
-		   }
-    	   return node1;   
-    }
     
-    /*
-     * returns the network Topology
-     */
-	public ArrayList<Node> getTopology() {
-		return topology;
-	}
+    
+    	
 	
-	/*
-	 * Edit the network Topolgy.
-	 */
-	public void setTopology(ArrayList<Node> topology) {
-		this.topology = topology;
-	}
 	
 	/*
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString(){
-		String s="";
-		for(Node no:topology){
-			s+=no.toString();
-			
-		}
-		return s;
+		
+		return topology.toString();
 	}
 	
 	/*
@@ -112,10 +88,10 @@ public class MainModel extends Observable {
 			//check the size of the messagesSent arrayList
 			int size=messagesSent.size();
 			//loop through the node and invoke transfer message to transfer messages between routers
-			for(Node n: topology){
+			for(Node n: topology.getTopology()){
 				Message message=n.transferMessage();
 				if(message!=null){
-					String s="A message has been transferred from "+message.getSource().getName() +" to "+message.getDestination().getName();
+					String s="A message has been transferred from "+message.getSource().getName() +" to "+message.getDestination().getName()+" after "+message.getNumHops()+" hops";
 					messagesSent.add(message);
 					//notify the view to show the string s
 					setChanged();
@@ -124,7 +100,7 @@ public class MainModel extends Observable {
 			}
 			//inject a message in the system at a user settable rate
 			if(count==settableRate){
-				injectNewMessage();
+				topology.injectNewMessage();
 				count=0;
 				String s="a new message has been successfuly injected";
 				setChanged();
@@ -138,31 +114,9 @@ public class MainModel extends Observable {
 			}
 	
 	
-	/*
-	 * add messages from the given array list of message to messsagesSent field
-	 * @param transferMessage arraylist of Message
-	 */
-	private void AddMessages(ArrayList<Message> transferMessage)
-	{
-		if(transferMessage.size()==0){
-			return;
-		}
-		
-		for(Message message :transferMessage)
-		{
-			messagesSent.add(message);
-		}
-	}
 	
-	/*
-	 *put a message in the network 
-	 */
-	private void injectNewMessage() {
-		Node node = topology.get(r.nextInt(topology.size()));
-		Message message =new Message("babak is the best",node,getDestinationNode(node));
-		node.addMessage(message);
-		
-	}
+	
+	
 	
 	
 	
@@ -198,7 +152,7 @@ public class MainModel extends Observable {
 	
 	//runs the simulation
 	public static void main(String args[]){
-		MainModel model=new MainModel();
+		NetworkSimulator model=new NetworkSimulator();
 		Controler controler=new Controler(model);
 		GUI gui =new GUI(controler);
 		controler.setGUI(gui);
@@ -235,7 +189,7 @@ public class MainModel extends Observable {
 	public void addNode(String letter, Circle circle) {
 		Node n=new Node(letter);
 		n.setCircle(circle);
-		topology.add(n);
+		topology.addANode(n);
 		setChanged();
 		notifyObservers(n);
 		
@@ -245,17 +199,25 @@ public class MainModel extends Observable {
 	 * @param n1 the first neighbor
 	 * @param n2 the second neighbor
 	 */
-	public void addNeighbours(Node n1, Node n2) {
-		if(n1!=null && n2!=null){
-			n1.addNeighbour(n2);
-			n2.addNeighbour(n1);
-			ArrayList<Node> nodes=new ArrayList<Node>();
-			nodes.add(n1);
-			nodes.add(n2);
+	public void addNeighbours(int x1,int y1,int x2,int y2) {
+			Node n1=null,n2=null;
+			for(Node n:topology.getTopology()){
+				//check if a circle contains the point where the mouse was clicked
+				if(n.getCircle().contains(new Point(x1,y1))){
+					 n1=n;
+					
+				}
+				//check if a circle contains the point where the mouse was released
+				if(n.getCircle().contains(new Point(x2,y2))){
+					 n2=n;
+				}
+			}
+			ArrayList<Node> nodes=topology.addNeighbours(n1,n2);
+			if(nodes!=null){
 			setChanged();
 			notifyObservers(nodes);
-			
-		}
+			}
+		
 	}
 	/*
 	 * steps through the simulation invoking the method simulation
@@ -278,27 +240,8 @@ public class MainModel extends Observable {
 	 * @param y the y-axis position
 	 */
 	public void deleteNode(int x, int y) {
-		Node n=null;
-		Node n2=null;
-		String s="";
-		for(Node node:topology){
-			if(node.getCircle().contains(new Point(x,y))){
-				n=node;
-				s=node.getName();
-			}
-				
-		}
-		n2=n;
-		if(n!=null){
-			topology.remove(n);}
-		if(n2!=null){	
-		for(Node n1:topology){
-				if(n1.getNeighbours().contains(n)){
-					n1.getNeighbours().remove(n);
-				}
-			}
+		String s=topology.deleteNode(x ,y);
 		
-		}
 		setChanged();
 		notifyObservers(s);
 	}

@@ -77,7 +77,7 @@ public class NetworkSimulator extends Observable {
 		
 		return topology.toString();
 	}
-	
+	//s
 	/*
 	 * simulates the messaging transfer, represents a step of the simulation
 	 */

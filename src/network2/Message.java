@@ -16,7 +16,7 @@ public class Message {
 		numPacks=0;
 		this.destination=destination;
 		this.source=source;
-		
+		previousNode=null;
 	}
 
 	/*

@@ -22,7 +22,10 @@ public class RandomStrategy implements  Strategy {
 	 * @param nodes of the toplogy
 	 * 
 	 */
-	public void updateRoutingTable(ArrayList<Node> nodes){
+	public void updateRoutingTable(Object o){
+		
+		ArrayList<Node> nodes =(ArrayList<Node>) o;
+		
 		Random r=new Random();
 		int i=0;
 		Node j=null;
@@ -38,14 +41,10 @@ public class RandomStrategy implements  Strategy {
 			}
 			
 			
-			
+		}
 		}
 	}
 		
-	@Override
-	public void printResult(Message message) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
-}
+

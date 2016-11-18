@@ -1,6 +1,6 @@
 package network2;
 
-import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -69,24 +69,41 @@ public class Node {
 	 * transferMessage()method is used to transfer the message 
 	 */
 	public Message transferMessage(){
+		Message returned=null;
 		if(messages.size()==0){
+			
 			return null;
 		}
-		Message message=messages.remove(0);
+		if(messages.get(messages.size()-1).getDestination().equals(this)){
+			messages.remove(messages.size()-1);
+			if(messages.size()==0){
+				
+				return null;
+			}
+		}
+		Message message=messages.remove(messages.size()-1);
 		message.setPreviousNode(this);
-		if(message.getDestination().equals(this)){
-			return message;
+		
+		if(message.getNumHops()>30){
+			return null;
 		}
 		for(Node n:routingtable.keySet()){
 			if(message.getDestination().equals(n)){
 				
 				for(Node n1:routingtable.get(n)){
-					n1.addMessage(message);
+					
+					
+					System.out.println("message: "+message.getMessage() +"traveled from "+ this.getName()+" to "+n1.getName());
 					message.incNumHops();
+						if(n1.equals(message.getDestination())){
+							returned=message;
+						}else{
+							n1.addMessage(message);
+						}
 				}
 			}
 		}
-		return null;
+		return returned;
 	}
 	/*
 	 * returns messages
@@ -139,4 +156,7 @@ public class Node {
 		}
 		
 	}
+	
+	
+	
 }

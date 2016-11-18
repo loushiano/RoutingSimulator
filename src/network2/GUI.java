@@ -39,14 +39,14 @@ public class GUI implements Observer{
 	private JPanel southPanel; //South Panel of the content Pane
 	private JPanel northPanel; //North Panel of the content Pane
 	private CirclePanel circlePanel;//a panel in which we will draw shapes
-	private Controler controler;//the controler that lsitens to the gui
+	private GUIController controler;//the controler that lsitens to the gui
 	private ArrayList<JButton> buttons;//list of buttons to be passed to the controller
 	private JTextArea area;//Jtext area to display output in
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
 	 * @param controler that listens to this view
 	 */
-	public GUI(Controler controler){
+	public GUI(GUIController controler){
 		//Create the fame with specific features
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -65,7 +65,7 @@ public class GUI implements Observer{
 		}
 		this.controler=controler;
 		setFrame(new JFrame("Network Topology"));
-		getFrame().setPreferredSize(new Dimension(600, 600));
+		getFrame().setPreferredSize(new Dimension(700, 600));
 		buttons=new ArrayList<JButton>();
 		circlePanel=new CirclePanel();
 		
@@ -107,7 +107,7 @@ public class GUI implements Observer{
 		delete.addActionListener(controler);
 		end.addActionListener(controler);
 		//add a jtext area to display the results for the user
-		 area=new JTextArea(10,60);
+		 
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
 		
 		southPanel.setPreferredSize(new Dimension(140,300));
@@ -119,8 +119,8 @@ public class GUI implements Observer{
 		southPanel.add(startSimulation);
 		southPanel.add(step);
 		southPanel.add(end);
-		
-		
+		frame.pack();
+		area=new JTextArea(10,80);
 		//Set the layout manage of the North Panel to Border Layout and add the area that represents the Topology to the panel.
 		JScrollPane pane1 =
 	            new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
@@ -128,15 +128,17 @@ public class GUI implements Observer{
 	
 		northPanel.add(pane1);
         //add a mouse listener to the content pane which is the controler
-		
+		northPanel.setPreferredSize(new Dimension(frame.getWidth()-30,frame.getHeight()/3));
+		//pane1.setSize(new Dimension(northPanel.getWidth(),northPanel.getHeight()));
         contentPane.addMouseListener(controler);
-
+        
 		//Add the panels to the content pane.
 		contentPane.add(southPanel, BorderLayout.EAST);
 		contentPane.add(northPanel,BorderLayout.SOUTH );
 		//Set the frame to visible and pack it.
 		frame.setVisible(true);
 		frame.pack();
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 		/*

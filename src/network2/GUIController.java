@@ -12,9 +12,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
-public class Controler implements ActionListener, MouseListener {
+public class GUIController implements ActionListener, MouseListener {
 	
 	private int x;
 	private int y,x1,y1,x2,y2;
@@ -22,15 +21,18 @@ public class Controler implements ActionListener, MouseListener {
 	private String letter;
 	private NetworkSimulator model;
 	private GUI gui;
+	private Topology topology;
+	private SimulationHandler simulation;
 	private boolean deleteNode;
 	private boolean adding;
 	/*
 	 * Constructor of the Controller initializes the model field of the class
 	 * @param model the models that communicates with the controller 
 	 */
-	public Controler(NetworkSimulator model){
+	public GUIController(NetworkSimulator model){
 		this.model=model;
-		
+		topology=model.getTopology();
+		simulation=model.getSimulation();
 	}
 	/*
 	 * a method that sets the gui that the controller controls
@@ -49,7 +51,7 @@ public class Controler implements ActionListener, MouseListener {
 	    	//if the user have pressed the create Node button we create a circle
 	    	Circle circle=new Circle(new Point(x,y),30,letter);
 	    	//pass the circle to the model along side with the letter that it contains
-	    	model.addNode(letter,circle);
+	    	topology.addANode(letter,circle);
 	    	
 	    	
 	    	CreateButtonClicked=false;
@@ -57,7 +59,7 @@ public class Controler implements ActionListener, MouseListener {
 	 }
 	    if(deleteNode){
 	    	//if the user have pressed delete node we invoke the method in the model to delete it 
-	    	model.deleteNode(x,y);
+	    	topology.deleteNode(x,y);
 	    	deleteNode=false;
 	    }
 	}
@@ -98,7 +100,7 @@ public class Controler implements ActionListener, MouseListener {
 		//y1=0;
 		//y2=0;
 		//add the two circles to each other in model addNeighbours method
-		model.addNeighbours(x1,y1,x2,y2);
+		topology.addNeighbours(x1,y1,x2,y2);
 		}
 	}
 
@@ -110,9 +112,11 @@ public class Controler implements ActionListener, MouseListener {
 			CreateButtonClicked=true;
 			
 		}else if(e.getActionCommand().equals("Step")){
-			model.step();
+			simulation.step();
 		}else if(e.getActionCommand().equals("Start")){
 				int settable =gui.getSettable();
+			
+			simulation.simualteMessages();
 			model.start(settable);
 			ArrayList<JButton> buttons=gui.getButtons(); 
 			for(JButton b:buttons){

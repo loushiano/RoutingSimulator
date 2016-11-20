@@ -1,4 +1,4 @@
-package network2;
+package view;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -33,4 +33,17 @@ public class Line {
 			g2.drawLine(x1, y1, x2, y2);
 			g2.setStroke(oldStroke);
 		}
+		public int getX1() {
+			return x1;
+		}
+		public int getX2() {
+			return x2;
+		}
+		public int getY1() {
+			return y1;
+		}
+		public int getY2() {
+			return y2;
+		}
+		
 }

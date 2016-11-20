@@ -1,4 +1,4 @@
-package network2;
+package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,6 +28,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import network2.GUIController;
+import network2.Message;
+import network2.Node;
 /*
  * This class is responsible for representing the whole Network Topology for the user.
  */
@@ -188,6 +193,10 @@ public class GUI implements Observer{
 				area.append("\n");
 			}
 			
+		}else if(arg1 instanceof LinkedList){
+			LinkedList<Object> list= (LinkedList<Object>)arg1;
+			circlePanel.moveMessage(((Message)list.get(0)).getMessage(),((Node)list.get(1)).getCircle(),((ArrayList<Node>)list.get(2)));
+			
 		}else{
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		}
@@ -235,4 +244,15 @@ public class GUI implements Observer{
 		
 		return Integer.parseInt(letter);
 	}
+	public int getStrategy() {
+		
+		
+		 String[] buttons = { "RandomStrategy", "FloodingStrategy", "ShortestPathStrategy" };
+
+		    int rc = JOptionPane.showOptionDialog(frame, "Choose wich strategy you want to test", "Strategy",
+		        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[2]);
+
+		   return rc;
+	}
+	
 }

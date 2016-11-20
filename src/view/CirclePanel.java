@@ -1,10 +1,16 @@
-package network2;
+package view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 
 import javax.swing.*;
+
+import network2.Node;
 
 /**
  * A class that draws all the shapes the user wants to draw
@@ -15,12 +21,19 @@ import javax.swing.*;
 public class CirclePanel extends JPanel {
 	private ArrayList<Circle> circles;//ArrayList of circles
 	private ArrayList<Line> lines;//ArrayList of lines
+	private RectangleMessage rectangle;
+	private ArrayList<Point2D> points;
+	private int counter;
+	private Timer _timer;
 	/*
 	 * Constructor that initialize the fields of this class
 	 */
 	public CirclePanel(){
 		circles=new ArrayList<Circle>();
 		lines=new ArrayList<Line>();
+		rectangle=null;
+		points=new ArrayList<Point2D>();
+		
 	}
 	
 	
@@ -41,6 +54,12 @@ public class CirclePanel extends JPanel {
 				drawCircle(c,g);
 			}
 		}
+		if(rectangle!=null){
+			rectangle.drawRectange(g);
+			
+			
+		}
+		
 	}
 	/*
 	 * draws a circle on the panel
@@ -114,8 +133,86 @@ public class CirclePanel extends JPanel {
 		}
 		repaint();
 	}
+
+	boolean b=true;
+	public void moveMessage(String message, Circle circle, ArrayList<Node> nodes) {
+		points=new ArrayList<Point2D>();
+		for(Node n: nodes){
+			Circle circle2=n.getCircle();
+		
+			
+			int x=(int)circle.getCenter().getX();
+			int y=(int)circle.getCenter().getY();
+			rectangle=new RectangleMessage(message,x,y);
+		Line line =getLine(circle,circle2);
+		Point2D current;
+		for (Iterator<Point2D> it = new LineIterator(line); it.hasNext();) {
+		    current = it.next();
+		    points.add(current);
+		}
+		}
+		 counter=0;
+		 
+		 
+		timer.start();
+		
+		
+			 	
+		}	 
+		    
+			 
 	
+		    	
+		    
+
+	 Timer timer = new Timer(3, new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent ae) {
+		    	if(counter<points.size()-1){
+		    		
+		    			
+		    	rectangle.setX((int)points.get(++counter).getX());
+				rectangle.setY((int)points.get(counter).getY());
+		    	repaint();
+		    	
+		    	}else{
+		    	stop();
+		    	}
+		    	}
+		        
+		    
+		});
+
+			
+		
+		
+		 
+		
+		
+		
 	
+
+
+	private Line getLine(Circle circle, Circle circle2) {
+		for(Line line: circle.getLines()){
+			if(circle2.containsLine(line)){
+				if(line.getX1()!=circle.getCenter().getX()){
+					return new Line((int)circle.getCenter().getX(),(int)circle.getCenter().getY(),(int)circle2.getCenter().getX(),(int)circle2.getCenter().getY());
+				}else{
+					return line;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private void stop() {
+			timer.stop();
+		 rectangle=null;
+		repaint();
+		b=false;
+		
+	}
 	
 	
 	

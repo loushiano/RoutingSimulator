@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import view.Circle;
+
 public class Topology {
 	private ArrayList<Node> topology;
 	private Random r;
@@ -63,11 +65,11 @@ public class Topology {
 	/*
 	 *put a message in the network 
 	 */
-	public Message injectNewMessage() {
+	public Message injectNewMessage(int k) {
 		
 		Node node = topology.get(r.nextInt(topology.size()));
-		Message message =new Message("babak is the best",node,getDestinationOfAMessage(node));
-		node.addMessage(message);
+		Message message =new Message(""+k,node,getDestinationOfAMessage(node));
+		node.getMessages().add(0, message);
 		return message;
 	}//sould be in simulaarto
 	/*
@@ -103,12 +105,14 @@ public class Topology {
 	
 		
 		if(n1!=null && n2!=null){
+			if(!n1.getNeighbours().contains(n2)){
 			n1.addNeighbour(n2);
 			n2.addNeighbour(n1);
 			ArrayList<Node> nodes=new ArrayList<Node>();
 			nodes.add(n1);
 			nodes.add(n2);
-		sim.informView(nodes);;
+		sim.informView(nodes);
+			}
 	}
 		
 }

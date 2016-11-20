@@ -1,10 +1,13 @@
-package network2;
+package test;
 
 import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import network2.Message;
+import network2.Node;
 
 public class MessageTest {
 	private Node n1, n2;

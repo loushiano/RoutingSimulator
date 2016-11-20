@@ -1,4 +1,4 @@
-package network2;
+package strategies;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public interface Strategy {
 	
 	/*
 	 * updates the routing table of the nodes
-	 * @param nodes of the toplogy
+	 * @param o Object to be passed to the method and parsed by each strategies that implement this interface
 	 * 
 	 */
 	public void updateRoutingTable(Object o);

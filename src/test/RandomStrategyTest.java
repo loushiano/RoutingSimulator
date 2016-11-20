@@ -1,4 +1,4 @@
-package network2;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import network2.Message;
+import network2.NetworkSimulator;
+import network2.Node;
+import strategies.RandomStrategy;
 
 public class RandomStrategyTest {
 
@@ -28,8 +33,7 @@ public class RandomStrategyTest {
 		nodes.add(n2);
 		nodes.add(n3);
 		NetworkSimulator model=new NetworkSimulator();
-		model.setTopology(nodes);
-		model.simualteMessages();
+		
 		
 	}
 

@@ -1,8 +1,10 @@
-package network2;
+package strategies;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import network2.Node;
 
 public class ShortestPathStrategy implements Strategy {
 	private ArrayList<Node> visited;
@@ -22,7 +24,7 @@ public class ShortestPathStrategy implements Strategy {
 					
 				}else{
 					visited.add(thisNode);
-				thisNode.getRoutingTable().get(destination).add(getClosest(thisNode,destination,nodes));
+				thisNode.getRoutingTable().get(destination).add(getClosest(thisNode,destination));
 				}
 			}
 			
@@ -31,7 +33,7 @@ public class ShortestPathStrategy implements Strategy {
 		
 	}
 
-	private Node getClosest(Node thisNode, Node destination, ArrayList<Node> nodes) {
+	private Node getClosest(Node thisNode, Node destination) {
 			less.clear();
 		if(thisNode.getNeighbours().contains(destination)){
 			return destination;

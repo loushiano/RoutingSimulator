@@ -1,13 +1,16 @@
 package network2;
 
+import java.util.ArrayList;
+
 public class Message {
 	
 	private String message;
 	private Node destination;
 	private Node source;
-	private Node previousNode;
+	private ArrayList<Node> visited;
 	private int numHops;
 	private int numPacks;
+	private boolean Success;
 	
 	
 	public Message(String message,Node source,Node destination){
@@ -16,7 +19,7 @@ public class Message {
 		numPacks=0;
 		this.destination=destination;
 		this.source=source;
-		previousNode=null;
+		visited=new ArrayList<Node>();
 	}
 
 	/*
@@ -99,12 +102,22 @@ public class Message {
 		this.numHops++;
 	}
 
-	public Node getPreviousNode() {
-		return previousNode;
+	public ArrayList<Node> getVisited() {
+		return visited;
 	}
 
-	public void setPreviousNode(Node previousNode) {
-		this.previousNode = previousNode;
+	public void addVisited(Node previousNode) {
+		visited.add(previousNode);
 	}
+
+	public boolean isSuccess() {
+		return Success;
+	}
+
+	public void setSuccess(boolean success) {
+		Success = success;
+	}
+
+	
 	
 }

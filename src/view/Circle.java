@@ -1,4 +1,4 @@
-package network2;
+package view;
 
 import java.awt.*;   // for Graphics
 import java.util.ArrayList;
@@ -118,7 +118,11 @@ public class Circle {
 		g2.setFont(font);
 		g2.drawString(letter,(int)center.getX()-2 ,(int)center.getY()+5);
 	}
-    /*
+    public ArrayList<Line> getLines() {
+		return lines;
+	}
+
+	/*
      * returns true if the circle contains the letter passed to it, false otherwise
      * @param l a string that represents a letter
      * @return true if the circle contains the letter passed to it, false otherwise

@@ -1,4 +1,4 @@
-package network2;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import network2.Message;
+import network2.Node;
 
 public class NodeTest {
 	private Node n1,n2,n3,n4,n5;

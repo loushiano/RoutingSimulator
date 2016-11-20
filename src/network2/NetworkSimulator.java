@@ -2,6 +2,12 @@ package network2;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import strategies.FloodingStrategy;
+import strategies.RandomStrategy;
+import strategies.ShortestPathStrategy;
+import strategies.Strategy;
+import view.GUI;
+
 public class NetworkSimulator extends Observable {
 	
 	
@@ -89,14 +95,21 @@ public class NetworkSimulator extends Observable {
 	 * starts the simulation by invoking the method simulate Messages
 	 * @param i the user settable rate
 	 */
-	public void start(int i){
+	public void start(int i,int j){
 		settableRate=i;
+		if(j==0){
+		strategy=new RandomStrategy();	
+		}else if(j==1){
+			strategy=new FloodingStrategy();	
+		}else {
+			strategy=new ShortestPathStrategy();	
+		}
 		 for(Node node:topology.getTopology()){
 			 node.setRoutingTable(topology.getTopology());
 			 informView(node.toString());
 		 }
 		 strategy.updateRoutingTable(topology.getTopology());
-		 for(Node n:topology.getTopology()){
+		 /*for(Node n:topology.getTopology()){
 			 for(Node n1:n.getRoutingTable().keySet()){
 				 System.out.print(n1.getName()+":");
 				 if(n.getRoutingTable().get(n1).size()==0){
@@ -111,7 +124,7 @@ public class NetworkSimulator extends Observable {
 				 
 			 }
 			 System.out.println();
-		 }
+		 }*/
 	}
 	public SimulationHandler getSimulation() {
 		return simulation;

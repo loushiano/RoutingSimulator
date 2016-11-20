@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 
+import view.Circle;
+import view.GUI;
+
 public class GUIController implements ActionListener, MouseListener {
 	
 	private int x;
@@ -115,9 +118,10 @@ public class GUIController implements ActionListener, MouseListener {
 			simulation.step();
 		}else if(e.getActionCommand().equals("Start")){
 				int settable =gui.getSettable();
-			
+				int strategy =gui.getStrategy();
 			simulation.simualteMessages();
-			model.start(settable);
+			model.start(settable,strategy);
+			((JButton)e.getSource()).setEnabled(false);
 			ArrayList<JButton> buttons=gui.getButtons(); 
 			for(JButton b:buttons){
 				if(b.getActionCommand().equals("Step")){

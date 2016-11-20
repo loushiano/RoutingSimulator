@@ -1,4 +1,4 @@
-package network2;
+package strategies;
 import java.util.ArrayList;
 /*
  * class RandomStrategy takes the responsibility of transferring a message in a network of routers randomly.
@@ -7,6 +7,8 @@ import java.util.ArrayList;
  * @since 20/10/2016
  */
 import java.util.Random;
+
+import network2.Node;
 
 public class RandomStrategy implements  Strategy {
 /*
@@ -17,11 +19,7 @@ public class RandomStrategy implements  Strategy {
 		
 		
 	}
-	/*
-	 * updates the routing table of the nodes
-	 * @param nodes of the toplogy
-	 * 
-	 */
+	@Override
 	public void updateRoutingTable(Object o){
 		
 		ArrayList<Node> nodes =(ArrayList<Node>) o;

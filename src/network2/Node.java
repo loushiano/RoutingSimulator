@@ -3,6 +3,9 @@ package network2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+
+import view.Circle;
 
 public class Node {
 	
@@ -68,36 +71,44 @@ public class Node {
 	/*
 	 * transferMessage()method is used to transfer the message 
 	 */
-	public Message transferMessage(){
-		Message returned=null;
+	public ArrayList<Message> transferMessage(NetworkSimulator sim){
+		ArrayList<Message> returned=new ArrayList<Message>();
+		
 		if(messages.size()==0){
 			
-			return null;
+			return returned;
 		}
-		if(messages.get(messages.size()-1).getDestination().equals(this)){
-			messages.remove(messages.size()-1);
-			if(messages.size()==0){
-				
-				return null;
-			}
-		}
-		Message message=messages.remove(messages.size()-1);
-		message.setPreviousNode(this);
 		
-		if(message.getNumHops()>30){
-			return null;
+		Message message=messages.remove(messages.size()-1);
+		if(!message.getVisited().contains(this)){
+			message.addVisited(this);
 		}
 		for(Node n:routingtable.keySet()){
+			
+			
 			if(message.getDestination().equals(n)){
-				
+					
+					if(routingtable.get(n).size()==0){
+						sim.informView("message"+message.getMessage()+"got discarded by "+this.getName());
+						return null;
+					}
 				for(Node n1:routingtable.get(n)){
 					
 					
-					System.out.println("message: "+message.getMessage() +"traveled from "+ this.getName()+" to "+n1.getName());
+					LinkedList<Object> transfer=new LinkedList<Object>();
+					transfer.add(message);
+					transfer.add(this);
+					transfer.add(routingtable.get(n));
+					sim.informView(transfer);
+					//System.out.println("message"+message.getMessage()+" has been traveled from "+this.getName() +" to "+n1.getName());
 					message.incNumHops();
+					message.addVisited(n1);
 						if(n1.equals(message.getDestination())){
-							returned=message;
+							returned.add(message);
+							//message.setSuccess(true);
 						}else{
+							//returned.add(message);
+							//message.setSuccess(false);
 							n1.addMessage(message);
 						}
 				}
@@ -105,6 +116,7 @@ public class Node {
 		}
 		return returned;
 	}
+	
 	/*
 	 * returns messages
 	 * @return messages in this router

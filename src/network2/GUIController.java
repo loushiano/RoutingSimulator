@@ -44,7 +44,10 @@ public class GUIController implements ActionListener, MouseListener {
 	public void setGUI(GUI gui){
 		this.gui=gui;
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		x = e.getX();
@@ -66,19 +69,28 @@ public class GUIController implements ActionListener, MouseListener {
 	    	deleteNode=false;
 	    }
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(adding==true){
@@ -90,7 +102,11 @@ public class GUIController implements ActionListener, MouseListener {
 			
 		}
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(adding==true){
@@ -106,7 +122,10 @@ public class GUIController implements ActionListener, MouseListener {
 		topology.addNeighbours(x1,y1,x2,y2);
 		}
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e){
 		if(e.getActionCommand().equals("Create Node")){

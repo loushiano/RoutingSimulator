@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import network2.Node;
+import network2.Router;
 
 public class ShortestPathStrategy implements Strategy {
-	private ArrayList<Node> visited;
-	 private HashMap<Integer,Node> less;
+	private ArrayList<Router> visited;
+	 private HashMap<Integer,Router> less;
 	 int count=0;
 	public ShortestPathStrategy() {
-		visited=new ArrayList<Node>();
-		less=new HashMap<Integer,Node>();
+		visited=new ArrayList<Router>();
+		less=new HashMap<Integer,Router>();
 	}
 	@Override
-	public void updateRoutingTable(Object o) {
-		ArrayList<Node> nodes=(ArrayList<Node>)o;
-		for(Node thisNode:nodes){
-			for(Node destination:thisNode.getRoutingTable().keySet()){
+	public boolean updateRoutingTable(ArrayList<Router> nodes) {
+		
+		for(Router thisNode:nodes){
+			for(Router destination:thisNode.getRoutingTable().keySet()){
 				
 				if(thisNode.equals(destination)){
 					
@@ -30,15 +30,15 @@ public class ShortestPathStrategy implements Strategy {
 			
 			visited.clear();
 		}
-		
+		return true;
 	}
 
-	private Node getClosest(Node thisNode, Node destination) {
+	private Router getClosest(Router thisNode, Router destination) {
 			less.clear();
 		if(thisNode.getNeighbours().contains(destination)){
 			return destination;
 		}else {
-			for(Node n:thisNode.getNeighbours()){
+			for(Router n:thisNode.getNeighbours()){
 				if(areConnected(n,destination)){
 					visited.clear();
 					visited.add(thisNode);
@@ -53,7 +53,7 @@ public class ShortestPathStrategy implements Strategy {
 	}
 		return getMinimum(less);
 	}
-	private Node getMinimum(HashMap<Integer,Node> less2) {
+	private Router getMinimum(HashMap<Integer,Router> less2) {
 		int array[]=new int[less2.size()];
 		int i=0;
 		for(int n:less2.keySet()){
@@ -63,13 +63,13 @@ public class ShortestPathStrategy implements Strategy {
 		Arrays.sort(array);
 		return less2.get(array[0]);
 	}
-	private boolean areConnected(Node n, Node destination) {
+	private boolean areConnected(Router n, Router destination) {
 		visited.add(n);
 		count++;
 		if(n.getNeighbours().contains(destination)){
 			return true;
 		}
-			for(Node n1:n.getNeighbours()){
+			for(Router n1:n.getNeighbours()){
 				if(!visited.contains(n1)){
 					return areConnected(n1,destination);
 				}

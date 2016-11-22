@@ -1,25 +1,16 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
+
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
-
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -31,7 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import network2.GUIController;
 import network2.Message;
-import network2.Node;
+import network2.Router;
 /*
  * This class is responsible for representing the whole Network Topology for the user.
  */
@@ -167,17 +158,21 @@ public class GUI implements Observer{
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		if(arg1 instanceof Node){
-			Node node=(Node)arg1;
+		if(arg1 instanceof Router){
+			Router node=(Router)arg1;
 			circlePanel.addCircle(node.getCircle());
 	    	circlePanel.draw();	
 		}else if(arg1 instanceof ArrayList) {
-			ArrayList<Node> nodes=(ArrayList<Node>)arg1;
-			Node n1=nodes.get(0);
-			Node n2=nodes.get(1);
+			ArrayList<Router> nodes=(ArrayList<Router>)arg1;
+			Router n1=nodes.get(0);
+			Router n2=nodes.get(1);
 			int x1=(int)n1.getCircle().getCenter().getX();
 			int y1=(int)n1.getCircle().getCenter().getY();
 			int x2=(int)n2.getCircle().getCenter().getX();
@@ -192,10 +187,6 @@ public class GUI implements Observer{
 				area.append(s);
 				area.append("\n");
 			}
-			
-		}else if(arg1 instanceof LinkedList){
-			LinkedList<Object> list= (LinkedList<Object>)arg1;
-			circlePanel.moveMessage(((Message)list.get(0)).getMessage(),((Node)list.get(1)).getCircle(),((ArrayList<Node>)list.get(2)));
 			
 		}else{
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
@@ -234,7 +225,7 @@ public class GUI implements Observer{
 	 * @return  the user settable rate of the simulation
 	 */
 	public int getSettable() {
-		int i=0;
+		
 		String letter;
 		letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate and press ok to start the simulation");
 		while(letter==null || letter.equals("")){
@@ -244,10 +235,15 @@ public class GUI implements Observer{
 		
 		return Integer.parseInt(letter);
 	}
+	
+	/*
+	 * this method is responsible to get the number strategy 
+	 * @return the number of strategy 
+	 */
 	public int getStrategy() {
 		
 		
-		 String[] buttons = { "RandomStrategy", "FloodingStrategy", "ShortestPathStrategy" };
+		 String[] buttons = { "RandomStrategy", "FloodingStrategy", "ShortestPathStrategy" ,"SoftriratorsStrategy"};
 
 		    int rc = JOptionPane.showOptionDialog(frame, "Choose wich strategy you want to test", "Strategy",
 		        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[2]);

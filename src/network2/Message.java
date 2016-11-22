@@ -2,24 +2,26 @@ package network2;
 
 import java.util.ArrayList;
 
+import view.RectangleMessage;
+
 public class Message {
 	
 	private String message;
-	private Node destination;
-	private Node source;
-	private ArrayList<Node> visited;
+	private Router destination;
+	private Router source;
+	private ArrayList<Router> visited;
 	private int numHops;
 	private int numPacks;
 	private boolean Success;
 	
 	
-	public Message(String message,Node source,Node destination){
+	public Message(String message,Router source,Router destination){
 		this.message=message;
 		numHops=0;
 		numPacks=0;
 		this.destination=destination;
 		this.source=source;
-		visited=new ArrayList<Node>();
+		visited=new ArrayList<Router>();
 	}
 
 	/*
@@ -41,7 +43,7 @@ public class Message {
 	 * gets the destination of message 
 	 * Returns the message 
 	 */
-	public Node getDestination() {
+	public Router getDestination() {
 		return destination;
 	}
 
@@ -49,7 +51,7 @@ public class Message {
 	 * sets the destination node  of the message 
 	 * @param destination is where the message is going to .
 	 */
-	public void setDestination(Node destination) {
+	public void setDestination(Router destination) {
 		this.destination = destination;
 	}
 
@@ -58,7 +60,7 @@ public class Message {
 	 * gets the source of the message 
 	 * Returns the the source  
 	 */
-	public Node getSource() {
+	public Router getSource() {
 		return source;
 	}
 
@@ -67,7 +69,7 @@ public class Message {
 	 * sets the source node of the message 
 	 * @param source is the node where the message sends from. 
 	 */
-	public void setSource(Node source) {
+	public void setSource(Router source) {
 		this.source = source;
 	}
 
@@ -102,11 +104,11 @@ public class Message {
 		this.numHops++;
 	}
 
-	public ArrayList<Node> getVisited() {
+	public ArrayList<Router> getVisited() {
 		return visited;
 	}
 
-	public void addVisited(Node previousNode) {
+	public void addVisited(Router previousNode) {
 		visited.add(previousNode);
 	}
 

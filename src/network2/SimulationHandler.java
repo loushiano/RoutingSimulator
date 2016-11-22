@@ -1,9 +1,16 @@
 package network2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
-import strategies.FloodingStrategy;
+import strategies.Strategy;
+import strategies.RandomStrategy;
+import strategies.SoftriatorsStrategy;
 
+/*
+ * This class is responsible for managing the network simulation. 
+ */
 public class SimulationHandler {
 
 	private int count=0;
@@ -11,12 +18,13 @@ public class SimulationHandler {
 	private int numMessages=0;
 	private  NetworkSimulator sim;
 	private Topology topology;
-	private Node node;
+	private HashMap<Router,ArrayList<Message>> storedMessages;
+	private int numberOfPackets=0;
 	
 	public SimulationHandler(NetworkSimulator sim,Topology topology){
 		this.sim=sim;
 		this.topology=topology;
-		
+		setStoredMessages(new HashMap<Router,ArrayList<Message>>());
 	}
 	
 	
@@ -24,62 +32,58 @@ public class SimulationHandler {
 	/*
 	 * simulates the messaging transfer, represents a step of the simulation
 	 */
-	public void step(){
+	public boolean step(){
 		
-			k++;
-			count++;
 			
+			count++;
+				for(Router r:topology.getTopology()){
+					
+					for(Message m:r.getStoredMessages()){
+						r.addMessage(m);
+						
+					}
+					
+					r.getStoredMessages().clear();
+				}
 			
 			//invoke transferMessage to transfer messages between routers
 			
-				
+				for(Router node: topology.getTopology()){
+					k++;
 			
 				
-				ArrayList<Message> messages=node.transferMessage(sim);
-				while(messages==null){
+				node.transferMessage(this);
+				
+				if(sim.getStrategy() instanceof RandomStrategy || sim.getStrategy() instanceof SoftriatorsStrategy ){
 					
-					sim.getStrategy().updateRoutingTable(node);
-					messages=node.transferMessage(sim);
-				}
-				if(sim.getStrategy() instanceof FloodingStrategy){
-					
-					sim.getStrategy().updateRoutingTable(topology.getNextOne(node));
-					
-				}else{
-					if(k==4){
+				
+					if(k==10){
 						sim.getStrategy().updateRoutingTable(topology.getTopology());
 						k=0;
 					}
 				}
-				
-				if(messages.size()!=0){
-					for(Message message:messages){
 						
-					String s="A message has been Succesfully transfered from "+message.getSource().getName() +" to its destination: "+message.getDestination().getName()+" after "+message.getNumHops()+" hops";
-					sim.addMessagesSent(message);
-					//notify the view to show the string s
-					sim.informView(s);
-					
-						sim.hopsMetrix();
-						}
-					
-					}
 				
 				
-			
+				}
 			//inject a message in the system at a user settable rate
 			if(count==sim.getSettableRate()){
-				Message message1=topology.injectNewMessage(numMessages++);
+				Message message1=injectNewMessage(numMessages++);
 				count=0;
 				String s="a new message has been successfuly injected with source: "+message1.getSource().getName()+" and destination: "+ message1.getDestination().getName();
 				sim.informView(s);
 			}
-			checkForMessages();
 			
-			node=topology.getNextOne(node);
+				
+			return true;
+			
 	}
+	
+	/*
+	 * this method checks for messages in the network
+	 */
 	private void checkForMessages() {
-		for(Node n:topology.getTopology()){
+		for(Router n:topology.getTopology()){
 			if(n.getMessages().size()!=0){
 				return;
 			}
@@ -97,9 +101,9 @@ public class SimulationHandler {
     	String s="hello Sir, your simulation is about to start, messages are being simulated now";
     	sim.informView(s);
     	
-    	for(Node node:topology.getTopology()){
+    	for(Router node:topology.getTopology()){
     		
-    	   for(int i=0;i<2;i++){
+    	   for(int i=0;i<1;i++){
     		  
     		   Message message=new Message(""+numMessages,node,topology.getDestinationOfAMessage(node));
     		   //System.out.println("message source: " +message.getSource().getName()+" dest: "+message.getDestination().getName());
@@ -107,7 +111,87 @@ public class SimulationHandler {
     		   numMessages++;
     	   }
     	}
-    	   node =topology.getTopology().get(0);
+    	 
     	  
 		}
+    
+    /*
+     * this method is used to inform the network simulator class
+     * @param o the object that will be passed to the network simulator
+     */
+    public void InformNetworkSimulator(Object o){
+	sim.informView(o);	
+	}
+
+    /*
+     * this method returns the stored messages 
+     * @return the store messages 
+     */
+	public HashMap<Router,ArrayList<Message>> getStoredMessages() {
+		return storedMessages;
+	}
+
+	
+	/*
+	 *This method sets the stored messages
+	 *@param StoredMessages the messages that will be stored
+	 */
+	public void setStoredMessages(HashMap<Router,ArrayList<Message>> storedMessages) {
+		this.storedMessages = storedMessages;
+	}
+
+	
+	/*
+	 * this method return the current  type of strategy 
+	 * @return type of strategy 
+	 */
+	public Strategy getSumlationStrategy() {
+		// TODO Auto-generated method stub
+		return sim.getStrategy();
+	}
+
+	/*
+	 * This method is responsible to transfer  messages between routers 
+	 */
+
+	public void messageTransferred(Message message) {
+		sim.getMessagesSent().add(message);
+		sim.hopsMetrix();
+		sim.packetsMetrix();
+		
+	}
+	/*
+	 * this method returns the number of packets 
+	 * @return number of packets 
+	 */
+	public int getNumberOfPackets() {
+		return numberOfPackets;
+	}
+
+
+	/*
+	 * This method injects a message 
+	 * @param k is the message to be sent
+	 */
+	
+	public Message injectNewMessage(int k) {
+			Random r=new Random();
+		Router node = topology.getTopology().get(r.nextInt(topology.getTopology().size()));
+		Message message =new Message(""+k,node,topology.getDestinationOfAMessage(node));
+		node.getStoredMessages().add(message);
+		return message;
+	}
+
+
+	/*
+	 * this method increments the number of packets 
+	 */
+	public void incrementPackets() {
+		numberOfPackets++;
+	
+	
+	}
+
+
+	
 }

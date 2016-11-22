@@ -1,0 +1,211 @@
+package network2;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import strategies.FloodingStrategy;
+import view.Circle;
+import view.MessageContainer;
+
+/*
+ * This class is responsible for representing a node in the network topology. This Node
+ * has the messages and also the neighbour nodes and routingTable. This node also can be represented as a circle in the view.
+ */
+public class Router {
+	
+	private String name;
+	private ArrayList<Router> neighbours;
+	private ArrayList<Message> messages;
+	private Circle circle;
+	private HashMap<Router,ArrayList<Router>> routingtable;
+	private ArrayList<Message> storedMessages;
+	private MessageContainer container;
+	public Router (String name){
+		this.name=name;
+		neighbours=new ArrayList<Router>();
+		messages =new ArrayList<Message>();
+		routingtable=new HashMap<Router,ArrayList<Router>>();
+		storedMessages=new ArrayList<Message>();
+		
+	}
+	/*
+	 * gets the name of the node 
+	 * @returns the name of the node  
+	 */
+	public String getName() {
+		return name;
+	}
+	/*
+	 * sets the name of this node 
+	 * @param name of the node
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/*
+	 * gets the neighbors of this node 
+	 * @returns the  neighbors of the node 
+	 */
+	public ArrayList<Router> getNeighbours() {
+		return neighbours;
+	}
+	
+	/*
+	 * sets the setNeighbours of this node 
+	 * @param neighbours is neighbors of the node  
+	 */
+	public void setNeighbours(ArrayList<Router> neighbours) {
+		this.neighbours = neighbours;
+	}
+	/*
+	 * @param node the given node
+	 * add a neighbour of node
+	 */
+	public void addNeighbour(Router node){
+		neighbours.add(node);
+		
+	}
+	
+	/*
+	 * adds a neighborto this node  
+	 * @param node is the node that we want to add it as neighbor to this node .  
+	 */
+	public void addMessage(Message message){
+		this.messages.add(message);
+	}
+	
+	/*
+	 * transferMessage()method is used to transfer the message 
+	 */
+	public void transferMessage(SimulationHandler sim){
+		
+		
+		if(messages.size()==0){
+			
+			return;
+		}
+		for(Message message : messages){
+		if(sim.getSumlationStrategy() instanceof FloodingStrategy){
+		if(!message.getVisited().contains(this)){
+			message.addVisited(this);
+		}
+		}
+		int i=0;
+		for(Router n:routingtable.keySet()){
+			
+			
+			if(message.getDestination().equals(n)){
+					
+					
+				for(Router n1:routingtable.get(n)){
+						if(!message.getVisited().contains(n1)){
+					i++;
+					/*<Object> transfer=new LinkedList<Object>();
+					transfer.add(message);
+					transfer.add(this);
+					transfer.add(routingtable.get(n));
+					sim.InformNetworkSimulator(transfer);
+					*/
+					String l="message"+message.getMessage()+" has traveled from "+this.getName() +" to "+n1.getName();
+					sim.InformNetworkSimulator(l);
+					sim.incrementPackets();
+					message.incNumHops();
+					if(sim.getSumlationStrategy() instanceof FloodingStrategy){
+					message.addVisited(n1);}
+						if(n1.equals(message.getDestination())){
+						
+							String s="A message has been Succesfully transfered from "+message.getSource().getName() +" to its destination: "+message.getDestination().getName()+" after "+message.getNumHops()+" hops";
+							sim.InformNetworkSimulator(s);
+							sim.messageTransferred(message);
+							//message.setSuccess(true);
+						}else{
+							//returned.add(message);
+							//message.setSuccess(false);
+							n1.addStoredMessage(message);
+						
+						}
+						}
+				}
+			}
+		}
+		if(i==0){
+			String s="message"+message.getMessage()+"got discarded by router "+getName();
+			sim.InformNetworkSimulator(s);
+		}
+		}
+		messages.clear();
+		
+	}
+	
+	private void addStoredMessage(Message message) {
+		storedMessages.add(message);
+		
+	}
+	public MessageContainer getContainer() {
+		return container;
+	}
+	/*
+	 * returns messages
+	 * @return messages in this router
+	 */
+	public ArrayList<Message> getMessages() {
+		return messages;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString(){
+		
+		String s=this.getName()+" has neighbours: ";
+		for(Router no:neighbours){
+			s+=no.getName()+" ";
+		}
+		return s;
+	}
+	/*
+	 * returns the circle that represents this node
+	 * @return the circle that represents this node
+	 */
+	public Circle getCircle() {
+		return circle;
+	}
+	/*
+	 * sets the circle that represents this node
+	 * @param circle that represents this node
+	 */
+	public void setCircle(Circle circle) {
+		this.circle = circle;
+	}
+	/*
+	 * returns the routing table of this node
+	 * @return the routing table of this node
+	 */
+	public HashMap<Router,ArrayList<Router>> getRoutingTable(){
+		return routingtable;
+	}
+	/*
+	 * sets the routing table of this node
+	 * @param topology of the system
+	 */
+	public void setRoutingTable(ArrayList<Router> topology) {
+		for(Router n:topology){
+			routingtable.put(n,new ArrayList<Router>());
+		}
+		
+	}
+	/*
+	 * this method returns the the stored messages in the router 
+	 * @return the stored messages 
+	 */
+	public ArrayList<Message> getStoredMessages() {
+		// TODO Auto-generated method stub
+		return storedMessages;
+	}
+	
+	
+	
+}

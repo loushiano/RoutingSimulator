@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
-import network2.Node;
+import network2.Router;
 
 /**
  * A class that draws all the shapes the user wants to draw
@@ -25,6 +25,7 @@ public class CirclePanel extends JPanel {
 	private ArrayList<Point2D> points;
 	private int counter;
 	private Timer _timer;
+	
 	/*
 	 * Constructor that initialize the fields of this class
 	 */
@@ -34,9 +35,13 @@ public class CirclePanel extends JPanel {
 		rectangle=null;
 		points=new ArrayList<Point2D>();
 		
+		
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -59,6 +64,7 @@ public class CirclePanel extends JPanel {
 			
 			
 		}
+		
 		
 	}
 	/*
@@ -135,9 +141,17 @@ public class CirclePanel extends JPanel {
 	}
 
 	boolean b=true;
-	public void moveMessage(String message, Circle circle, ArrayList<Node> nodes) {
+	
+	
+	/*
+	 * this method transfers the Rectangle message from this circle (this node) to one of the node in the given array list of nodes
+	 * @param message the given message 
+	 * @param circle the circle that represents the node
+	 * @param nodes is the array list of nodes 
+	 */
+	public void moveMessage(String message, Circle circle, ArrayList<Router> nodes) {
 		points=new ArrayList<Point2D>();
-		for(Node n: nodes){
+		for(Router n: nodes){
 			Circle circle2=n.getCircle();
 		
 			
@@ -155,7 +169,7 @@ public class CirclePanel extends JPanel {
 		 
 		 
 		timer.start();
-		
+			
 		
 			 	
 		}	 
@@ -166,6 +180,10 @@ public class CirclePanel extends JPanel {
 		    
 
 	 Timer timer = new Timer(3, new ActionListener() {
+		 /*'
+		  * (non-Javadoc)
+		  * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		  */
 		    @Override
 		    public void actionPerformed(ActionEvent ae) {
 		    	if(counter<points.size()-1){
@@ -191,8 +209,11 @@ public class CirclePanel extends JPanel {
 		
 		
 	
-
-
+	 /*
+	  * this method gets the x and y coordinates of the  line 
+	  * @param circle the first given circle 
+	  * @param circle2 the second given circle  
+	  */
 	private Line getLine(Circle circle, Circle circle2) {
 		for(Line line: circle.getLines()){
 			if(circle2.containsLine(line)){
@@ -206,6 +227,9 @@ public class CirclePanel extends JPanel {
 		return null;
 	}
 	
+	/*
+	 * this method is responsible to stop the timer 
+	 */
 	private void stop() {
 			timer.stop();
 		 rectangle=null;
@@ -213,8 +237,9 @@ public class CirclePanel extends JPanel {
 		b=false;
 		
 	}
+
 	
 	
-	
+
 
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 import java.util.Random;
 
-import network2.Node;
+import network2.Router;
 
 public class RandomStrategy implements  Strategy {
 /*
@@ -19,27 +19,33 @@ public class RandomStrategy implements  Strategy {
 		
 		
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see strategies.Strategy#updateRoutingTable(java.util.ArrayList)
+	 */
 	@Override
-	public void updateRoutingTable(Object o){
+	public boolean updateRoutingTable(ArrayList<Router> nodes){
 		
-		ArrayList<Node> nodes =(ArrayList<Node>) o;
 		
 		Random r=new Random();
 		int i=0;
-		Node j=null;
-		for(Node node:nodes){
-			for(Node node1:node.getRoutingTable().keySet()){
+		Router j=null;
+		for(Router node:nodes){
+			for(Router node1:node.getRoutingTable().keySet()){
 				i=r.nextInt(node.getNeighbours().size());
 				j=node.getNeighbours().get(i);
 				if(node.equals(node1)){
 					
 				}else{
+					node.getRoutingTable().get(node1).clear();
 				node.getRoutingTable().get(node1).add(j);
 				}
 			}
 			
 			
 		}
+		return true;
 		}
 	}
 		

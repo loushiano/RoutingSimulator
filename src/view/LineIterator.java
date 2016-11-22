@@ -19,7 +19,9 @@ public class LineIterator implements Iterator<Point2D> {
 	final double dx, dy;
 	
 	double x,y,error;
-	
+	/*
+	 * constructor of LineIterator to initialize the fields and create objects if needed  
+	 */
 	public LineIterator(Line line, double precision) {
 		this.line = line;
 		this.precision = precision;
@@ -39,12 +41,18 @@ public class LineIterator implements Iterator<Point2D> {
 	public LineIterator(Line line) {
 		this(line, DEFAULT_PRECISION);
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#hasNext()
+	 */
 	@Override
 	public boolean hasNext() {
 	    return Math.abs( x - line.getX2()) > 0.9 || ( Math.abs(y - line.getY2()) > 0.9);
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#next()
+	 */
 	@Override
 	public Point2D next() {
 		Point2D ret = new Point2D.Double(x, y);
@@ -61,7 +69,10 @@ public class LineIterator implements Iterator<Point2D> {
 		
 		return ret;
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.Iterator#remove()
+	 */
 	@Override
 	public void remove() {
 		throw new AssertionError();

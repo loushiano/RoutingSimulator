@@ -1,13 +1,20 @@
 package network2;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 import strategies.FloodingStrategy;
 import strategies.RandomStrategy;
 import strategies.ShortestPathStrategy;
+import strategies.SoftriatorsStrategy;
 import strategies.Strategy;
 import view.GUI;
 
+/*
+ * This class acts as the model of the graphical user interface. This class is responsible for
+ * implementing the algorithm behind the GUI. This class takes care of updating the view
+ * of the GUI. 
+ * */
 public class NetworkSimulator extends Observable {
 	
 	
@@ -35,14 +42,18 @@ public class NetworkSimulator extends Observable {
 		
 		strategy=new ShortestPathStrategy();
 		simulation= new SimulationHandler(this,topology);
+		
+		
 	}
 	
-	
+	/*
+	 * this method returns the Topology
+	 */
 	public Topology getTopology() {
 		return topology;
 	}
 	/*
-	 * 
+	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString(){
@@ -50,7 +61,7 @@ public class NetworkSimulator extends Observable {
 		return topology.toString();
 	}
 	/*
-	 * calculates the hops
+	 * this method calculates the hops
 	 */
 	public void hopsMetrix() {
 		double j=0;
@@ -59,9 +70,8 @@ public class NetworkSimulator extends Observable {
 			
 		}
 		j=j/messagesSent.size();
-		String s="the current average Hops for the random Strategy is: "+j;
-		setChanged();
-		notifyObservers(s);
+		String s="the current average Hops for the random Strategy is: "+ j;
+		informView(s);
 	}
 	
 	/*
@@ -94,6 +104,7 @@ public class NetworkSimulator extends Observable {
 	/*
 	 * starts the simulation by invoking the method simulate Messages
 	 * @param i the user settable rate
+	 * @param j to check what strategy will be used 
 	 */
 	public void start(int i,int j){
 		settableRate=i;
@@ -101,44 +112,48 @@ public class NetworkSimulator extends Observable {
 		strategy=new RandomStrategy();	
 		}else if(j==1){
 			strategy=new FloodingStrategy();	
-		}else {
+		}else if (j==2){
 			strategy=new ShortestPathStrategy();	
+		}else{
+			strategy=new SoftriatorsStrategy();
 		}
-		 for(Node node:topology.getTopology()){
+		 for(Router node:topology.getTopology()){
 			 node.setRoutingTable(topology.getTopology());
 			 informView(node.toString());
 		 }
 		 strategy.updateRoutingTable(topology.getTopology());
-		 /*for(Node n:topology.getTopology()){
-			 for(Node n1:n.getRoutingTable().keySet()){
-				 System.out.print(n1.getName()+":");
-				 if(n.getRoutingTable().get(n1).size()==0){
-					 System.out.print("null");
-				 }else{
-				 for(Node n2:n.getRoutingTable().get(n1)){
-					 
-						 System.out.print(n2.getName()+" ");
-					 
-				 }
-				 }
-				 
-			 }
-			 System.out.println();
-		 }*/
+		 
 	}
+	
+	/*
+	 * this method is responsible  for getting the simulation handler
+	 * @return the Simulation Handler variable
+	 */
 	public SimulationHandler getSimulation() {
 		return simulation;
 	}
+	
+	/*
+	 *this method is responsible for informing the view that is related to this network simulation
+	 *@param n the object that we want to pass 
+	 */
 	public void informView(Object n) {
 		setChanged();
 		notifyObservers(n);
 		
 	}
-
+	
+	/*
+	 *this method is used by the network simulator to add this message to the list of messages 
+	 *@param: message that we want to add 
+	 */
 	public void addMessagesSent(Message message) {
 		messagesSent.add(message);		
 	}
-	
+	/*
+	 * this method return the settable Rate of  user
+	 * @return : settable Rate
+	 */
 	public int getSettableRate(){
 		return settableRate;
 	}
@@ -154,11 +169,22 @@ public class NetworkSimulator extends Observable {
 
 	}
 
-
+	/*
+	 * this method return the strategy that related to this network simulator 
+	 * @return: strategy 
+	 */
 	public Strategy getStrategy() {
 		// TODO Auto-generated method stub
 		return strategy;
 	}
+
+
+	public void packetsMetrix() {
+		String s="total number of packets transmitted is " +simulation.getNumberOfPackets();
+		informView(s);
+		
+	}
+	
 	
 
 }

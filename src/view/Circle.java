@@ -118,6 +118,11 @@ public class Circle {
 		g2.setFont(font);
 		g2.drawString(letter,(int)center.getX()-2 ,(int)center.getY()+5);
 	}
+    
+    /*
+     * this method returns the number of lines 
+     * @return number of lines 
+     */
     public ArrayList<Line> getLines() {
 		return lines;
 	}
@@ -162,10 +167,20 @@ public class Circle {
 		lines.remove(l);
 	}
 
+	/*
+	 * this method gets the radius of the circle
+	 * @return the radius of this circle
+	 */
 	public int getRadius() {
 		
 		return this.radius;
 	}
+	
+	/*
+	 * this method sets the centre of the circle 
+	 * @param x is the x coordinate of the circle 
+	 * @param y is the y coordinate of the circle 
+	 */
 	public void setCentre(int x,int y){
 		this.center=new Point(x,y);
 	}

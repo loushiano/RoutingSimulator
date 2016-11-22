@@ -2,6 +2,8 @@ package strategies;
 
 import java.util.ArrayList;
 
+import network2.Router;
+
 /*
  * class RandomStrategy takes the responsibility of transferring a message in a network of routers randomly.
  * @author Ibrahim Ali Fawaz
@@ -17,10 +19,10 @@ public interface Strategy {
 	
 	/*
 	 * updates the routing table of the nodes
-	 * @param o Object to be passed to the method and parsed by each strategies that implement this interface
+	 * @param ArrayList<Router> nodes to be passed to the method and parsed by each strategies that implement this interface
 	 * 
 	 */
-	public void updateRoutingTable(Object o);
+	public boolean updateRoutingTable(ArrayList<Router> nodes);
 	
 
 }

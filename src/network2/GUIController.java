@@ -28,6 +28,7 @@ public class GUIController implements ActionListener, MouseListener {
 	private SimulationHandler simulation;
 	private boolean deleteNode;
 	private boolean adding;
+	private ArrayList<JButton> buttons;
 	/*
 	 * Constructor of the Controller initializes the model field of the class
 	 * @param model the models that communicates with the controller 
@@ -36,6 +37,7 @@ public class GUIController implements ActionListener, MouseListener {
 		this.model=model;
 		topology=model.getTopology();
 		simulation=model.getSimulation();
+		 
 	}
 	/*
 	 * a method that sets the gui that the controller controls
@@ -43,6 +45,7 @@ public class GUIController implements ActionListener, MouseListener {
 	 */
 	public void setGUI(GUI gui){
 		this.gui=gui;
+		buttons=gui.getButtons();
 	}
 	/*
 	 * (non-Javadoc)
@@ -135,13 +138,18 @@ public class GUIController implements ActionListener, MouseListener {
 			
 		}else if(e.getActionCommand().equals("Step")){
 			simulation.step();
+			for(JButton b:buttons){
+				if(b.getActionCommand().equals("Undo")){
+					b.setEnabled(true);
+				}
+			}
 		}else if(e.getActionCommand().equals("Start")){
 				int settable =gui.getSettable();
 				int strategy =gui.getStrategy();
 			simulation.simualteMessages();
 			model.start(settable,strategy);
 			((JButton)e.getSource()).setEnabled(false);
-			ArrayList<JButton> buttons=gui.getButtons(); 
+			 
 			for(JButton b:buttons){
 				if(b.getActionCommand().equals("Step")){
 					b.setEnabled(true);
@@ -159,6 +167,11 @@ public class GUIController implements ActionListener, MouseListener {
 			deleteNode=true;
 		}else if(e.getActionCommand().equals("Add Neighbour")){
 			adding=true;
+		}else if (e.getActionCommand().equals("undo")){
+			simulation.undo();
+			if(simulation.getSteps()==0){
+				((JButton)e.getSource()).setEnabled(false);
+			}
 		}
 	}
 	

@@ -20,6 +20,7 @@ public class SimulationHandler {
 	private Topology topology;
 	private HashMap<Router,ArrayList<Message>> storedMessages;
 	private int numberOfPackets=0;
+	private int numberOfSteps;
 	
 	public SimulationHandler(NetworkSimulator sim,Topology topology){
 		this.sim=sim;
@@ -74,9 +75,29 @@ public class SimulationHandler {
 				sim.informView(s);
 			}
 			
-				
+			numberOfSteps++;
 			return true;
 			
+	}
+	/*
+	 * this message is the undo message, it is the opposite of step
+	 */
+	public void undo(){
+		if(numberOfSteps>0){
+		ArrayList<Message> messages;
+		for(Router r:topology.getTopology()){
+			r.getMessages().clear();
+			if(r.getOldies().size()!=0){
+			messages=r.getOldies().get(r.getOldies().size()-1);
+			for(Message m:messages){
+				m.getVisited().clear();
+				r.addMessage(m);
+			}
+			}
+		}
+		numberOfSteps--;
+		}
+		
 	}
 	
 	/*
@@ -190,6 +211,16 @@ public class SimulationHandler {
 		numberOfPackets++;
 	
 	
+	}
+
+
+	/*
+	 * returns the number of steps including the deduction due to the undo method
+	 * @return the number of steps including the deduction due to the undo method
+	 */
+	public int getSteps() {
+		
+		return numberOfSteps;
 	}
 
 

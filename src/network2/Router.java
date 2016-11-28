@@ -22,13 +22,24 @@ public class Router {
 	private HashMap<Router,ArrayList<Router>> routingtable;
 	private ArrayList<Message> storedMessages;
 	private MessageContainer container;
+	private ArrayList<ArrayList<Message>> oldies;
+	
 	public Router (String name){
 		this.name=name;
 		neighbours=new ArrayList<Router>();
 		messages =new ArrayList<Message>();
 		routingtable=new HashMap<Router,ArrayList<Router>>();
 		storedMessages=new ArrayList<Message>();
+		oldies=new ArrayList<ArrayList<Message>>();
 		
+	}
+	/*
+	 * returns an arrayList of arrayList of messages, this is used for the undo message
+	 * @return an arrayList of arrayList of messages, this is used for the undo message
+	 * @See undo in SimulationHandler
+	 */
+	public ArrayList<ArrayList<Message>> getOldies() {
+		return oldies;
 	}
 	/*
 	 * gets the name of the node 
@@ -81,7 +92,11 @@ public class Router {
 	 */
 	public void transferMessage(SimulationHandler sim){
 		
-		
+		ArrayList<Message> oldMessages=new ArrayList<Message>();
+			for(Message m:messages){
+				oldMessages.add(m);
+			}
+			oldies.add(oldMessages);
 		if(messages.size()==0){
 			
 			return;
@@ -138,7 +153,10 @@ public class Router {
 		messages.clear();
 		
 	}
-	
+	/*
+	 * adds a message to the stored message to be added to the router after one step
+	 * @param message to add to the stored messages
+	 */
 	private void addStoredMessage(Message message) {
 		storedMessages.add(message);
 		

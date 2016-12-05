@@ -1,0 +1,16 @@
+<Topology>
+	<router>
+		<name>A</name>
+		<circle>
+			<x>258.0</x>
+			<y>176.0</y>
+		</circle>
+	</router>
+	<router>
+		<name>B</name>
+		<circle>
+			<x>483.0</x>
+			<y>313.0</y>
+		</circle>
+	</router>
+</Topology>

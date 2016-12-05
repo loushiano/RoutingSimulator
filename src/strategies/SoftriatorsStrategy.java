@@ -34,6 +34,11 @@ public class SoftriatorsStrategy implements Strategy{
 		}
 		return true;
 		}
+
+	@Override
+	public String getName() {
+		return "SoftriatorsStrategy";
+	}
 		
 	}
 

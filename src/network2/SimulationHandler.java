@@ -19,12 +19,18 @@ public class SimulationHandler {
 	private  NetworkSimulator sim;
 	private Topology topology;
 	private HashMap<Router,ArrayList<Message>> storedMessages;
+	private ArrayList<Integer> oldPackets;
+	private ArrayList<Message> injectedMessages;
 	private int numberOfPackets=0;
-	private int numberOfSteps;
+	private int numberOfSteps=0;
+	private ArrayList<Message> undoMessages;
 	
 	public SimulationHandler(NetworkSimulator sim,Topology topology){
 		this.sim=sim;
 		this.topology=topology;
+		oldPackets=new ArrayList<Integer>();
+		injectedMessages=new ArrayList<Message>();
+		undoMessages=new ArrayList<Message>();
 		setStoredMessages(new HashMap<Router,ArrayList<Message>>());
 	}
 	
@@ -35,17 +41,9 @@ public class SimulationHandler {
 	 */
 	public boolean step(){
 		
+			oldPackets.add(getPackets());
 			
-			count++;
-				for(Router r:topology.getTopology()){
-					
-					for(Message m:r.getStoredMessages()){
-						r.addMessage(m);
-						
-					}
-					
-					r.getStoredMessages().clear();
-				}
+				
 			
 			//invoke transferMessage to transfer messages between routers
 			
@@ -53,7 +51,7 @@ public class SimulationHandler {
 					k++;
 			
 				
-				node.transferMessage(this);
+				node.transferMessage();
 				
 				if(sim.getStrategy() instanceof RandomStrategy || sim.getStrategy() instanceof SoftriatorsStrategy ){
 					
@@ -67,14 +65,38 @@ public class SimulationHandler {
 				
 				
 				}
+				
 			//inject a message in the system at a user settable rate
-			if(count==sim.getSettableRate()){
-				Message message1=injectNewMessage(numMessages++);
-				count=0;
+			if(numberOfSteps%(sim.getSettableRate()-1)==0 && numberOfSteps!=0){
+				Message message1;
+				if(undoMessages.size()>0){
+					message1=undoMessages.remove(undoMessages.size()-1);
+					for(Router r:topology.getTopology()){
+						if(r.equals(message1.getSource())){
+							r.addMessage(message1);
+						}
+					}
+					injectedMessages.add(new Message(message1.getMessage(),message1.getSource(),message1.getDestination()));
+				}else{
+				message1=injectNewMessage(numMessages++);
+				injectedMessages.add(new Message(message1.getMessage(),message1.getSource(),message1.getDestination()));
+				}
 				String s="a new message has been successfuly injected with source: "+message1.getSource().getName()+" and destination: "+ message1.getDestination().getName();
 				sim.informView(s);
+				
 			}
-			
+			for(Router r:topology.getTopology()){
+				
+				for(Message m:r.getStoredMessages()){
+					r.addMessage(m);
+					
+				}
+				
+				r.getStoredMessages().clear();
+				sim.informView(r);
+			}
+			sim.hopsMetrix();
+			sim.packetsMetrix();
 			numberOfSteps++;
 			return true;
 			
@@ -86,15 +108,22 @@ public class SimulationHandler {
 		if(numberOfSteps>0){
 		ArrayList<Message> messages;
 		for(Router r:topology.getTopology()){
+			k--;
 			r.getMessages().clear();
+			sim.informView(r);
 			if(r.getOldies().size()!=0){
-			messages=r.getOldies().get(r.getOldies().size()-1);
+			messages=r.getOldies().remove(r.getOldies().size()-1);
 			for(Message m:messages){
-				m.getVisited().clear();
+				
 				r.addMessage(m);
 			}
 			}
+			
 		}
+		if(injectedMessages.size()>0){
+			undoMessages.add(injectedMessages.remove(injectedMessages.size()-1));
+		}
+		setPackets(oldPackets.remove(oldPackets.size()-1));
 		numberOfSteps--;
 		}
 		
@@ -119,12 +148,11 @@ public class SimulationHandler {
 	 * Create three messages and make those have different source and destination nodes
 	 */
     public void simualteMessages(){
-    	String s="hello Sir, your simulation is about to start, messages are being simulated now";
-    	sim.informView(s);
+    	
     	
     	for(Router node:topology.getTopology()){
-    		
-    	   for(int i=0;i<1;i++){
+    		node.setSimlation(this);
+    	   for(int i=0;i<2;i++){
     		  
     		   Message message=new Message(""+numMessages,node,topology.getDestinationOfAMessage(node));
     		   //System.out.println("message source: " +message.getSource().getName()+" dest: "+message.getDestination().getName());
@@ -172,13 +200,15 @@ public class SimulationHandler {
 	}
 
 	/*
-	 * This method is responsible to transfer  messages between routers 
+	 * This method is invoked after each message has been transfered form a source to a destination
+	 * @param message that has been transfered from its source to its destination
 	 */
 
 	public void messageTransferred(Message message) {
+		if(!sim.getMessagesSent().contains(message)){
 		sim.getMessagesSent().add(message);
-		sim.hopsMetrix();
-		sim.packetsMetrix();
+		}
+		
 		
 	}
 	/*
@@ -212,6 +242,21 @@ public class SimulationHandler {
 	
 	
 	}
+	/*
+	 * returns the number of packets
+	 * @return the number of packets
+	 */
+	public int getPackets(){
+		return numberOfPackets;
+	}
+	/*
+	 * sets the number of Packets
+	 * @param num the number of packets to be set
+	 */
+	public void setPackets(int num){
+		numberOfPackets=num;
+		
+	}
 
 
 	/*
@@ -221,6 +266,23 @@ public class SimulationHandler {
 	public int getSteps() {
 		
 		return numberOfSteps;
+	}
+
+
+	/*
+	 * sets the number of messages,used in the reset method in the NetworkSimulator
+	 * @param i the number of messages to be set
+	 */
+	public void setNumMessages(int i) {
+		numMessages=i;
+		
+	}
+	/*
+	 * sets the number of steps,used in the reset method in the NetworkSimulator
+	 * @param i the number of steps to be set
+	 */
+	public void setSteps(int i){
+		numberOfSteps=i;
 	}
 
 

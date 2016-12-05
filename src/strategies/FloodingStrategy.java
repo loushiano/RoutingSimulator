@@ -29,6 +29,12 @@ public class FloodingStrategy implements Strategy {
 		return true;
 			
 	}
+
+
+	@Override
+	public String getName() {
+		return "FloodingStrategy";
+	}
 		
 		
 	

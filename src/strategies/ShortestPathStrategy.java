@@ -39,11 +39,14 @@ public class ShortestPathStrategy implements Strategy {
 			return destination;
 		}else {
 			for(Router n:thisNode.getNeighbours()){
+				visited.clear();
+				visited.add(thisNode);
 				if(areConnected(n,destination)){
-					visited.clear();
-					visited.add(thisNode);
+					
 					less.put(count,n);
 					count=0;
+					
+				}else{
 					
 				}
 				}
@@ -61,20 +64,41 @@ public class ShortestPathStrategy implements Strategy {
 			i++;
 		}
 		Arrays.sort(array);
+		
 		return less2.get(array[0]);
+		
+			
+		
 	}
 	private boolean areConnected(Router n, Router destination) {
 		visited.add(n);
+		
+		
+		
 		count++;
 		if(n.getNeighbours().contains(destination)){
 			return true;
-		}
+		}	
+			int i=0;
+			boolean b=false;
 			for(Router n1:n.getNeighbours()){
 				if(!visited.contains(n1)){
-					return areConnected(n1,destination);
+					
+					  b=areConnected(n1,destination);
+					  if(b==true){
+						  return true;
+					  }
+				}
+				i++;
+				if(i==n.getNeighbours().size()){
+					return b;
 				}
 			}
 			return false;
+	}
+	@Override
+	public String getName() {
+		return "ShortestPathStrategy";
 	}
 	
 	

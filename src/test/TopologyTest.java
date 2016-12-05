@@ -36,8 +36,8 @@ public class TopologyTest {
 		n2 = new Router("B");
 		n3 = new Router("C");
 		m = new Message("0",n1,n2);
-		c1=new Circle(new Point(3,3),20,"A");
-		c2=new Circle(new Point(4,4),20,"B");
+		c1=new Circle(new Point(3,3),"A");
+		c2=new Circle(new Point(4,4),"B");
 	}
 
 	@After
@@ -72,14 +72,14 @@ public class TopologyTest {
 
 	@Test
 	public void testAddARouter() {
-		Circle c=new Circle(new Point(3,3),20,"A");
+		Circle c=new Circle(new Point(3,3),"A");
 		t.addANode("A", c);
 		assertEquals(c,t.getTopology().get(0).getCircle());
 	}
 
 	@Test
 	public void testDeleteRouter() {
-		Circle c=new Circle(new Point(4,3),20,"A");
+		Circle c=new Circle(new Point(4,3),"A");
 		t.addANode("A", c);
 		assertEquals(c,t.getTopology().get(0).getCircle());
 		t.deleteNode(4, 3);

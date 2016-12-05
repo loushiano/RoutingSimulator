@@ -11,20 +11,22 @@ import java.awt.Stroke;
 public class RectangleMessage {
 	private String message;
 	private int x,y;
-	public static final int WIDTH=30;
-	public static final int HEIGHT=20;
-	public  RectangleMessage(String message,int x,int y){
-		this.x=x;
-		this.y=y;
-		this.message=message;
+	public static final int WIDTH=200;
+	public static final int HEIGHT=30;
+	
+	public  RectangleMessage(String message,Circle circle,int numOfMessages){
 		
+		
+		this.message=message;
+		x=(int)circle.getCenter().getX();
+		y=(int)circle.getCenter().getY()-circle.getRadius()-40-HEIGHT*numOfMessages;
 	}
 	
 	public void setX(int x) {
 		this.x = x;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public void addY(int y) {
+		this.y =this.y- HEIGHT*y;
 	}
 	public void drawRectange(Graphics g){
 		Graphics2D g2 =(Graphics2D)g;
@@ -37,15 +39,18 @@ public class RectangleMessage {
     		
 
     	
+    	
+    	g2.setColor(Color.GRAY);
+    	g2.fillRect(x-WIDTH/2,y,WIDTH,HEIGHT);
     	Stroke oldStroke = g2.getStroke();
-    	g2.setStroke(new BasicStroke(10));
+    	g2.setStroke(new BasicStroke(3));
     	g2.setColor(Color.BLACK);
-    	g2.fillRect(x-WIDTH/2,y-HEIGHT/2,WIDTH,HEIGHT);
+    	g2.drawRect(x-WIDTH/2,y,WIDTH,HEIGHT);
     	g2.setStroke(oldStroke);
-    	g2.setColor(Color.WHITE);
+    	g2.setColor(Color.white);
 		Font font =new Font(Font.SANS_SERIF,Font.BOLD,10);
 		g2.setFont(font);
-		g2.drawString(message,x,y);
+		g2.drawString(message,x-WIDTH/2+3,y+HEIGHT/2);
 		
 	}
 	

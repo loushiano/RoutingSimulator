@@ -23,6 +23,11 @@ public interface Strategy {
 	 * 
 	 */
 	public boolean updateRoutingTable(ArrayList<Router> nodes);
+	/*
+	 * returns a string representation of the name of the strategy
+	 * @return a string representation of the name of the strategy
+	 */
+	public String getName();
 	
 
 }

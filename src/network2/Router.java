@@ -1,13 +1,14 @@
 package network2;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import strategies.FloodingStrategy;
 import view.Circle;
-import view.MessageContainer;
+
 
 /*
  * This class is responsible for representing a node in the network topology. This Node
@@ -21,8 +22,9 @@ public class Router {
 	private Circle circle;
 	private HashMap<Router,ArrayList<Router>> routingtable;
 	private ArrayList<Message> storedMessages;
-	private MessageContainer container;
+	
 	private ArrayList<ArrayList<Message>> oldies;
+	private SimulationHandler sim;
 	
 	public Router (String name){
 		this.name=name;
@@ -85,16 +87,18 @@ public class Router {
 	 */
 	public void addMessage(Message message){
 		this.messages.add(message);
+		sim.InformNetworkSimulator(this);
 	}
 	
 	/*
 	 * transferMessage()method is used to transfer the message 
 	 */
-	public void transferMessage(SimulationHandler sim){
+	public void transferMessage(){
 		
 		ArrayList<Message> oldMessages=new ArrayList<Message>();
 			for(Message m:messages){
-				oldMessages.add(m);
+				Message m1=new Message(m.getMessage(),m.getSource(),m.getDestination());
+				oldMessages.add(m1);
 			}
 			oldies.add(oldMessages);
 		if(messages.size()==0){
@@ -117,27 +121,18 @@ public class Router {
 				for(Router n1:routingtable.get(n)){
 						if(!message.getVisited().contains(n1)){
 					i++;
-					/*<Object> transfer=new LinkedList<Object>();
-					transfer.add(message);
-					transfer.add(this);
-					transfer.add(routingtable.get(n));
-					sim.InformNetworkSimulator(transfer);
-					*/
-					String l="message"+message.getMessage()+" has traveled from "+this.getName() +" to "+n1.getName();
-					sim.InformNetworkSimulator(l);
+					
 					sim.incrementPackets();
 					message.incNumHops();
 					if(sim.getSumlationStrategy() instanceof FloodingStrategy){
 					message.addVisited(n1);}
 						if(n1.equals(message.getDestination())){
 						
-							String s="A message has been Succesfully transfered from "+message.getSource().getName() +" to its destination: "+message.getDestination().getName()+" after "+message.getNumHops()+" hops";
+							String s="message"+message.getMessage() +" has been Succesfully transfered from "+message.getSource().getName() +" to its destination: "+message.getDestination().getName()+" after "+message.getNumHops()+" hops";
 							sim.InformNetworkSimulator(s);
 							sim.messageTransferred(message);
-							//message.setSuccess(true);
+							
 						}else{
-							//returned.add(message);
-							//message.setSuccess(false);
 							n1.addStoredMessage(message);
 						
 						}
@@ -161,9 +156,7 @@ public class Router {
 		storedMessages.add(message);
 		
 	}
-	public MessageContainer getContainer() {
-		return container;
-	}
+	
 	/*
 	 * returns messages
 	 * @return messages in this router
@@ -223,6 +216,46 @@ public class Router {
 		// TODO Auto-generated method stub
 		return storedMessages;
 	}
+	/*
+	 * to set the simulationHandler that simulates the behavior of the network
+	 * @param simulationHandler the simulationHandler that simulates the behavior of the network
+	 */
+	public void setSimlation(SimulationHandler simulationHandler) {
+		this.sim=simulationHandler;
+		
+	}
+	/*
+	 * method that return a string that represents the router in xml form
+	 * @return String representation of the xml formal of the router
+	 */
+	public String toXML(int i) {
+			String tab="";
+			String tab1="";
+			for(int j=0;j<i;j++){
+				tab+="\t";
+				if(j<i-1){
+					tab1+="\t";
+				}
+			}
+			
+		String s="<router>" +"\n"+tab+"<name>"+ getName() +"</name>\n" + tab+ getNeighbors(tab) +circle.toXML(i+1)+"\n"+tab1+"</router>";
+		return s;
+	}
+	/*
+	 * returns a string representation of the xml tags of the neighbors of this node
+	 * @param tab the spacing of the neighbor tag
+	 * @return a string representation of the xml tags of the neighbors of this node
+	 */
+	private String getNeighbors(String tab) {
+		String s="";
+		for(Router r:neighbours){
+			s+="<neighbor>"+r.getName()+"</neighbor>\n";
+			s+=tab;
+		}
+		return s;
+	}
+	
+	
 	
 	
 	

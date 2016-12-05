@@ -3,6 +3,9 @@ package view;
 import java.awt.*;   // for Graphics
 import java.util.ArrayList;
 
+import network2.Message;
+import network2.Router;
+
 
 
 //Each Circle object represents a circle in the 2D plane
@@ -10,11 +13,12 @@ import java.util.ArrayList;
 //with a given center and radius.
 
 public class Circle {
-
+	private final int RADIUS=30;
 	private Point center;   // fields
 	private int radius;
 	private String letter;
 	private ArrayList<Line> lines;
+	private ArrayList<RectangleMessage> rectangles;
 
 	/*
 	 *  constructor
@@ -22,14 +26,14 @@ public class Circle {
 	 *  @param radius the radius of the center
 	 *  @param letter the letter that the circle holds
 	 */
-
-	public Circle(Point center, int radius,String letter) {
+	public Circle(Point center,String letter) {
 
 		this.center = center;
 
-		this.radius = radius;
+		this.radius = RADIUS;
 		this.letter=letter;
 		lines=new ArrayList<Line>();
+		rectangles=new ArrayList<RectangleMessage>();
 
 	}
 
@@ -43,6 +47,13 @@ public class Circle {
 
 		return Math.PI * Math.pow(this.radius, 2);
 
+	}
+	/*
+	 * returns the arrayList of rectangle shapes that represent the messages of a router
+	 * @return the arrayList of rectangle shapes that represent the messages of a router
+	 */
+	public ArrayList<RectangleMessage> getRectangles() {
+		return rectangles;
 	}
 
 	/*
@@ -117,6 +128,11 @@ public class Circle {
 		Font font =new Font(Font.SANS_SERIF,Font.BOLD,15);
 		g2.setFont(font);
 		g2.drawString(letter,(int)center.getX()-2 ,(int)center.getY()+5);
+		
+		for(RectangleMessage rec:rectangles){
+			rec.drawRectange(g2);
+			
+		}
 	}
     
     /*
@@ -183,5 +199,30 @@ public class Circle {
 	 */
 	public void setCentre(int x,int y){
 		this.center=new Point(x,y);
+	}
+	/*
+	 * adds a rectangle above the circle, which represents the message in the circle
+	 * @param message to be despalyed in the rectangle to be shown 
+	 */
+	public void addRect(RectangleMessage rect) {
+		
+		rectangles.add(rect);
+		
+	}
+	/*
+	 * returns an xml representation of the circle in form of a string
+	 * @return an xml representation of the circle in form of a string
+	 */
+	public String toXML(int i) {
+		String tab="";
+		String tab1="";
+		for(int j=0;j<i;j++){
+			tab += "\t";
+			if(j<i-1){
+				tab1+="\t";
+			}
+		}
+		String s="<circle>\n"+tab+"<x>"+center.getX()+"</x>\n"+tab+"<y>"+center.getY()+"</y>\n"+tab1+"</circle>";
+		return s;
 	}
 }

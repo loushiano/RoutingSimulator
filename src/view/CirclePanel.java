@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
+import network2.Message;
 import network2.Router;
 
 /**
@@ -23,6 +24,7 @@ public class CirclePanel extends JPanel {
 	private ArrayList<Line> lines;//ArrayList of lines
 	private RectangleMessage rectangle;
 	private ArrayList<Point2D> points;
+	
 	private int counter;
 	private Timer _timer;
 	
@@ -59,11 +61,7 @@ public class CirclePanel extends JPanel {
 				drawCircle(c,g);
 			}
 		}
-		if(rectangle!=null){
-			rectangle.drawRectange(g);
-			
-			
-		}
+		
 		
 		
 	}
@@ -83,8 +81,9 @@ public class CirclePanel extends JPanel {
 	 * @param circle to be added to the circles of the panel
 	 */
 	public void addCircle(Circle circle) {
+		if(!circles.contains(circle)){
 		circles.add(circle);
-		
+		}
 	}
 	/*
 	 * invokes repaint to show all missing shapes
@@ -149,7 +148,7 @@ public class CirclePanel extends JPanel {
 	 * @param circle the circle that represents the node
 	 * @param nodes is the array list of nodes 
 	 */
-	public void moveMessage(String message, Circle circle, ArrayList<Router> nodes) {
+	/*public void moveMessage(String message, Circle circle, ArrayList<Router> nodes) {
 		points=new ArrayList<Point2D>();
 		for(Router n: nodes){
 			Circle circle2=n.getCircle();
@@ -174,7 +173,7 @@ public class CirclePanel extends JPanel {
 			 	
 		}	 
 		    
-			 
+		*/	 
 	
 		    	
 		    
@@ -190,7 +189,7 @@ public class CirclePanel extends JPanel {
 		    		
 		    			
 		    	rectangle.setX((int)points.get(++counter).getX());
-				rectangle.setY((int)points.get(counter).getY());
+				//rectangle.setY((int)points.get(counter).getY());
 		    	repaint();
 		    	
 		    	}else{
@@ -237,9 +236,38 @@ public class CirclePanel extends JPanel {
 		b=false;
 		
 	}
+	/*
+	 * this method adds all the messages that are in a router to the circle that corresponds to that router,to be then displayed above that circle
+	 * @param the router to which the messages correspondss
+	 */
+	public void addRect(Router node) {
+		
+		node.getCircle().getRectangles().clear();
+		int i=0;
+		for(Message m:node.getMessages()){
+			String message="Message:"+m.getMessage()+" source: "+ m.getSource().getName()+" destination: "+ m.getDestination().getName();
+			
+		RectangleMessage rect=new RectangleMessage(message,node.getCircle(),i);
+		
+		node.getCircle().addRect(rect);
+		i++;
+	}
 
 	
-	
-
+	}
+	/*
+	 * return the circles of the panel
+	 * @return the circles of the panel
+	 */
+	public ArrayList<Circle> getCircles() {
+		return circles;
+	}
+	/*
+	 * return the lines of the panel
+	 * @return the lines of the panel
+	 */
+	public ArrayList<Line> getLines(){
+		return lines;
+	}
 
 }

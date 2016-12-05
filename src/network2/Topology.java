@@ -1,6 +1,12 @@
 package network2;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -73,7 +79,9 @@ public class Topology {
 			}
 		
 		}
-		sim.informView(s);
+		Router r[]=new Router[1];
+		r[0]=n2;
+		sim.informView(r);
 	}
 	/*
 	 *put a message in the network 
@@ -137,4 +145,92 @@ public class Topology {
 		}
 		return topology.get(i+1);
 	}
+	/*
+	 * exportXML is a methods that export the topology into an xml file in a give location
+	 * @param path the path of the file to which we would like to export
+	 */
+		public void exportToXML(String f){
+			String s="<Topology>";
+			for(Router r:topology){
+				s+="\n\t";
+				s+=r.toXML(2);
+			}
+			s+="\n</Topology>";
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(s);
+			if(!f.contains(".xml")){
+				f+="/file.xml";
+				//sim.informView(n);
+			}
+				File file1=new File(f);
+				Path file=file1.toPath();
+			
+			try {
+				Files.write(file, list, Charset.forName("UTF-8"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		/*
+		 * returns a topology after parsing the xml file passed to it
+		 * @param file to be parsed
+		 * @return a topology after parsing the xml file passed to it
+		 */
+		public void importXMl(String file){
+			ArrayList<String> s=null;	
+			File f=new File(file);
+			try {
+					 s=XMLParser.readSAX(f);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(s==null){
+					sim.informView(null);
+				}else{
+				sim.reset();
+				setTopology(formTopology(s));
+				}
+				
+		}
+		private ArrayList<Router> formTopology(ArrayList<String> components) {
+			String routers =components.get(0);
+			String neighbours=components.get(1);
+			String circles=components.get(2);
+			String names[]=routers.split(" ");
+			String neighbors[]=neighbours.split("2");
+			String circle[]=circles.split(" ");
+			ArrayList<Router> returnedRouters =new ArrayList<Router>();
+			for(int i=0;i<names.length;i++){
+				Router r=new Router(names[i]);
+				int x=(int)Double.parseDouble(circle[i*2]);
+				int y=(int)Double.parseDouble(circle[i*2+1]);
+				Circle c=new Circle(new Point(x,y), names[i]);
+				r.setCircle(c);
+				returnedRouters.add(r);
+			}
+			for(int i=0;i<neighbors.length;i++){
+				String temp[]=neighbors[i].split(" ");
+				for(int j=0;j<temp.length;j++){
+					
+					Router node=null;
+					for(Router r:returnedRouters){
+						if(temp[j].equals(r.getName())){
+							node=r;
+						}
+					}
+					if(!returnedRouters.get(i).getNeighbours().contains(node)){
+						if(node!=null){
+						returnedRouters.get(i).getNeighbours().add(node);
+						}
+						}
+					
+				}
+				System.out.println();
+			}
+			
+			return returnedRouters;
+		}
 }

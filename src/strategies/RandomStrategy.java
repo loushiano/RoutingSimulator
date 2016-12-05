@@ -47,6 +47,11 @@ public class RandomStrategy implements  Strategy {
 		}
 		return true;
 		}
+
+	@Override
+	public String getName() {
+		return "RandomStratey";
+	}
 	}
 		
 	

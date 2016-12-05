@@ -1,18 +1,25 @@
 package view;
 
 import java.awt.BorderLayout;
-
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
+import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,14 +37,18 @@ public class GUI implements Observer{
 	private JFrame frame; // The fame
 	private JButton createNode; //Button
 	private JButton step,delete,end,addNeighbour,undo; //Button
-	private JButton startSimulation; //Button
+	private JButton startSimulation,shortest,random,flooding,softri,setSettable; //Button
 	private Container contentPane; // Content Pane
-	private JPanel southPanel; //South Panel of the content Pane
-	private JPanel northPanel; //North Panel of the content Pane
+	private JPanel rightPanel; //South Panel of the content Pane
+	private JPanel southPanel; //North Panel of the content Pane
 	private CirclePanel circlePanel;//a panel in which we will draw shapes
 	private GUIController controler;//the controler that lsitens to the gui
 	private ArrayList<JButton> buttons;//list of buttons to be passed to the controller
-	private JTextArea area;//Jtext area to display output in
+	private JTextArea hopsArea,packetsArea;//Jtext area to display output in
+	private ArrayList<JButton> stratButtons;
+	private JMenuBar menuBar;
+	private int strategyInt=0;
+	private int rate=3;
 	/*
 	 * This is the constructor for running the GUI for the network TOpology
 	 * @param controler that listens to this view
@@ -61,12 +72,12 @@ public class GUI implements Observer{
 		}
 		this.controler=controler;
 		setFrame(new JFrame("Network Topology"));
-		getFrame().setPreferredSize(new Dimension(700, 630));
+		//getFrame().setPreferredSize(new Dimension(1200, 700));
 		buttons=new ArrayList<JButton>();
 		circlePanel=new CirclePanel();
+		stratButtons= new ArrayList<JButton>();
 		
-		
-		getFrame().setResizable(false);
+		getFrame().setResizable(true);
 		}
 		/*
 		 * creates the topology based on a user entry, with all the nodes and connections
@@ -74,14 +85,26 @@ public class GUI implements Observer{
 		public void createTopology(){
 		
 		//Panels of the Content Pane
-		southPanel = new JPanel();
-		northPanel = new JPanel();
+		rightPanel = new JPanel();
+		southPanel = new JPanel(new FlowLayout(0,15,5));
 		frame.setContentPane(circlePanel);
 		//Get the content pane from the frame.
 		contentPane = frame.getContentPane();
 		contentPane.setLayout(new BorderLayout());
+		menuBar=new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		JMenu menu =new JMenu("File");
+		JMenuItem save =new JMenuItem("save");
+		save.addActionListener(controler);
+		JMenuItem load =new JMenuItem("load");
+		load.addActionListener(controler);
+		menu.add(save);
+		menu.add(load);
+		menuBar.add(menu);
+		//contentPane.setPreferredSize(new Dimension(frame.getWidth(),3*frame.getHeight()/6));
 		//Create the buttons required for representing the topology.
 		createNode = new JButton("Create Node");
+		createNode.setText("Add Node");
 		buttons.add(createNode);
 		startSimulation = new JButton("Start");
 		buttons.add(startSimulation);
@@ -94,7 +117,20 @@ public class GUI implements Observer{
 		buttons.add(end);
 		buttons.add(addNeighbour);
 		undo=new JButton("Undo");
+		undo.addActionListener(controler);
 		buttons.add(undo);
+		setSettable =new JButton("Set Rate");
+		buttons.add(setSettable);
+		
+		shortest=new JButton("ShortestPathStrategy");
+		random =new JButton("RandomStrategy");
+		flooding =new JButton("FloodingStrategy");
+		softri =new JButton("SoftriatorsStrategy");
+		stratButtons.add(shortest);
+		stratButtons.add(random);
+		stratButtons.add(flooding);
+		stratButtons.add(softri);
+		end.setEnabled(false);
 		//Add actionListenr to Buttons
 		createNode.addActionListener(controler);
 		step.addActionListener(controler);
@@ -104,40 +140,73 @@ public class GUI implements Observer{
 		addNeighbour.addActionListener(controler);
 		delete.addActionListener(controler);
 		end.addActionListener(controler);
-		//add a jtext area to display the results for the user
-		 
+		shortest.addActionListener(controler);
+		random.addActionListener(controler);
+		flooding.addActionListener(controler);
+		softri.addActionListener(controler);
+		setSettable.addActionListener(controler);
+		//add a jtext area to display the results for the user 
 		//Set the layout manage of the South Panel to FlowLayout and add the buttons to the south Panel.
 		
-		southPanel.setPreferredSize(new Dimension(140,300));
+		rightPanel.setPreferredSize(new Dimension(140,300));
+		southPanel.setPreferredSize(new Dimension(180,300));
+		rightPanel.setLayout(new FlowLayout(0,15,30));
 		southPanel.setLayout(new FlowLayout(0,15,30));
-		southPanel.add(createNode);
-		southPanel.add(addNeighbour);
+		rightPanel.add(createNode);
+		rightPanel.add(addNeighbour);
 		
-		southPanel.add(delete);
-		southPanel.add(startSimulation);
-		southPanel.add(step);
-		southPanel.add(end);
-		southPanel.add(undo);
+		rightPanel.add(delete);
+		rightPanel.add(startSimulation);
+		rightPanel.add(step);
+		rightPanel.add(end);
+		rightPanel.add(undo);
+		rightPanel.add(setSettable);
 		undo.setEnabled(false);
 		frame.pack();
-		area=new JTextArea(10,80);
+		
+		
 		//Set the layout manage of the North Panel to Border Layout and add the area that represents the Topology to the panel.
-		JScrollPane pane1 =
+		/*JScrollPane pane1 =
 	            new JScrollPane(area,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 	                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	
-		northPanel.add(pane1);
+		pane1.setPreferredSize(new Dimension(200,200));
+		*/
+		
+		
+		
         //add a mouse listener to the content pane which is the controler
-		northPanel.setPreferredSize(new Dimension(frame.getWidth()-30,frame.getHeight()/3));
-		//pane1.setSize(new Dimension(northPanel.getWidth(),northPanel.getHeight()));
+		
+		JLabel label =new JLabel("choose a strategy:");
+	
+		
+		southPanel.add(label);
+		southPanel.add(random);
+		random.setEnabled(false);
+		southPanel.add(flooding);
+		
+		southPanel.add(shortest);
+		southPanel.add(softri);
+		//initialize the text areas
+		JLabel label2 =new JLabel("Hops Metrix:");
+		JLabel label3 =new JLabel("Packets Metrix:");
+		hopsArea= new JTextArea(2,16);
+		packetsArea =new JTextArea(2,16);
+		southPanel.add(label2);
+		southPanel.add(hopsArea);
+		southPanel.add(label3);
+		southPanel.add(packetsArea);
+		
+		//southPanel.add(pane1,BorderLayout.EAST);
+		
         contentPane.addMouseListener(controler);
         
 		//Add the panels to the content pane.
-		contentPane.add(southPanel, BorderLayout.EAST);
-		contentPane.add(northPanel,BorderLayout.SOUTH );
+		contentPane.add(rightPanel, BorderLayout.EAST);
+		contentPane.add(southPanel,BorderLayout.WEST );
 		//Set the frame to visible and pack it.
 		frame.setVisible(true);
 		frame.pack();
+		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -172,6 +241,7 @@ public class GUI implements Observer{
 		if(arg1 instanceof Router){
 			Router node=(Router)arg1;
 			circlePanel.addCircle(node.getCircle());
+			circlePanel.addRect(node);
 	    	circlePanel.draw();	
 		}else if(arg1 instanceof ArrayList) {
 			ArrayList<Router> nodes=(ArrayList<Router>)arg1;
@@ -183,17 +253,21 @@ public class GUI implements Observer{
 			int y2=(int)n2.getCircle().getCenter().getY();
 			circlePanel.drawLine(x1,y1,x2,y2);
 			startSimulation.setEnabled(true);
-		}else if(arg1 instanceof String){
-			String s=(String)arg1;
-			if(s.length()<4){
-			circlePanel.delete(s);
-			}else {
-				area.append(s);
-				area.append("\n");
-			}
+		}else if(arg1 instanceof Router[]){
+			String s=((Router[])arg1)[0].getName();
 			
+			circlePanel.delete(s);
+			
+			
+		}else if (arg1 instanceof String[]){
+			String[] s=(String[])arg1;
+			hopsArea.setText(s[0]);
+		}else if (arg1 instanceof String){
+		String s =(String) arg1;
+		packetsArea.setText(s);
+		
 		}else{
-			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+			resetGui();
 		}
 		
 	}
@@ -217,11 +291,12 @@ public class GUI implements Observer{
 	 */
 	public String getLetter() {
 		String letter;
-		letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node");
+		letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node,then press anywhere on the screen to locate the Node");
 		while(letter==null || letter.equals("")){
-			letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node");
+			letter = JOptionPane.showInputDialog(getFrame(), "Enter the name of the Node,then press anywhere on the screen to locate the Node");
 			
 		}
+		
 		return letter.toUpperCase();
 	}
 	/*
@@ -230,14 +305,9 @@ public class GUI implements Observer{
 	 */
 	public int getSettable() {
 		
-		String letter;
-		letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate and press ok to start the simulation");
-		while(letter==null || letter.equals("")){
-			letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate and press ok to start the simulation");
-			
-		}
 		
-		return Integer.parseInt(letter);
+		
+		return rate;
 	}
 	
 	/*
@@ -245,14 +315,93 @@ public class GUI implements Observer{
 	 * @return the number of strategy 
 	 */
 	public int getStrategy() {
+		 
+		   return strategyInt;
+	}
+	public void resetGui() {
+		hopsArea.setText(null);
+		packetsArea.setText(null);
+		circlePanel.getCircles().clear();
+		circlePanel.getLines().clear();
+		circlePanel.draw();
 		
+	}
+	/*
+	 * returns a string representation of the path chosen by the user to open a saved file
+	 * @return  a string representation of the path chosen by the user to open a saved file
+	 */
+	public String promptForFolder( Component parent )
+	{
+	    JFileChooser fc = new JFileChooser();
+	    fc.setFileSelectionMode( JFileChooser.FILES_AND_DIRECTORIES);
+
+	    if( fc.showOpenDialog( parent ) == JFileChooser.APPROVE_OPTION )
+	    {
+	        return fc.getSelectedFile().getAbsolutePath();
+	    }
+
+	    return null;
+	}
+	/*
+	 *method used to save file into the system 
+	 *@param parent the frame of the application
+	 *@return a string representation of the url of the path that the file was saved into 
+	 */
+	public String saveFile( Component parent )
+	{
 		
-		 String[] buttons = { "RandomStrategy", "FloodingStrategy", "ShortestPathStrategy" ,"SoftriratorsStrategy"};
+	    JFileChooser fc = new JFileChooser();
+	    fc.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY);
+	    String s=null;
+	    //if( fc.showSaveDialog( parent ) == JFileChooser.SAVE_DIALOG )
+	    //{
+	      //  return fc.getSelectedFile().getAbsolutePath();
+	    //}
+	    int rVal = fc.showSaveDialog(frame);
+	      if (rVal == JFileChooser.APPROVE_OPTION) {
+	        
+	        s=fc.getCurrentDirectory().toString()+"/"+fc.getSelectedFile().getName();
+	      }
+	      if (rVal == JFileChooser.CANCEL_OPTION) {
+	    	  JOptionPane.showMessageDialog(frame,"you have pressed cancel,nothing will get saved");
+	      }
+	    
 
-		    int rc = JOptionPane.showOptionDialog(frame, "Choose wich strategy you want to test", "Strategy",
-		        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[2]);
-
-		   return rc;
+	    return s;
+	}
+	/*
+	 * propmpts the user with a message 
+	 * @string the message to be prompted to the user
+	 */
+	public void promptUser(String string) {
+		JOptionPane.showMessageDialog(frame,string);
+		
+	}
+	/*
+	 * return an arrayList of the strategy buttons
+	 * @return an arrayList of the strategy buttons
+	 */
+	public ArrayList<JButton> getStratButtons(){
+		return stratButtons;
+	}
+	/*
+	 * sets the strategy integer that will be used in the network simulator to decide which strategy to apply on the simulation
+	 * @i the integer to be set to the strategy Integer
+	 */
+	public void setStrategy(int j){
+		strategyInt=j;
+	}	
+	/*
+	 * method that asks the user to enter a settable rate for the simulaton
+	 */
+	public void setSettable(){
+		String letter;
+		letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate of the simulation");
+		while(letter==null || letter.equals("")){
+			letter = JOptionPane.showInputDialog(getFrame(), "Enter the settable rate of the simulation");
+			
+		}
+		rate=Integer.parseInt(letter);
 	}
 	
 }

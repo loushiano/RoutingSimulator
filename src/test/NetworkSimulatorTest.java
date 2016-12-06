@@ -39,7 +39,8 @@ public class NetworkSimulatorTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
+	//Test networkSimulator
 	@Test
 	public void testNetworkSimulator() {
 		assertNotNull(ns.getTopology());
@@ -48,29 +49,31 @@ public class NetworkSimulatorTest {
 		assertNotNull(ns.getSettableRate());
 		assertNotNull(ns.getStrategy());
 	}
-
+	
+	//Test getTopology
 	@Test
-
 	public void testGetTopology() {
 		assertNotNull(ns.getTopology());
 	}
-
+	//Test getMessagesSent
 	@Test
 	public void testGetMessagesSent() {
 		assertNotNull(ns.getMessagesSent());
 	}
-
+	
+	//Test getSimulation
 	@Test
 	public void testGetSimulation() {
 		assertNotNull(ns.getSimulation());
 	}
-
-	@Test
 	
+	//Test getSettableRate
+	@Test
 	public void testGetSettableRate() {
 		assertNotNull(ns.getSettableRate());
 	}
 
+	//Test getStrategy
 	@Test
 	public void testGetStrategy() {
 		assertNotNull(ns.getStrategy());

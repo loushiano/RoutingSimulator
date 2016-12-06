@@ -43,7 +43,8 @@ public class FloodingStrategyTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
+	//Test updateRoutingRable
 	@Test
 	public void testUpdateRoutingTable() {
 		assertNotNull(a);;

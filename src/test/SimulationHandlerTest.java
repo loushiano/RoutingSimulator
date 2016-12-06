@@ -51,13 +51,15 @@ public class SimulationHandlerTest {
 	public void tearDown() throws Exception {
 		
 	}
-
+	
+	//Test simulation Handler.
 	@Test
-
 	public void testSimulationHandler() {
 		assertNotNull(sh);
 	}
-
+	
+	
+	//Test step
 	@Test
 	public void testStep() {
 		boolean x = sh.step();

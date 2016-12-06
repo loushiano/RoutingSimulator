@@ -46,7 +46,9 @@ public class TopologyTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
+	
+	//Test getTopology
 	@Test
 	public void testGetTopology() {
 		assertNotNull(t.getTopology());
@@ -56,6 +58,7 @@ public class TopologyTest {
 		assertNotEquals(t.getTopology(), topology2);
 	}
 
+	//Test setTopology
 	@Test
 	public void testSetTopology() {
 		t.setTopology(topology1);
@@ -63,7 +66,7 @@ public class TopologyTest {
 		assertEquals(t.getTopology(), topology1);
 	}
 
-
+	//Test Topology
 	@Test
 	public void testTopology() {
 		assertNotNull(t);
@@ -73,14 +76,16 @@ public class TopologyTest {
 		assertNotNull(t.getTopology());
 		assertEquals(t.getTopology(), topology1);
 	}
-
+	
+	//Test addARouter
 	@Test
 	public void testAddARouter() {
 		Circle c=new Circle(new Point(3,3),"A");
 		t.addANode("A", c);
 		assertEquals(c,t.getTopology().get(0).getCircle());
 	}
-
+	
+	//Test deleteRouter
 	@Test
 	public void testDeleteRouter() {
 		Circle c=new Circle(new Point(4,3),"A");
@@ -90,7 +95,7 @@ public class TopologyTest {
 		assertEquals(true,t.getTopology().isEmpty());
 	}
 
-
+	//Test getDestinationOfaMessage
 	@Test
 	public void testGetDestinationOfAMessage() {
 		ArrayList<Router> topology2 = new ArrayList<Router>();
@@ -99,12 +104,14 @@ public class TopologyTest {
 		t.setTopology(topology2);
 		assertEquals(n2,t.getDestinationOfAMessage(n1));
 	}
-
+	
+	//Test addNeughbours
 	@Test
 	public void testAddNeighbours() {
 		assertEquals(true,t.addNeighbours(4,4,3,3));
 	}
-
+	
+	//Test getNextOne
 	@Test
 	public void testGetNextOne() {
 		ArrayList<Router> topology2 = new ArrayList<Router>();

@@ -97,7 +97,8 @@ public class RouterTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-
+	
+	//Test Router
 	@Test
 	public void testRouter() {
 		n1 = new Router("G");
@@ -109,14 +110,17 @@ public class RouterTest {
 		
 	
 	}
-
+	
+	//Test getName
 	@Test
 	public void testGetName() {
 		assertNotNull(n1.getName());
 		assertEquals(n1.getName(), n4.getName());
 		assertNotNull(n1.getName(), "Hi");
 	}
-
+	
+	
+	//Test setName
 	@Test
 	public void testSetName() {
 		
@@ -126,6 +130,7 @@ public class RouterTest {
 		assertEquals(n1.getName(), "H");
 	}
 
+	//Test getNeighbours
 	@Test
 	public void testGetNeighbours() {
 		assertNotNull(n3.getNeighbours());
@@ -134,7 +139,8 @@ public class RouterTest {
 		assertEquals(n2.getNeighbours(), n2.getNeighbours());
 		assertEquals(n4.getNeighbours(), Routers3);
 	}
-
+	
+	//Test setNeighbours
 	@Test
 	public void testSetNeighbours() {
 		//n1 and n5 Neighbours are already set above in setUP
@@ -143,7 +149,9 @@ public class RouterTest {
 		assertNotEquals(n1.getNeighbours(), n5.getNeighbours());
 		assertEquals(n5.getNeighbours(), Routers5);
 	}
-
+	
+	
+	//Test addNeighbours
 	@Test
 	public void testAddNeighbour() {
 		n4.addNeighbour(n5);
@@ -151,7 +159,8 @@ public class RouterTest {
 		assertEquals(n4.getNeighbours(), Routers3);
 		assertNotEquals(n4.getNeighbours(), Routers2);
 	}
-
+	
+	//Test addMessage
 	@Test
 	public void testAddMessage() {
 		
@@ -166,10 +175,10 @@ public class RouterTest {
 		assertEquals(n5.getMessages(),messages1);
 		assertNotEquals(n5.getMessages(), n1.getMessages());
 	}
-
-
+	
+	
+	//Test getMessages
 	@Test
-
 	public void testGetMessages() {
 		assertNotNull(n2.getMessages());
 		ArrayList<Message> ms= new ArrayList<Message>();
@@ -178,7 +187,8 @@ public class RouterTest {
 		assertEquals(n5.getMessages(), messages);
 		assertNotEquals(n3.getMessages(), n4.getMessages());
 	}
-
+	
+	//Test toString
 	@Test
 	public void testToString() {
 		assertNotNull(n1.toString());

@@ -1,5 +1,8 @@
 package view;
-
+/*
+ * This class CirclePanel is responsible for representing the circle panel in the topology.
+ * @author Ali Al-Saaidi
+ */
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +16,6 @@ import javax.swing.*;
 import network2.Message;
 import network2.Router;
 
-/**
- * A class that draws all the shapes the user wants to draw
- * 
- * @author Ibrahim Ali Fawaz
- *
- */
 public class CirclePanel extends JPanel {
 	private ArrayList<Circle> circles;//ArrayList of circles
 	private ArrayList<Line> lines;//ArrayList of lines

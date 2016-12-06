@@ -1,5 +1,9 @@
 package strategies;
-
+/*
+ * This class ShortestPathStrategy is responsible for transferring the messages in the topology by means of the shortest way.
+ * 
+ * @author Ali Al-Saaidi
+ */
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

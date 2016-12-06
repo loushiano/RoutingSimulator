@@ -1,8 +1,8 @@
 package network2;
 /*
- * A class Controler that listens to the GUI class and perform actions based on that
+ * A class GUIControler that listens to the GUI class and perform actions based on that
+
  * @author Ali Alsaaidi
- * 
  */
 import java.awt.Point;
 import java.awt.event.ActionEvent;

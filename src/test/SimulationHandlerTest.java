@@ -1,5 +1,9 @@
 package test;
-
+/*
+ * This class SimulationHandlerTest is responsible for testing the simulation handler.
+ * 
+ * @author Ahmad Ayyoub
+ */
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -49,6 +53,7 @@ public class SimulationHandlerTest {
 	}
 
 	@Test
+
 	public void testSimulationHandler() {
 		assertNotNull(sh);
 	}

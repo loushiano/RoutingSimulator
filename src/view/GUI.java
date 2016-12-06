@@ -31,7 +31,8 @@ import network2.GUIController;
 import network2.Message;
 import network2.Router;
 /*
- * This class is responsible for representing the whole Network Topology for the user.
+ * This class GUI is responsible for representing user interface of the network topology.
+ * @author Ahmad Ayyoub
  */
 public class GUI implements Observer{
 	private JFrame frame; // The fame

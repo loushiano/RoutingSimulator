@@ -1,5 +1,8 @@
 package test;
-
+/*
+ * This class NetworkSimulatorTest is responsible for testing the network simulator.
+ * @author Ali Al-Saaidi
+ */
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public class NetworkSimulatorTest {
 	}
 
 	@Test
+
 	public void testGetTopology() {
 		assertNotNull(ns.getTopology());
 	}
@@ -62,6 +66,7 @@ public class NetworkSimulatorTest {
 	}
 
 	@Test
+	
 	public void testGetSettableRate() {
 		assertNotNull(ns.getSettableRate());
 	}

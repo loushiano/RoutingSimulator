@@ -1,5 +1,8 @@
 package test;
-
+/*
+ * This class NetworkSimulatorTest is responsible for testing the network simulator.
+ * @author Suhaib Habboush
+ */
 import static org.junit.Assert.*;
 
 import java.awt.Point;
@@ -59,6 +62,7 @@ public class TopologyTest {
 		assertNotNull(t.getTopology());
 		assertEquals(t.getTopology(), topology1);
 	}
+
 
 	@Test
 	public void testTopology() {

@@ -1,7 +1,13 @@
 package network2;
 /*
  * XMLParser is a class to parse an xml file using the SAXParser
- * @author Ali al-saaidi
+
+
+ * @author Ali al-saaidi, 
+ * @author Ali Fawaz
+ * @author Ahmad Ayyoub
+ * @author suhaib habboush
+ * @author Osama Rachid 
  * 
  */
 

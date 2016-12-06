@@ -1,5 +1,8 @@
 package strategies;
-
+/*
+ * This class RandomStrategy is responsible for transfering the messages in the topology in a Randomly.
+ * @author Osama Rachid
+ */
 import java.util.ArrayList;
 
 import network2.Router;

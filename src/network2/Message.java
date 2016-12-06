@@ -1,5 +1,8 @@
 package network2;
-
+/*
+ * A class Message that is responsible for transfering messsages between network topology.
+ * @author Ahmad Ayyoub
+ */
 import java.util.ArrayList;
 
 import view.RectangleMessage;

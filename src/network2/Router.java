@@ -13,6 +13,8 @@ import view.Circle;
 /*
  * This class is responsible for representing a node in the network topology. This Node
  * has the messages and also the neighbour nodes and routingTable. This node also can be represented as a circle in the view.
+ * 
+ * @author Ahmad Ayyoub
  */
 public class Router {
 	

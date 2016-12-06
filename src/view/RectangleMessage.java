@@ -7,7 +7,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-
+/*
+ * This class RectangleMessage is responsible for representing rectangle message at the top of the router.
+ * @author Osama Rachid.                                                    
+ */
 public class RectangleMessage {
 	private String message;
 	private int x,y;
@@ -21,13 +24,24 @@ public class RectangleMessage {
 		x=(int)circle.getCenter().getX();
 		y=(int)circle.getCenter().getY()-circle.getRadius()-40-HEIGHT*numOfMessages;
 	}
-	
+	/*
+	 * this method will draw the rectangle. using graphics
+	 * 
+	 */
 	public void setX(int x) {
 		this.x = x;
 	}
+	/*
+	 * this method will set location x of this RM
+	 * 
+	 */
 	public void addY(int y) {
 		this.y =this.y- HEIGHT*y;
 	}
+	/*
+	 * this method will set location y of this RM
+	 * 
+	 */
 	public void drawRectange(Graphics g){
 		Graphics2D g2 =(Graphics2D)g;
     	g2.setRenderingHint(

@@ -10,6 +10,7 @@ import strategies.SoftriatorsStrategy;
 
 /*
  * This class is responsible for managing the network simulation. 
+ * @author Suhaib Habboush
  */
 public class SimulationHandler {
 

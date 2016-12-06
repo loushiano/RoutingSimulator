@@ -1,5 +1,8 @@
 package test;
-
+/*
+ * This class NetworkSimulatorTest is responsible for testing the network simulator.
+ * @author Osama Rachid
+ */
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -166,6 +169,7 @@ public class RouterTest {
 
 
 	@Test
+
 	public void testGetMessages() {
 		assertNotNull(n2.getMessages());
 		ArrayList<Message> ms= new ArrayList<Message>();

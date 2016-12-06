@@ -8,12 +8,15 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 
 /*
- * this class is responsible for representing  a line in the view
+ * This class Line is responsible for representing the line between the routers.
+ * @author Suhaib Habboush
  */
 
 public class Line {
 	private int x1,x2,y1,y2;
-	
+		/*
+		 * Line Constructor
+		 */
 		public Line(int x1,int y1,int x2,int y2){
 			this.x1=x1;
 			this.y1=y1;

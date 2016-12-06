@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import network2.Router;
-
+/*
+ * This class SoftriatorsStrategy is responsible for transfering the messages in the topology in a way that makes the message reach its destination as fast as possible. 
+ * @author Suhaib Habboush
+ */
 public class SoftriatorsStrategy implements Strategy{
 
 	@Override

@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import network2.Router;
-
+/*
+ * This class RandomStrategy is responsible for transfering the messages in the topology in a Randomly.
+ * @author Ahmad Ayyoub
+ */
 public class RandomStrategy implements  Strategy {
 /*
  *contructor doesnt do anything

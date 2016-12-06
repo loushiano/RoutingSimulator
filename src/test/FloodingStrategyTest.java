@@ -1,5 +1,8 @@
 package test;
-
+/*
+ * This class RandomStrategy is responsible for transfering the messages in the topology in a flooding way.
+ * @author Ahmad Ayyoub
+ */
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;

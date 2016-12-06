@@ -1,4 +1,7 @@
 package network2;
+
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +18,8 @@ import view.GUI;
  * This class acts as the model of the graphical user interface. This class is responsible for
  * implementing the algorithm behind the GUI. This class takes care of updating the view
  * of the GUI. 
+ * 
+ * @author Osama Rachid
  * */
 public class NetworkSimulator extends Observable {
 		

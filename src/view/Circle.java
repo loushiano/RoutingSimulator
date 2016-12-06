@@ -1,5 +1,8 @@
 package view;
-
+/*
+ * This class Circle is responsible for representing the circle in the topology.
+ * @author Ali Fawaz
+ */
 import java.awt.*;   // for Graphics
 import java.util.ArrayList;
 

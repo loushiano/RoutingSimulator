@@ -15,6 +15,8 @@ import view.Circle;
 /*
  * This class is responsible for representing the network topology which consists of multiple
  * nodes connected together.
+ * 
+ * @author Ali Fawaz
  */
 
 public class Topology {
